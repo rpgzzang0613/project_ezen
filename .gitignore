@@ -9,6 +9,7 @@ target
 pom.properties
 .classpath
 MANIFEST.MF
+servlet-context.xml
 
 ### Eclipse ###
 .metadata
