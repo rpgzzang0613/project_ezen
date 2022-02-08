@@ -12,7 +12,7 @@
 <!-- 아이콘 -->
 <script src="https://kit.fontawesome.com/66da7a4b92.js" crossorigin="anonymous"> 
 </script>
-<title>호텔 대잔치</title>
+<title>호텔 잔치</title>
 </head>
 <body>
 	<nav class="navbar"><!-- 제일큰박스 -->
