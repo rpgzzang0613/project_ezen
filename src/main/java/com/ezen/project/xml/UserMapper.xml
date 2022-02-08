@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+
+<mapper namespace="com.ezen.project.service.UserMapper">
+
+	<insert id="insertUser" parameterType="UserDTO">
+		insert into project_useraccount values(project_useraccount_SEQ.nextval, 
+		#{u_name}, #{u_password}, #{u_email}, #{u_birth}, #{u_tel}, #{a_level}, #{u_nickname}, #{u_point}, 
+		#{u_black}, to_char(sysdate, 'YYYY.MM.DD HH24:MI:SS'))
+	</insert>
+	
+	<select id="searchUser_password" parameterType="java.util.Map" resultType="String">
+		select u_password from project_useraccount where u_name=#{u_name} and u_email=#{u_email} and u_tel=#{u_tel}
+	</select>
+		
+	<select id="searchUser_email" parameterType="java.util.Map" resultType="String">
+		select u_email from project_useraccount where u_name=#{u_name} and u_tel=#{u_tel}
+	</select>
+	
+	<select id="getUserByEmail" parameterType="String" resultType="UserDTO">
+		select * from project_useraccount where u_email=#{u_email}
+	</select>
+	
+	<select id="getUserByUnum" resultType="UserDTO">
+		select * from project_useraccount where u_num=#{u_num}
+	</select>
+	
+	<update id="updateUserPassword" parameterType="UserDTO">
+		update project_useraccount set u_password=#{u_password} where u_email=#{u_email}
+	</update>
+	
+	<update id="addBlackList" parameterType="UserDTO"> 
+		update project_useraccount set a_level=#{a_level}, u_black=#{u_black} where u_num=#{u_num}
+	</update>
+	
+	<update id="deleteBlackList" parameterType="UserDTO"> 
+		update project_useraccount set a_level=#{a_level}, u_black='None' where u_num=#{u_num}
+	</update>
+	
+	<update id="saveBlackContent" parameterType="UserDTO">
+		update project_useraccount set u_black=#{u_black} where u_num=#{u_num}
+	</update>	
+	
+	<!-- list에서 user level이 0~1로 설정해서 관리자계정 안보이게 설정-->
+	<select id="listUser" resultType="UserDTO">
+		select * from project_useraccount where a_level between 0 and 1
+	</select> 
+	
+	<!-- a_level이 0인 블랙리스트 유저만 표시 -->
+	<select id="listBlackUser" resultType="UserDTO">
+		select * from project_useraccount where a_level ='0'
+	</select>
+	
+	<select id="findUser" resultType="UserDTO" parameterType="java.util.Map">
+		${sql}
+	</select>
+	
+	<select id="findUserOnBlack" resultType="UserDTO" parameterType="java.util.Map">
+		${sql} 
+	</select>
+	
+	<delete id="deleteUserByAdmin" parameterType="int">
+		delete from project_useraccount where u_num=#{u_num}
+	</delete>
+	
+	<select id="getUserPassword" parameterType="String" resultType="String">
+		select u_password from project_useraccount where u_num=#{u_num}
+	</select>
+	
+	<delete id="deleteUser" parameterType="java.util.Map"> 
+		delete from project_useraccount where u_num=#{u_num} and u_password=#{u_password}
+	</delete>
+	
+</mapper>

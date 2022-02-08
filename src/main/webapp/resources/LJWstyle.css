@@ -1,0 +1,192 @@
+.flex {
+	flex: 1;
+}
+.row {
+	display: flex;
+	flex-direction: row;
+}
+.row-reverse {
+	display: flex;
+	flex-direction: row-reverse;
+}
+.column {
+	display: flex;
+	flex-direction: column;
+}
+.align-center {
+	align-items: center;
+}
+.justify-between {
+	justify-content: space-between;
+}
+.justify-around {
+	justify-content:space-around;
+}
+.justify-center {
+	justify-content: center;
+}
+.justify-end{
+	justify-content: flex-end; 
+}
+.border-bottom {
+	border-bottom:1px solid grey;
+}
+.border {
+	border:1px solid grey;
+}
+.gutter-y-10 > * {
+	margin-bottom: 10px;
+}
+
+button {
+  border: none;
+  color: white;
+  height: 40px;
+  border-radius: 5px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;
+  cursor: pointer;
+}
+button:hover{transform: scale( 1.1 );}
+
+.button-actions {
+	margin-top: 20px;
+}
+.button-actions > * {
+	margin-left: 10px;
+	width: 100px;
+}
+.button-actions button:first-child {
+	margin-left: 0;
+}
+
+.review {
+	padding: 30px 0;
+}
+.review > span {
+	margin-bottom: 10px;
+}
+.review label {
+	margin-left: 5px;
+}
+.review .picture {
+	width: 240px; 
+	height: 135px; 
+	margin-right: 10px;
+	object-fit: cover;
+}
+.booking {
+	width: 100%;
+}
+.booking > .selectedImage img{
+	width: 1000px; 
+	height: 560px;
+	object-fit: cover;
+	border: 1px solid grey;
+}
+.booking > .images img {
+	width: 160px;
+	height: 90px;
+	object-fit: cover;
+	border: 1px solid grey;
+	cursor: pointer;
+}
+.booking .picture {
+	width: 240px;
+	height: 135px;
+	margin-right: 10px;
+	object-fit: cover;
+	
+}
+
+.Roomcontent {
+	width: 100%;
+	
+}
+.Roomcontent > .selectedImage img{
+	width: 1000; 
+	height: 560px;
+	object-fit: cover;
+	border: 1px solid grey;
+}
+.Roomcontent > .images img {
+	width: 60px;
+	height: 100px;
+	object-fit: cover;
+	border: 1px solid grey;
+	cursor: pointer;
+}
+
+.Roomcontent .picture {
+	width: 240px;
+	height: 135px;
+	margin-right: 10px;
+	object-fit: cover;
+	
+}
+
+.payment-info div:nth-child(odd){
+	background: #FFF5E6;
+}
+.payment-info label {
+	display: inline-block;
+	height: 40px;
+	line-height: 40px;
+}
+.payment-info label:nth-child(odd) {
+	width: 150px;
+	text-align: center;
+}
+.payment-info label:nth-child(even) {
+	flex: 1 0;
+}
+
+
+.book-detail .first{
+	width: 400px;
+	border-right: 1px dotted grey;
+}
+.section {
+	border-top: 1px solid grey;
+	padding: 15px 0;
+}
+.book-detail .second {
+	flex: 1 0;
+}
+.first .section>div {
+	height: 40px;
+	line-height: 40px;
+}
+.second .section label:nth-child(odd) {
+	height: 35px;
+	line-height: 35px;
+}
+.second .section label:nth-child(even) {
+	text-indent: 5px;
+}
+.book-detail .first label:nth-child(odd) {
+	width: 150px;
+	text-align: center;
+}
+.book-detail .first label:nth-child(even) {
+	flex: 1 0;
+}
+
+.book-detail .second label {
+	display:inline-block;
+	width: 100%;
+	padding-left: 10px;
+}
+.book-detail .second label:nth-child(even) {
+	color: #6B4DD6;
+	font-weight: bold;
+	margin-bottom: 5px;
+}
+.book-detail .second .payment label:nth-child(even) {
+	color: #F5635C;
+	font-weight: bold;
+	margin-bottom: 5px;
+}
+

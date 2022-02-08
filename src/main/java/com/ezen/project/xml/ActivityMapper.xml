@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+	
+<mapper namespace = "com.ezen.project.service.ActivityMapper">
+
+	<insert id="inputActivity" parameterType="ActivityDTO">
+		insert into project_activity values(
+		project_activity_seq.nextval, #{c_num}, #{a_name}, #{a_tel}, 
+		#{a_address}, #{a_notice}, #{a_info}, 
+		#{a_image1}, #{a_image2}, #{a_image3}, #{a_image4}, #{a_image5}, 
+		#{a_code}, #{a_extracode}, #{a_manager}, sysdate)
+	</insert>
+	
+	<delete id="deleteActivity" parameterType="int">
+		delete project_activity where a_num=#{a_num}
+	</delete>
+	
+	<update id="editActivity" parameterType="ActivityDTO">
+		update project_activity set 
+		a_name=#{a_name}, a_tel=#{a_tel}, a_address=#{a_address}, a_notice=#{a_notice},
+		a_info=#{a_info}, a_image1=#{a_image1}, a_image2=#{a_image2}, a_image3=#{a_image3},
+		a_image4=#{a_image4}, a_image5=#{a_image5}, a_code=#{a_code}, a_extracode=#{a_extracode},
+		a_manager=#{a_manager} where a_num=#{a_num}
+	</update>
+	
+	<select id="listActivity" parameterType="int" resultType="ActivityDTO">
+       select * from project_activity where c_num = #{c_num}
+    </select>
+    
+     <select id="getActivity" parameterType="int" resultType="ActivityDTO">
+		select * from project_activity where a_num=#{a_num}
+	</select>
+	
+	<insert id="inputProgram" parameterType="ProgramDTO">
+		insert into project_program values(
+		project_program_seq.nextval, #{c_num}, #{a_num}, #{p_name}, 
+		#{p_price}, #{p_maxbooker}, sysdate)
+	</insert>
+	
+	<select id="listProgram" parameterType="int" resultType="ProgramDTO">
+       select * from project_program where a_num = #{a_num}
+    </select>
+    
+    <select id="getProgram" parameterType="int" resultType="ProgramDTO">
+    	select * from project_program where p_num=#{p_num}
+    </select>
+    
+    <update id="editProgram" parameterType="ProgramDTO">
+		update project_program set 
+		p_name=#{p_name}, p_price=#{p_price}, p_maxbooker=#{p_maxbooker} where p_num=#{p_num}
+	</update>
+    
+    <delete id="deleteProgram" parameterType="int">
+		delete project_program where p_num=#{p_num}
+	</delete>
+    
+	<select id="listBookingActByCompany" parameterType="int" resultType="BookingActDTO">
+    	select * from project_bookingAct where a_num=#{a_num} order by a_num desc
+    </select>
+
+	<update id="denyBookingAct" parameterType="int">
+		update project_bookingAct set ba_status='deny' where ba_num=#{ba_num}
+	</update>
+    
+	<update id="confirmBookingAct" parameterType="int">
+		update project_bookingAct set ba_status='confirm' where ba_num=#{ba_num}
+	</update>
+    
+	<update id="checkoutBookingAct" parameterType="int">
+		update project_bookingAct set ba_status='checkout' where ba_num=#{ba_num}
+	</update>
+
+</mapper> 

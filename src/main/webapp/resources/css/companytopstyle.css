@@ -1,0 +1,76 @@
+@charset "EUC-KR";
+
+body{
+	margin: 0;
+	font-familt: 'Source Sans Pro';
+}
+
+/*a 쓸때 스타일*/
+a{
+	text-decoration:none;
+}
+
+/*전체 스타일 */ 
+.navbar{
+	display:flex;  
+	justify-content: space-between;
+	align-items: center;
+	background-color: #f2f3f7;
+	padding:8px 12px; 
+} 
+ 
+/*로고 스타일*/
+.navbar_logo{
+	font-size: 24px;
+	color: white;
+}
+ 
+/*로고 색 */ 
+.navbar_logo i {
+	color: black;
+}
+ 
+/*메뉴창  스타일*/
+.navbar_menu {
+	display: flex;
+	list-style: none;
+	padding-left: 0;
+	color: white;
+}
+
+/*메뉴창 간격 띄우기*/
+.navbar_menu li{
+	padding: 8px 12px;
+}
+ 
+/*마우스 올렸을 때 색 변화 */
+.navbar_menu li:hover{ 
+	background-color: #ebeffd;
+	border-radius: 4px;
+}
+
+/*오른쪽 아이콘 스타일*/
+.navbar_icons {
+	list-style: none;
+	color: white;
+	display: flex;
+	padding-left:0;
+}
+.partner {
+	color: black;
+	display:flex;
+	padding-left:0;
+}   
+/*오른쪽 아이콘 간격*/
+.navbar_icons li {
+	padding: 8px 12px;
+} 
+
+/*버튼 위치설정*/
+.navbar_toggleBtn{
+	display: none;
+	position: absolute;
+	right: 32px;
+	font-size: 24px;
+	color:#EBB065;
+}

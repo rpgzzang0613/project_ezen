@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+
+<mapper namespace="com.ezen.project.service.DisplayActMapper">
+	<select id="sport" resultType="int">
+		 select count(*) from project_activity where a_code='sport'
+	</select>
+	
+	<select id="study" resultType="int">
+		 select count(*) from project_activity where a_code='study'
+	</select>
+	
+	<select id="ent" resultType="int">
+		 select count(*) from project_activity where a_code='ent'
+	</select>
+	
+	<select id="music" resultType="int">
+		 select count(*) from project_activity where a_code='music'
+	</select>
+	
+	<select id="cooking" resultType="int">
+		 select count(*) from project_activity where a_code='cooking'
+	</select>
+	
+	<select id="culture" resultType="int">
+		 select count(*) from project_activity where a_code='culture'
+	</select>
+
+	<select id="searchActivity" parameterType="String" resultType="ActivityDTO">
+		select * from project_activity where a_name like 
+		'%${search}%' or a_address like '%${search}%'
+	</select>
+	
+	<select id="searchFilterActivity" parameterType="String" resultType="ActivityDTO">
+		select * from project_activity where (a_name like 
+		'%${search}%' or a_address like '%${search}%') and a_code=#{a_code}
+	</select>
+
+	<select id="searchFilterAllActivity" parameterType="String" resultType="ActivityDTO">
+		select * from project_activity where a_code=#{a_code}
+	</select>
+	
+	<insert id="wishCheckAct" parameterType="java.util.Map">
+		insert into project_wishlistact values(project_wishlistact_seq.nextval, #{u_num}, #{a_num})
+	</insert>
+	
+	<select id="getActivityList" parameterType="java.util.Map" resultType="ActivityDTO">
+		${sql}
+	</select>
+	
+	<select id="getWishListAct" parameterType="java.util.Map" resultType="WishListActDTO">
+		select * from project_wishListact where u_num=#{u_num}
+	</select>
+	
+	<delete id="wishDelete" parameterType="java.util.Map">
+		delete from project_wishlistact where u_num=#{u_num} and a_num=#{a_num}
+	</delete>
+	
+	<select id="getActNames" resultType="String">
+		select a_name from project_activity 
+	</select>
+	<select id="getActAddresses" resultType="String">
+		select a_address from project_activity 
+	</select>
+	
+	<insert id="insertBookAct" parameterType="BookingActDTO">
+		insert into project_bookingact values(project_bookingact_seq.nextval, 
+		#{p_num}, #{a_num}, #{u_num}, #{ba_bookdate}, #{ba_payment}, #{ba_totalprice}, 
+		'wait', #{ba_name}, #{ba_tel}, #{ba_totalbooker}, to_char(sysdate, 'YYYY.MM.DD HH24:MI:SS'), 0)
+	</insert>
+	
+	<select id="getMaxBooker" parameterType="int" resultType="int">
+		select p_maxbooker from project_program where p_num=#{p_num};
+	</select>
+	
+	<select id="listCurrentBooker" parameterType="java.util.Map" resultType="int">
+		select ba_totalbooker from project_bookingact where p_num=#{p_num} and ba_bookdate=#{ba_bookdate} 
+		and ba_status != 'deny'
+	</select>
+	
+	<select id="getBookAct" parameterType="int" resultType="BookingActDTO">
+		select * from project_bookingact where ba_num=#{ba_num}
+	</select>
+	
+	<update id="deleteActBook" parameterType="int">
+		update project_bookingAct set ba_status='deny' where ba_num=#{ba_num}
+	</update>
+
+	<select id="activityDoubleSearchOk" parameterType="java.util.Map" resultType="ActivityDTO">
+		select * from project_activity where a_name like 
+		#{aname} and a_address like #{addr}
+	</select>
+	
+	<select id="allActReview" resultType="ReviewActDTO">
+		select * from project_reviewact
+	</select>
+	
+	<select id="getReviewCountByAct" resultType="int">
+		select count(*) from project_reviewAct where a_num = #{a_num}
+	</select>
+	
+	<select id="reviewActStar" resultType="int">
+		select review_star from project_reviewAct where a_num = #{a_num}
+	</select>
+	
+	<select id="listReviewByAct" resultType="ReviewActDTO" parameterType="int">
+		select * from project_reviewAct where a_num=#{a_num}
+	</select>
+</mapper>

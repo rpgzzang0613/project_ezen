@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.ezen.project.service.QnABoardMapper">
+	
+	<select id="listAdminCompanyQnA" resultType="CompanyQnADTO" parameterType="java.util.Map">
+		select * from (select rownum rn, A.* from 
+		(select * from project_companyQnA order by cqa_re_step asc)A) 
+		where rn between #{start} and #{end}
+	</select>
+	
+	<select id="listCompanyQnA" resultType="CompanyQnADTO" parameterType="java.util.Map">
+		select * from project_companyQnA where c_num_parent=#{c_num} or c_num=#{c_num} order by cqa_re_step asc
+	</select>
+	
+	<select id="getAdminCompanyQnACount" resultType="int">
+		select count(*) from project_companyQnA
+	</select>
+
+	<select id="getCompanyQnACount" resultType="int">
+		select count(*) from project_companyQnA where c_num_parent=#{c_num} or c_num=#{c_num}
+	</select>
+	
+	<update id="plusCompanyQnARe" parameterType="java.util.Map">
+		${sql}
+	</update>
+	
+	<insert id="insertCompanyQnA" parameterType="CompanyQnADTO">
+		insert into project_companyQnA values(project_companyQnA_seq.nextval, #{c_num}, #{cqa_subject}, #{cqa_contents}, 
+		#{cqa_re_step}, #{cqa_re_level}, to_char(sysdate, 'YYYY.MM.DD HH24:MI:SS'), #{c_num_parent})
+	</insert>
+	
+	<select id="getCompanyQnA" parameterType="int" resultType="CompanyQnADTO">
+		select * from project_companyQnA where cqa_num=#{cqa_num}
+	</select>
+	
+	<delete id="deleteCompanyQnA" parameterType="int">
+		delete from project_companyQnA where cqa_num=#{cqa_num}
+	</delete>
+	
+	<update id="updateCompanyQnA" parameterType="CompanyQnADTO">
+		update project_companyQnA set cqa_subject=#{cqa_subject}, cqa_contents=#{cqa_contents} where cqa_num=#{cqa_num}
+	</update>
+	
+	<select id="listAdminUserQnA" resultType="UserQnADTO" parameterType="java.util.Map">
+		select * from (select rownum rn, A.* from 
+		(select * from project_userQnA order by uqa_re_step asc)A) 
+		where rn between #{start} and #{end}
+	</select>
+	
+	<select id="listUserQnA" resultType="UserQnADTO" parameterType="int">
+		select * from project_userQnA where u_num_parent=#{u_num} or u_num=#{u_num} order by uqa_re_step asc
+	</select>
+	
+	<select id="getAdminUserQnACount" resultType="int">
+		select count(*) from project_userQnA
+	</select>
+	
+	<select id="getUserQnACount" resultType="int">
+		select count(*) from project_userQnA where u_num_parent=#{u_num} or u_num=#{u_num}
+	</select>
+	
+	<update id="plusUserQnARe" parameterType="java.util.Map">
+		${sql}
+	</update>
+	
+	<insert id="insertUserQnA" parameterType="UserQnADTO">
+		insert into project_userQnA values(project_userQnA_seq.nextval, #{u_num}, #{uqa_subject}, #{uqa_contents}, 
+		#{uqa_re_step}, #{uqa_re_level}, to_char(sysdate, 'YYYY.MM.DD HH24:MI:SS'), #{u_num_parent})
+	</insert>
+	
+	<select id="getUserQnA" parameterType="int" resultType="UserQnADTO">
+		select * from project_userQnA where uqa_num=#{uqa_num}
+	</select>
+	
+	<delete id="deleteUserQnA" parameterType="int">
+		delete from project_userQnA where uqa_num=#{uqa_num}
+	</delete>
+	
+	<update id="updateUserQnA" parameterType="UserQnADTO">
+		update project_userQnA set uqa_subject=#{uqa_subject}, uqa_contents=#{uqa_contents} where uqa_num=#{uqa_num}
+	</update>
+	
+	<select id="getCnameByCnum" parameterType="int" resultType="String">
+		select c_name from project_companyaccount where c_num=#{c_num}
+	</select>
+	
+	<select id="getUnicknameByUnum" parameterType="int" resultType="String">
+		select u_nickname from project_useraccount where u_num=#{u_num}
+	</select>
+</mapper>

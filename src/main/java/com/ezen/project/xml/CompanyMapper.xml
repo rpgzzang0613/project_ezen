@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+
+<mapper namespace="com.ezen.project.service.CompanyMapper">
+
+	<insert id="insertCompany" parameterType="CompanyDTO">
+		insert into project_companyaccount values(project_companyaccount_SEQ.nextval, 
+		#{c_ceo}, #{c_bnum}, #{c_password}, #{c_name}, #{c_tel}, #{c_email}, #{c_address}, '2', 
+		#{c_image}, to_char(sysdate, 'YYYY.MM.DD HH24:MI:SS'))
+	</insert>
+	 
+	<update id="updateCompany" parameterType="CompanyDTO">
+		update project_companyaccount set  
+		c_image=#{c_image}, c_name=#{c_name}, c_tel=#{c_tel}, c_address=#{c_address} 
+		where c_num=#{c_num}
+	</update>
+	
+	<select id="searchCompany_password" parameterType="java.util.Map" resultType="String">
+		select c_password from project_companyaccount where c_name=#{c_name} and c_email=#{c_email} and c_bnum=#{c_bnum}
+	</select>
+			 
+	<select id="searchCompany_email" parameterType="java.util.Map" resultType="String">
+		select c_email from project_companyaccount where c_name=#{c_name} and c_bnum=#{c_bnum}
+	</select>	
+	
+	<select id="hasCompanyAccount" parameterType="java.util.Map" resultType="CompanyDTO">
+		select * from project_companyaccount where c_email = #{c_email} and c_bnum = #{c_bnum}
+	</select>
+	
+	<select id="getCompanyByEmail" parameterType="String" resultType="CompanyDTO">
+		select * from project_companyaccount where c_email = #{c_email}
+	</select>
+	
+	<select id="getCompanyByCnum" resultType="CompanyDTO">
+		select * from project_companyaccount where c_num = #{c_num}
+	</select>
+	
+	<update id="updateCompanyPassword" parameterType="CompanyDTO">
+		update project_companyaccount set c_password = #{c_password} where c_email = #{c_email}
+	</update>	
+	 
+	<!-- 블랙리스트 등록  -->
+	<update id="updateCompanyLevel" parameterType="CompanyDTO">
+		update project_companyaccount set a_level = #{a_level} where c_num=#{c_num}
+	</update>	
+	
+	<!-- list에서company level이 0~1로 설정해서 관리자계정 안보이게 설정-->
+	<select id="listCompany" resultType="CompanyDTO">
+		select * from project_companyaccount where a_level between 0 and 2
+	</select>
+	
+	<select id="findCompany" resultType="CompanyDTO" parameterType="java.util.Map">
+		${sql}
+	</select>
+	
+	<delete id = "deleteCompany" parameterType="java.util.Map">
+		delete from project_companyaccount where c_num = #{c_num} and c_password = #{c_password}
+	</delete>
+	
+	<delete id="deleteCompanyByAdmin" parameterType="int">
+		delete from project_companyaccount where c_num = #{c_num}
+	</delete>
+	
+	<select id="findEmail" resultType="String" parameterType="java.util.Map">
+		select c_email from project_companyaccount where c_name=#{c_name} and c_bnum=#{c_bnum}
+	</select>
+	
+	<select id="countCompanyforPassword" parameterType="java.util.Map" resultType="int">
+		select count(*) from project_companyaccount where c_email=#{c_email} and c_bnum=#{c_bnum} and c_name=#{c_name}
+	</select>
+</mapper>

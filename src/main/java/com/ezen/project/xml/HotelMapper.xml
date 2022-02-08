@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ezen.project.service.HotelMapper">
+	
+	<insert id="inputHotel" parameterType="HotelDTO">
+		insert into project_hotel values(
+		project_hotel_seq.nextval, #{c_num}, #{h_name}, #{h_tel}, 
+		#{h_address}, #{h_grade}, #{h_notice}, #{h_info}, 
+		#{h_image1}, #{h_image2}, #{h_image3}, #{h_image4}, #{h_image5}, 
+		#{h_park}, #{h_meal}, #{h_wifi}, #{h_disabled}, #{h_ott}, #{h_pool}, 
+		#{h_kids}, #{h_bus}, #{h_smoke}, #{h_front24}, #{h_manager}, to_char(sysdate, 'YYYY.MM.DD HH24:MI:SS')
+		)
+	</insert>
+	
+	<delete id="deleteHotel" parameterType="int">
+		delete project_hotel where h_num=#{h_num}
+	</delete>
+	
+	<select id="countRoomOnHotel" parameterType="int" resultType="int">
+		select count(room_num) from project_room where h_num=#{h_num}
+	</select>
+	
+	<select id="countRoomOnGroup" parameterType="String" resultType="int">
+		select count(room_num) from project_room where room_code=#{room_code}
+	</select>
+	
+	<delete id="deleteRoomOnHotel" parameterType="int">
+		delete project_room where h_num=#{h_num}
+	</delete>
+	
+	<select id="getAllRoomImagesOnHotel" parameterType="int" resultType="RoomDTO">
+		select room_image1,room_image2,room_image3 from project_room
+		where h_num=#{h_num}
+	</select>
+	
+	<update id="editHotel" parameterType="HotelDTO">
+		update project_hotel set 
+		h_name=#{h_name}, h_tel=#{h_tel}, h_address=#{h_address}, h_grade=#{h_grade}, 
+		h_notice=#{h_notice}, h_info=#{h_info}, h_image1=#{h_image1}, h_image2=#{h_image2}, 
+		h_image3=#{h_image3}, h_image4=#{h_image4}, h_image5=#{h_image5}, 
+		h_park=#{h_park}, h_meal=#{h_meal}, h_wifi=#{h_wifi}, h_disabled=#{h_disabled}, 
+		h_ott=#{h_ott}, h_pool=#{h_pool}, h_kids=#{h_kids}, h_bus=#{h_bus}, h_smoke=#{h_smoke}, 
+		h_front24=#{h_front24}, h_manager=#{h_manager} 
+		where h_num=#{h_num}
+	</update>
+	
+	<select id="listHotel" parameterType="int" resultType="HotelDTO">
+       select * from project_hotel where c_num = #{c_num}
+    </select>
+    
+    <select id="listHotel2" resultType="HotelDTO">
+		SELECT * 
+		FROM project_hotel h INNER JOIN 
+		(SELECT h_num,room_price,room_capacity,room_enable,room_type FROM project_room) r 
+		ON h.h_num = r.h_num
+		WHERE r.room_capacity = '2' AND 
+		h.h_address like '%서울%' AND
+    </select>
+    
+    <select id="getHotel" parameterType="int" resultType="HotelDTO">
+		select * from project_hotel where h_num=#{h_num}
+	</select>
+    
+    <select id="getMaxHnum" resultType="int">
+    	select max(h_num) from project_hotel
+    </select>
+    
+    <insert id="inputRoom" parameterType="RoomDTO">
+    	insert into project_room values(
+    	project_room_seq.nextval, #{h_num}, #{c_num}, #{room_name}, #{room_type}, 
+    	#{room_image1}, #{room_image2}, #{room_image3}, #{room_price}, #{room_capacity}, 
+    	#{room_extraprice}, 'y', #{room_code}
+    	)
+    </insert>
+    
+    <delete id="deleteRoomGroup" parameterType="String">
+		delete project_room where room_code like #{room_code}
+	</delete>
+	
+	<delete id="deleteRoom" parameterType="int">
+		delete project_room where room_num=#{room_num}
+	</delete>
+	
+	<update id="editRoomGroup" parameterType="RoomDTO">
+		update project_room set 
+		room_name=#{room_name}, room_image1=#{room_image1}, room_image2=#{room_image2}, 
+		room_image3=#{room_image3}, room_price=#{room_price}, 
+		room_capacity=#{room_capacity}, room_extraprice=#{room_extraprice} 
+		where room_code=#{room_code}
+	</update>
+	
+	<select id="listRoomGroup" parameterType="int" resultType="RoomDTO">
+		SELECT * FROM project_room
+		INNER JOIN(
+		SELECT MIN(room_num) as room_num FROM project_room GROUP BY room_code)A
+		ON project_room.room_num = A.room_num
+		WHERE h_num=#{h_num} order by room_type asc
+    </select>
+    
+    <select id="listRoom" parameterType="String" resultType="RoomDTO">
+       select * from project_room where room_code=#{room_code} order by room_num asc
+    </select>
+	
+	<select id="getRoomByRoomNum" parameterType="int" resultType="RoomDTO">
+		select * from project_room where room_num=#{room_num}
+	</select>
+	
+	<select id="getRoomType" parameterType="int" resultType="String">
+		select room_type from project_room where room_num = #{room_num}
+	</select>
+	
+	<select id="listRoomInGroupByRoomCode" parameterType="String" resultType="RoomDTO">
+		select * from project_room where room_code=#{room_code}
+	</select>
+	
+	<update id="disableRoom" parameterType="int">
+		update project_room set room_enable='n' where room_num=#{room_num}
+	</update>
+	
+	<update id="enableRoom" parameterType="int">
+		update project_room set room_enable='y' where room_num=#{room_num}
+	</update>
+	
+	<select id="listBookingByHotel" parameterType="int" resultType="BookingDTO">
+		select * from project_booking where h_num=#{h_num} order by book_num desc
+    </select>
+    
+    <select id="getHnameByHnum" parameterType="int" resultType="String">
+    	select h_name from project_hotel where h_num=#{h_num}
+    </select>
+    
+    <update id="confirmBooking" parameterType="int">
+    	update project_booking set book_status='confirm' where book_num=#{book_num}
+    </update>
+    
+    <update id="denyBooking" parameterType="int">
+    	update project_booking set book_status='deny' where book_num=#{book_num}
+    </update>
+    
+    <update id="checkinBooking" parameterType="int">
+    	update project_booking set book_status='checkin' where book_num=#{book_num}
+    </update>
+    
+    <update id="checkoutBooking" parameterType="int">
+    	update project_booking set book_status='checkout' where book_num=#{book_num}
+    </update>
+    
+    <select id="checkRoomCodeExists" parameterType="int" resultType="String">
+    	select max(room_code) from project_room where room_code like #{h_num}
+    </select>
+    
+    <select id="getMaxRoomCode" parameterType="int" resultType="String">
+    	select max(room_code) from project_room where room_code like #{h_num} group by room_code
+    </select>
+</mapper>

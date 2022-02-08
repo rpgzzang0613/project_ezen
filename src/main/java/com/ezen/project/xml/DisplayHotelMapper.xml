@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+	
+<mapper namespace="com.ezen.project.model.DisplayHotelMapper"> 
+	<update id="checkToday" parameterType="String">
+		update project_booking set book_status='deny' 
+		where book_indate &lt; #{today} and book_status='wait'
+	</update>
+	
+	<!-- 자동완성 -->
+	<select id="getHotelNames" resultType="String">
+		select h_name from project_hotel order by h_num
+	</select>
+	
+	<select id="getHotelAddresses" resultType="String">
+		select h_address from project_hotel order by h_num
+	</select>
+	
+	<select id="listHotelByPrice" resultType="HotelDTO" parameterType="java.util.Map">
+		${sql}
+	</select>
+	
+	<select id="listHotelByLocation" resultType="HotelDTO" parameterType="String">
+		select * from project_hotel where h_name like #{condition} or 
+		h_address like #{condition}
+	</select>
+	
+	<!-- 전체리뷰 -->
+	<select id="allReview" resultType="ReviewDTO">
+		select * from project_review
+	</select>
+	
+	<!-- 위시리스트 체크 확인 -->
+	<select id="isWishCheck" resultType="int" parameterType="java.util.Map">
+		select count(*) from project_wishlist where h_num=#{h_num} and u_num=#{u_num}
+	</select>
+	
+	<!-- 호텔 후기 갯수 -->
+	<select id="getReviewCountByHotel" resultType="int">
+		select count(*) from project_review where h_num = #{h_num}
+	</select>
+	
+	<!-- 호텔별점 -->
+	<select id="reviewStar" resultType="int">
+		select review_star from project_review where h_num = #{h_num}
+	</select>
+	
+	<!-- 호텔 객실 리스트 -->
+	<select id="listRoomByType" resultType="RoomDTO" parameterType="java.util.Map">
+		SELECT * FROM project_room
+		INNER JOIN(
+		SELECT MIN(room_num) as room_num FROM project_room GROUP BY room_code)A
+		ON project_room.room_num = A.room_num
+		WHERE h_num=#{h_num} AND room_type=#{type}
+	</select>
+	
+	<!-- 해당 호텔의 리뷰 모두 꺼내오기 -->
+	<select id="listReviewByHotel" resultType="ReviewDTO" parameterType="int">
+		select * from project_review where h_num=#{h_num}
+	</select>
+	
+	<!-- 위시리스트 삭제 -->
+	<delete id="wishRelease" parameterType="java.util.Map">
+		delete from project_wishlist where h_num=#{h_num} and u_num=#{u_num}
+	</delete>
+	
+	<!-- 위시리스트 추가 -->
+	<insert id="wishCheck" parameterType="java.util.Map">
+		insert into project_wishlist values(project_wishlist_seq.nextval,
+		#{u_num}, #{h_num})
+	</insert>
+	
+	<!-- 예약시 적립포인트 저장 -->	
+	<update id="savePointUpdate" parameterType="java.util.Map">
+		update project_useraccount set u_point = u_point + #{book_savepoint} where u_num=#{u_num}
+	</update>
+	
+	<!-- 예약시 사용포인트 저장 -->
+	<update id="usedPointUpdate" parameterType="java.util.Map">
+		update project_useraccount set u_point = u_point - #{inputPoint} where u_num=#{u_num}
+	</update>
+	
+	<!-- 예약insert -->
+	<insert id="insertBook" parameterType="java.util.Map">
+		insert into project_booking values(project_booking_seq.nextval,
+		 #{room_num}, #{h_num}, #{u_num}, #{indate}, #{outdate}
+		 ,to_char(sysdate, 'YYYY.MM.DD HH24:MI:SS'), #{book_payment}, #{inputPoint}, #{book_totalprice},
+		  #{book_savepoint}, 'wait', #{book_name}, #{book_tel},
+		   #{book_roomtype}, #{book_extra}, #{room_code}, 0)
+	</insert>
+	
+	<update id="updatePointEnd" parameterType="int">
+		update project_useraccount set u_point = #{u_point}
+	</update>
+	
+	<select id="bookInfo" resultType="BookingDTO" parameterType="java.util.Map">
+		select * from project_booking where book_num = #{book_num}
+	</select>
+	
+	<!-- 예약취소 point정리 -->
+	<select id="usePoint" resultType="int" parameterType="int">
+		select book_usepoint from project_booking where book_num=#{book_num}
+	</select>
+	<select id="savePoint" resultType="int" parameterType="int">
+		select book_savepoint from project_booking where book_num=#{book_num}
+	</select>
+	<update id="updatePoint" parameterType="java.util.Map">
+		update project_useraccount set u_point = u_point + #{update} where u_num=#{u_num}
+	</update>
+	
+	<!-- 예약번호로 객실찾기 -->
+	<select id="findRoomNum" resultType="int" parameterType="int">
+		select room_num from project_booking where book_num=#{book_num}
+	</select>
+	
+	<!-- 예약삭제 -->
+	<update id="deleteBook" parameterType="int">
+		update project_booking set book_status='deny' where book_num=#{book_num}
+	</update>
+	
+	<!-- 호텔전체목록 -->
+	<select id="hotelList" resultType="HotelDTO">
+		select * from project_hotel
+	</select>
+	
+	<!-- 예약된 객실번호 찾기 -->
+	<select id="getRoomNum" resultType="int" parameterType="int">
+		select room_num from project_booking where book_num=#{book_num}
+	</select>
+	
+	<!-- 객실가격찾기 -->
+	<select id="getRoomPrice" resultType="int" parameterType="int">
+		select room_price from project_room where room_num=#{room_num}
+	</select>
+	
+	<!-- 호텔이름찾기 -->
+	<select id="getHotelName" resultType="String" parameterType="java.util.Map">
+		select h_name from project_hotel where h_num=#{h_num}
+	</select>
+	
+	<!-- 예약번호 가져오기 -->
+	<select id="getBookNum" resultType="int" parameterType="java.util.Map">
+		select book_num from (select rownum rn, A.* from 
+		(select * from project_booking where h_num=#{h_num} and u_num=#{u_num} 
+		order by book_num asc)A) where rn=1
+	</select>
+	
+	<!-- 포인트적립db -->
+	<insert id="savePointDB" parameterType="java.util.Map">
+		insert into project_userpoint values(project_userpoint_seq.nextval, #{book_num}, #{u_num}, 
+		#{p_status}, #{p_contents}, #{p_point}, #{p_remaining}, to_char(sysdate, 'YYYY.MM.DD HH24:MI:SS'))
+	</insert>
+	
+	<!-- 예약정보 가져오기 -->
+	<select id="getBooking" resultType="BookingDTO" parameterType="int">
+		select * from project_booking where book_num=#{book_num}
+	</select>
+	
+	<!-- 유저 현재 point가져오기 -->
+	<select id="getUserPoint" resultType="int" parameterType="int">
+		select u_point from project_useraccount where u_num=#{u_num}
+	</select>
+	
+	<!-- 예약취소시 포인트db -->
+	<insert id="cancelPoint" parameterType="java.util.Map">
+		insert into project_userpoint values(project_userpoint_seq.nextval, #{book_num}, #{u_num}, 
+		#{p_status}, #{p_contents}, #{p_point}, #{p_remaining}, to_char(sysdate, 'YYYY.MM.DD HH24:MI:SS'))
+	</insert>
+	
+	<!-- 위시리스트 찜하기 해제 -->
+	<delete id="wishRelease2" parameterType="int">
+		delete from project_wishlist where w_num=#{w_num}
+	</delete>
+	
+	<delete id="wishRelease3" parameterType="int">
+		delete from project_wishlistact where w_num=#{w_num}
+	</delete>
+	<select id="countBookedRoom" parameterType="java.util.Map" resultType="int">
+		${sql}
+	</select>
+	
+	<select id="isBookedRoom" parameterType="java.util.Map" resultType="int">
+		${sql}
+	</select>
+</mapper>

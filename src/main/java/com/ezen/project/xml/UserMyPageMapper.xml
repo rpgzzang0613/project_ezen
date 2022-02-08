@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ 	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 	
+<mapper namespace="com.ezen.project.service.UserMyPageMapper">
+	<select id="getBookingCount" parameterType="int" resultType="int">
+		select count(*) from project_booking where u_num = #{u_num}
+	</select>
+	
+	<select id="getReviewCount" parameterType="int" resultType="int">
+		select count(*) from project_review where u_num = #{u_num}
+	</select>
+	
+	<select id="getPointCount" parameterType="int" resultType="int">
+		select count(*) from project_userpoint where u_num = #{u_num}
+	</select>
+
+	 <select id="listBookingByUser" parameterType = "java.util.Map" resultType="BookingDTO">
+      select * from (select rownum rn, A.* from
+      (SELECT h_image1, hotel.h_num, book_review, book_indate, book_status, book_outdate, book_num, h_name, room_num, book_joindate
+        , CONCAT(TO_DATE(book_outdate, 'YYYY-MM-DD') - TO_DATE(book_indate, 'YYYY-MM-DD'), '박') AS day
+         FROM project_booking book, project_hotel hotel where u_num=#{u_num} AND book.h_num = hotel.h_num order by book_num desc)A)
+      where rn between #{start} and #{end}
+   </select>
+
+	<select id="listReviewByUser" parameterType = "java.util.Map" resultType="ReviewDTO">
+		select * from (select rownum rn, A.* from
+		(select * from project_review where u_num=#{u_num} order by review_joindate desc)A)
+		where rn between #{start} and #{end}
+	</select>
+	
+	<select id="listPoint" parameterType = "java.util.Map" resultType="UserPointDTO">
+		select * from (select rownum rn, A.* from
+		(select * from project_userpoint where u_num=#{u_num} order by p_num desc)A)
+		where rn between #{start} and #{end}
+	</select>
+
+	<select id="getReview" resultType="ReviewDTO" parameterType="int">
+		select * from project_review where review_num = #{review_num}
+	</select>
+	
+	<update id="editReview" parameterType="java.util.Map">
+		update project_review set review_contents=#{review_contents}, 
+		review_image=#{review_image}, review_star=#{review_star} 
+		where review_num=#{review_num}
+	</update>
+
+	<select id="listWishList" resultType="WishListDTO" parameterType="java.lang.Integer">
+		SELECT AA.h_image1
+			     , AA.h_name
+			     , AA.h_grade
+			     , AA.h_address   
+			     , AA.w_num  
+			     , CASE WHEN ROUND(AA.reviewAvg) = 1 THEN '★☆☆☆☆'
+						WHEN ROUND(AA.reviewAvg) = 2 THEN '★★☆☆☆'
+						WHEN ROUND(AA.reviewAvg) = 3 THEN '★★★☆☆'
+						WHEN ROUND(AA.reviewAvg) = 4 THEN '★★★★☆'
+						WHEN ROUND(AA.reviewAvg) = 5 THEN '★★★★★'
+						ELSE '☆☆☆☆☆' END AS reviewStar
+				 , NVL(AA.reviewAvg, 0) AS reviewAvg
+			     , AA.reviewCnt
+			  FROM (
+			    SELECT hotel.h_image1
+			     , hotel.h_name
+			     , hotel.h_grade
+			     , hotel.h_address
+			     , wishlist.w_num
+			     , (SELECT AVG(sub1.review_star) FROM project_review sub1
+			         WHERE sub1.h_num = hotel.h_num
+			         GROUP BY sub1.h_num) AS reviewAvg
+			     , (SELECT COUNT(sub1.review_star) FROM project_review sub1
+			         WHERE sub1.h_num = hotel.h_num) AS reviewCnt
+			     FROM project_wishlist wishlist
+			        , project_hotel   hotel 
+			    WHERE wishlist.u_num = #{u_num}
+			      AND wishlist.h_num = hotel.h_num
+			  ) AA
+	</select>
+
+	<select id="wishListActView" resultType="WishListActDTO" parameterType="java.lang.Integer">
+		SELECT AA.a_image1
+			     , AA.a_name
+			     , AA.a_address   
+			     , AA.w_num  
+			     , CASE WHEN ROUND(AA.reviewAvg) = 1 THEN '★☆☆☆☆'
+						WHEN ROUND(AA.reviewAvg) = 2 THEN '★★☆☆☆'
+						WHEN ROUND(AA.reviewAvg) = 3 THEN '★★★☆☆'
+						WHEN ROUND(AA.reviewAvg) = 4 THEN '★★★★☆'
+						WHEN ROUND(AA.reviewAvg) = 5 THEN '★★★★★'
+						ELSE '☆☆☆☆☆' END AS reviewStar
+				 , NVL(AA.reviewAvg, 0) AS reviewAvg
+			     , AA.reviewCnt
+			  FROM (
+			    SELECT act.a_image1
+			     , act.a_name
+			     , act.a_address
+			     , wishlist.w_num
+			     , (SELECT AVG(sub1.review_star) FROM project_reviewact sub1
+			         WHERE sub1.a_num = act.a_num
+			         GROUP BY sub1.a_num) AS reviewAvg
+			     , (SELECT COUNT(sub1.review_star) FROM project_reviewact sub1
+			         WHERE sub1.a_num = act.a_num) AS reviewCnt
+			     FROM project_wishlistact wishlist
+			        , project_activity   act 
+			    WHERE wishlist.u_num = #{uNum}
+			      AND wishlist.a_num = act.a_num
+			  ) AA
+	</select>
+
+	<insert id="insertReview" parameterType="java.util.Map">
+		insert into project_review values(project_review_seq.nextval, #{h_num}, #{u_num},
+		#{review_contents}, to_char(sysdate, 'YYYY.MM.DD HH24:MI:SS'), #{review_image}, #{review_star}, #{review_nickname}, 
+		#{review_roomtype})
+	</insert>
+
+	<update id="checkReview" parameterType="int">
+		update project_booking set book_review=1 where book_num=#{book_num}
+	</update>
+	
+	<delete id="deleteReview" parameterType="int">
+		delete from project_review where review_num = #{review_num} 
+	</delete>
+	
+	<select id="getReview_image" parameterType="int" resultType="String">
+		select review_image from project_review where review_num=#{review_num}
+	</select>
+	
+	<select id="getReview_imageAct" parameterType="int" resultType="String">
+		select review_image from project_reviewact where review_num=#{review_num}
+	</select>
+
+	<update id="changeNickName" parameterType="java.util.Map">
+		update project_useraccount set u_nickname = #{nickname} where u_num=#{u_num} 
+	</update>
+
+	<update id="changeUserTel" parameterType="java.util.Map">
+		update project_useraccount set u_tel = #{u_tel} where u_num=#{u_num} 
+	</update>
+	
+	<select resultType="int" id="countBookingAct">
+		select count(*) from project_bookingact where u_num=#{u_num}
+	</select>
+	
+	<select id = "listBookingActByUser" parameterType="java.util.Map" resultType="BookingActDTO">
+		select * from (select rownum rn, A.* from
+      	(SELECT a_image1, act.a_num, ba_bookdate, ba_status, ba_review, ba_num, a_name, p_num, ba_joindate
+        FROM project_bookingact bookact, project_activity act where u_num=#{u_num} AND 
+        bookact.a_num = act.a_num order by ba_num desc)A)
+      	where rn between #{start} and #{end}
+	</select>
+
+	<select id="getProgramType" parameterType="java.util.Map" resultType="String">
+		select p_name from project_program where p_num=#{p_num}
+	</select>
+	
+	<insert id="insertActReview" parameterType="java.util.Map">
+		insert into project_reviewact values(project_reviewAct_seq.nextval, #{a_num}, #{u_num},
+		#{review_contents}, to_char(sysdate, 'YYYY.MM.DD HH24:MI:SS'), #{review_image}, 
+		#{review_star}, #{review_nickname}, #{review_programtype})
+	</insert>
+	
+	<update id="checkActReview" parameterType="int">
+		update project_bookingAct set ba_review=1 where ba_num=#{ba_num}
+	</update>
+	
+	<select id="getReviewActCount" parameterType="int" resultType="int">
+		select count(*) from project_reviewact where u_num=#{u_num}
+	</select>
+	
+	<select id="listReviewActByUser" parameterType = "java.util.Map" resultType="ReviewActDTO">
+		select * from (select rownum rn, A.* from
+		(select * from project_reviewAct where u_num=#{u_num} order by review_joindate desc)A)
+		where rn between #{start} and #{end}
+	</select>
+	
+	<delete id="deleteActReview" parameterType="int">
+		delete from project_reviewact where review_num = #{review_num} 
+	</delete>
+	
+	<select id="getActReview" resultType="ReviewActDTO" parameterType="int">
+		select * from project_reviewAct where review_num = #{review_num}
+	</select>
+	
+	<update id="editActReview" parameterType="java.util.Map">
+		update project_reviewact set review_contents=#{review_contents}, 
+		review_image=#{review_image}, review_star=#{review_star} 
+		where review_num=#{review_num}
+	</update>
+</mapper>
