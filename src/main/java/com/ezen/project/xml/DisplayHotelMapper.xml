@@ -18,7 +18,7 @@
 		select h_address from project_hotel order by h_num
 	</select>
 	
-	<select id="listHotelByPrice" resultType="HotelDTO" parameterType="java.util.Map">
+	<select id="listHotelByFilter" resultType="HotelDTO" parameterType="java.util.Map">
 		${sql}
 	</select>
 	

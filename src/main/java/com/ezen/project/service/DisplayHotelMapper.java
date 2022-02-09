@@ -47,7 +47,7 @@ public class DisplayHotelMapper {
 		return totalList;
 	}
 	
-//	지역별 호텔리스트
+	// 최초 디폴트 리스트
 	public List<HotelDTO> listHotelByLocation(String condition){
 		return sqlSession.selectList("listHotelByLocation", "%"+condition+"%");
 	}
@@ -68,11 +68,11 @@ public class DisplayHotelMapper {
 		
 		sql.put("sql", str);
 		
-		return sqlSession.selectList("listHotelByPrice", sql);
+		return sqlSession.selectList("listHotelByFilter", sql);
 	}
 	
 	// 낮은 가격순 정렬해서 가져오기
-	public List<HotelDTO> listHotelByMinPrice(String condition){
+	public List<HotelDTO> listHotelByMinPrice(String condition) {
 		Map<String,String> sql = new Hashtable<String, String>();
 		String str = "SELECT h.* "
 					+ "FROM project_hotel h INNER JOIN ("
@@ -86,70 +86,68 @@ public class DisplayHotelMapper {
 		
 		sql.put("sql", str);
 		
-		return sqlSession.selectList("listHotelByPrice", sql);
+		return sqlSession.selectList("listHotelByFilter", sql);
 	}
 	
-//	전체호텔 전체리뷰수 반환
-	public Map<Integer, Integer> countReview(List<HotelDTO> hotelList){
-		List<Integer> h_num = new ArrayList<Integer>();
-		for(int i=0; i < hotelList.size(); i++) {
-			HotelDTO hdto = hotelList.get(i);
-			h_num.add(hdto.getH_num());
-		}
+	// 높은 리뷰개수순 정렬해서 가져오기
+	public List<HotelDTO> listHotelByMaxReviewCount(String condition) {
+		Map<String,String> sql = new Hashtable<String, String>();
+		String str = "SELECT h.*,NVL(reviewCount, 0) AS reviewCount "
+					+ "FROM project_hotel h LEFT JOIN ("
+					+ "SELECT h_num AS tmpHnum,COUNT(h_num) AS reviewCount "
+					+ "FROM project_review "
+					+ "GROUP BY h_num"
+					+ ")b "
+					+ "ON h.h_num=b.tmpHnum "
+					+ "WHERE h_name like '%"+condition+"%' or h_address like '%"+condition+"%' "
+					+ "ORDER BY reviewCount desc nulls last";
+		System.out.println(str);
+		sql.put("sql", str);
 		
-		List<ReviewDTO> allReview = sqlSession.selectList("allReview");
+		return sqlSession.selectList("listHotelByFilter", sql);
+	}
+	
+	// 낮은 리뷰개수순 정렬해서 가져오기
+	public List<HotelDTO> listHotelByMinReviewCount(String condition) {
+		Map<String,String> sql = new Hashtable<String, String>();
+		String str = "SELECT h.*,NVL(reviewCount, 0) AS reviewCount "
+					+ "FROM project_hotel h LEFT JOIN ("
+					+ "SELECT h_num AS tmpHnum,COUNT(h_num) AS reviewCount "
+					+ "FROM project_review "
+					+ "GROUP BY h_num"
+					+ ")b "
+					+ "ON h.h_num=b.tmpHnum "
+					+ "WHERE h_name like '%"+condition+"%' or h_address like '%"+condition+"%' "
+					+ "ORDER BY reviewCount asc nulls first";
+		
+		sql.put("sql", str);
+		
+		return sqlSession.selectList("listHotelByFilter", sql);
+	}
+	
+	// 호텔당 전체리뷰개수를 Map형태로 리턴 <h_num, count>
+	public Map<Integer, Integer> countReview(List<HotelDTO> hotelList) {
+		
 		Map<Integer, Integer> map = new Hashtable<Integer, Integer>();
 		
-		int count = 0;
-		for(int j=0; j<h_num.size(); j++) {
-			//등록된 모든 호텔
-			int hotelNum = h_num.get(j);
-			//등록된 모든 후기
-			for(int i=0; i<allReview.size(); i++) {
-				ReviewDTO rdto = allReview.get(i);
-				if(hotelNum == rdto.getH_num()) {
-					count++;
-				}
-			}
-			map.put(hotelNum, count);
-			count = 0;
+		for(HotelDTO hdto : hotelList) {
+			map.put(hdto.getH_num(), getReviewCountByHotel(hdto.getH_num()));
 		}
-		return map;
 		
+		return map;
 	}
 	
-//	전체호텔 리뷰평균 반환
-	public Map<Integer, Double> averageReview(List<HotelDTO> hotelList){
-		List<Integer> h_num = new ArrayList<Integer>();
-		for(int i=0; i < hotelList.size(); i++) {
-			HotelDTO hdto = hotelList.get(i);
-			h_num.add(hdto.getH_num());
-		}
+	// 호텔당 리뷰별점평균을 Map형태로 리턴 <h_num, average>
+	public Map<Integer, Double> averageReview(List<HotelDTO> hotelList) {
 		
-		List<ReviewDTO> allReview = sqlSession.selectList("allReview");
 		Map<Integer, Double> map = new Hashtable<Integer, Double>();
 		
-		int count = 0;
-		int totalStar = 0;
-		for(int j=0; j<h_num.size(); j++) {
-			//등록된 모든 호텔
-			int hotelNum = h_num.get(j);
-			//등록된 모든 후기
-			for(int i=0; i<allReview.size(); i++) {
-				ReviewDTO rdto = allReview.get(i);
-				if(hotelNum == rdto.getH_num()) {
-					count++;
-					totalStar += rdto.getReview_star();
-				}
-			}
-			double average = (double)totalStar / count;
-			average = Math.round(average*10)/10.0;//소수 1번째 자리까지 표기
-			map.put(hotelNum, average);
-			count = 0;
-			totalStar = 0;
+		for(HotelDTO hdto : hotelList) {
+			double average = reviewStar(hdto.getH_num());
+			map.put(hdto.getH_num(), Math.round(average*10)/10.0);	// 첫째자리 소수까지 표기
 		}
-		return map;
 		
+		return map;
 	}
 	
 //	위시리스트 체크여부 확인

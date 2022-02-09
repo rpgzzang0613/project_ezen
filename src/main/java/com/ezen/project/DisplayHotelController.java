@@ -99,13 +99,12 @@ public class DisplayHotelController {
 					hotelList = displayHotelMapper.listHotelByMinPrice(params.get("condition"));
 					break;
 				case "maxReview": 
-					// 상기 리뷰 낮은 순으로 정렬된 tmpHotelList를 뒤집어서 hotelList에 저장
-					Collections.reverse(tmpHotelList);
-					hotelList = tmpHotelList;
+					// DB에서 리뷰 높은 순으로 다시 뽑아옴
+					hotelList = displayHotelMapper.listHotelByMaxReviewCount(params.get("condition"));
 					break;
 				case "minReview": 
-					// 상기 리뷰 낮은 순으로 정렬된 tmpHotelList를 hotelList에 저장
-					hotelList = tmpHotelList;
+					// DB에서 리뷰 낮은 순으로 다시 뽑아옴
+					hotelList = displayHotelMapper.listHotelByMinReviewCount(params.get("condition"));
 					break;
 				case "maxStar": 
 					// 상기 별점 낮은 순으로 정렬된 tmpHotelList2를 뒤집에서 hotelList에 저장
@@ -260,7 +259,6 @@ public class DisplayHotelController {
 			req.setAttribute("hdto", hdto);
 		}
 		
-		
 //		호텔에 대한 리뷰 리스트
 		List<ReviewDTO> reviewList = displayHotelMapper.listReviewByHotel(h_num);
 		
@@ -364,14 +362,8 @@ public class DisplayHotelController {
 		map2.put("room_code", room.getRoom_code());
 		
 		int max_roomCount = hotelMapper.countRoomOnGroup(room.getRoom_code());
-		
 		int booked_roomCount = displayHotelMapper.countBookedRoom(map2);
-		
 		int bookable_roomCount = max_roomCount - booked_roomCount;
-		
-		System.out.println("총 방 수 : " + max_roomCount);
-		System.out.println("예약된 방 수 : " + booked_roomCount);
-		System.out.println("예약가능 방 수 : " + bookable_roomCount);
 		
 //		호텔기본정보
 //		@구분자로 사항들을 나눠서 배열에 담아줌 -> jsp에서 배열 하나씩 출력+줄개행
@@ -485,6 +477,7 @@ public class DisplayHotelController {
 		searchResult(req, params);
 		return "display/display_hotelSearchOk";
 	}
+	
 	@RequestMapping(value="/wishCheck")
 	public String wishCheck(HttpServletRequest req,@RequestParam Map<String, String> params) {
 		displayHotelMapper.wishCheck(params);

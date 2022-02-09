@@ -27,14 +27,10 @@ public class HotelDTO {
 	private String h_manager;
 	private String h_joindate;
 	
+	// DB에 없는 값
+	private int reviewCount;
+	private double reviewAvg;
 	private int wishList = 0;
-	
-	public int getWishList() {
-		return wishList;
-	}
-	public void setWishList(int wishList) {
-		this.wishList = wishList;
-	}
 	
 	public int getH_num() {
 		return h_num;
@@ -193,5 +189,25 @@ public class HotelDTO {
 		this.h_image3 = images[2];
 		this.h_image4 = images[3];
 		this.h_image5 = images[4];
+	}
+	
+	
+	public int getWishList() {
+		return wishList;
+	}
+	public void setWishList(int wishList) {
+		this.wishList = wishList;
+	}
+	public int getReviewCount() {
+		return reviewCount;
+	}
+	public void setReviewCount(int reviewCount) {
+		this.reviewCount = reviewCount;
+	}
+	public double getReviewAvg() {
+		return reviewAvg;
+	}
+	public void setReviewAvg(double reviewAvg) {
+		this.reviewAvg = reviewAvg;
 	}
 }
