@@ -69,7 +69,7 @@ console.log(Kakao.isInitialized());
   <img 
     src="resources/images/Kakao.jpg"
     width=400px
-    alt="카카오 로그인 버튼"
+    alt="카카오 회원가입 버튼"
   /> 
 </a>  
 	</td>

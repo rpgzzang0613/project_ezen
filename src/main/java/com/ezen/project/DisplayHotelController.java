@@ -40,183 +40,116 @@ public class DisplayHotelController {
 	@Autowired
 	private UserMyPageMapper userMyPageMapper;
 	
-//	호텔 검색후 HotelDTO리스트 반환 필터
+	// 호텔 검색 결과 페이지를 보여주기 위한 설정
 	@RequestMapping("/display_hotelSearchOk")
 	public String hotelSearchOk(HttpServletRequest req, @RequestParam Map<String,String> params) {
-//		params로 검색어, 인원수, 체크인, 체크아웃을 받아 sql에서 조건으로 써야할듯(미완성)
-		List<HotelDTO> hotelList = null;
+		// params에 담긴 것들 : condition(직접 입력한 검색어나 지역키워드), indate, outdate, inwon
+		// filter는 필터누를때만 담김
 		
-		if(params.get("filter") == null) {
-//			아래 메소드 실행
-			searchResult(req, params);
-			req.setAttribute("condition", params.get("condition"));
-		}else {
-			Map<Integer, Integer> countReview = null;
-			Map<Integer, Double> starReview = null;
-			List<HotelDTO> newHotelList = null;
-			List<Map.Entry<Integer, Integer>> orderedByReviewCount = null;
-			List<Map.Entry<Integer, Double>> orderedByStarCount = null;
+		// 검색한 호텔을 담을 List 생성해서 검색조건에 맞는 모든 DTO를 꺼내옴
+		List<HotelDTO> hotelList = displayHotelMapper.listHotelByLocation(params.get("condition"));
+		
+		// 꺼내온 호텔DTO들에 각 호텔마다의 리뷰 개수를 MAP형태로 저장하는 작업
+		Map<Integer, Integer> countReview = displayHotelMapper.countReview(hotelList);
+		
+		// 꺼내온 호텔DTO들에 각 호텔마다의 리뷰 별점평균을 MAP형태로 저장하는 작업 
+		Map<Integer, Double> averageReview = displayHotelMapper.averageReview(hotelList);
+		
+		// 필터를 누를때만 조건문을 타게됨
+		if(params.get("filter") != null) {
 			
+			// 리뷰개수 낮은 순으로 정렬해두기
+			List<HotelDTO> tmpHotelList = new ArrayList<HotelDTO>();
+			List<Map.Entry<Integer, Integer>> orderedByReviewCount = new LinkedList<>(countReview.entrySet());
+			orderedByReviewCount.sort(Map.Entry.comparingByValue());
+			
+			for(Map.Entry<Integer, Integer> entry : orderedByReviewCount) {
+				int order = entry.getKey();
+				for(HotelDTO hdto : hotelList) {
+					if(order == hdto.getH_num()) {
+						tmpHotelList.add(hdto);
+						break;
+					}
+				}
+			}
+			
+			// 리뷰별점 낮은 순으로 정렬해두기
+			List<HotelDTO> tmpHotelList2 = new ArrayList<HotelDTO>();
+			List<Map.Entry<Integer, Double>> orderedByStarCount = new LinkedList<>(averageReview.entrySet());
+			orderedByStarCount.sort(Map.Entry.comparingByValue());
+			
+			for(Map.Entry<Integer, Double> entry : orderedByStarCount) {
+				int order = entry.getKey();
+				for(HotelDTO hdto : hotelList) {
+					if(order == hdto.getH_num()) {
+						tmpHotelList2.add(hdto);
+						break;
+					}
+				}
+			}
+			
+			// 누른 필터에 따라 리스트 재정렬
 			switch(params.get("filter")) {
 				case "maxPrice":
+					// DB에서 가격 높은 순으로 다시 뽑아옴
 					hotelList = displayHotelMapper.listHotelByMaxPrice(params.get("condition"));
 					break;
-				case "minPrice": 
+				case "minPrice":
+					// DB에서 가격 낮은 순으로 다시 뽑아옴
 					hotelList = displayHotelMapper.listHotelByMinPrice(params.get("condition"));
 					break;
 				case "maxReview": 
-					hotelList = displayHotelMapper.listHotelByLocation(params.get("condition"));
-//					꺼내온 HotelDTO 리스트들의 후기갯수, 별점평균 계산후 map에 담아줌
-//					Map<호텔고유값, 후기갯수>
-					countReview = displayHotelMapper.countReview(hotelList);
-//					후기 적은순대로 newHotelList라는 새로운 리스트에 정렬해넣기
-					orderedByReviewCount = new LinkedList<>(countReview.entrySet());
-					orderedByReviewCount.sort(Map.Entry.comparingByValue());
-	         
-					newHotelList = new ArrayList<HotelDTO>();
-					
-					for(Map.Entry<Integer, Integer> entry : orderedByReviewCount) {
-						int order = entry.getKey();
-						for(HotelDTO hdto : hotelList) {
-							if(order == hdto.getH_num()) {
-								newHotelList.add(hdto);
-								break;
-							}
-						}
-					}
-					
-					// 후기 적은순을 뒤집어서 후기 많은순으로 변경
-					Collections.reverse(newHotelList);
-					
-					hotelList = newHotelList;
-					
+					// 상기 리뷰 낮은 순으로 정렬된 tmpHotelList를 뒤집어서 hotelList에 저장
+					Collections.reverse(tmpHotelList);
+					hotelList = tmpHotelList;
 					break;
 				case "minReview": 
-					hotelList = displayHotelMapper.listHotelByLocation(params.get("condition"));
-//					꺼내온 HotelDTO 리스트들의 후기갯수, 별점평균 계산후 map에 담아줌
-//					Map<호텔고유값, 후기갯수>
-					countReview = displayHotelMapper.countReview(hotelList);
-//					후기 적은순대로 newHotelList라는 새로운 리스트에 정렬해넣기
-					orderedByReviewCount = new LinkedList<>(countReview.entrySet());
-					orderedByReviewCount.sort(Map.Entry.comparingByValue());
-	         
-					newHotelList = new ArrayList<HotelDTO>();
-					
-					for(Map.Entry<Integer, Integer> entry : orderedByReviewCount){
-						int order = entry.getKey();
-						for(HotelDTO hdto : hotelList) {
-							if(order == hdto.getH_num()) {
-								newHotelList.add(hdto);
-								break;
-							}
-						}
-					}
-					
-					hotelList = newHotelList;
-					
+					// 상기 리뷰 낮은 순으로 정렬된 tmpHotelList를 hotelList에 저장
+					hotelList = tmpHotelList;
 					break;
 				case "maxStar": 
-					hotelList = displayHotelMapper.listHotelByLocation(params.get("condition"));
-//					꺼내온 HotelDTO 리스트들의 후기갯수, 별점평균 계산후 map에 담아줌
-//					Map<호텔고유값, 후기갯수>
-					starReview = displayHotelMapper.averageReview(hotelList);
-//					후기 적은순대로 newHotelList라는 새로운 리스트에 정렬해넣기
-					orderedByStarCount = new LinkedList<>(starReview.entrySet());
-					orderedByStarCount.sort(Map.Entry.comparingByValue());
-					         
-					newHotelList = new ArrayList<HotelDTO>();
-									
-					for(Map.Entry<Integer, Double> entry : orderedByStarCount){
-						int order = entry.getKey();
-						for(HotelDTO hdto : hotelList) {
-							if(order == hdto.getH_num()) {
-								newHotelList.add(hdto);
-								break;
-							}
-						}
-					}
-									
-					Collections.reverse(newHotelList);
-									
-					hotelList = newHotelList;
-									
+					// 상기 별점 낮은 순으로 정렬된 tmpHotelList2를 뒤집에서 hotelList에 저장
+					Collections.reverse(tmpHotelList2);
+					hotelList = tmpHotelList2;
 					break;
-				case "minStar": 
-					hotelList = displayHotelMapper.listHotelByLocation(params.get("condition"));
-//					꺼내온 HotelDTO 리스트들의 후기갯수, 별점평균 계산후 map에 담아줌
-//					Map<호텔고유값, 후기갯수>
-					starReview = displayHotelMapper.averageReview(hotelList);
-//					후기 적은순대로 newHotelList라는 새로운 리스트에 정렬해넣기
-					orderedByStarCount = new LinkedList<>(starReview.entrySet());
-					orderedByStarCount.sort(Map.Entry.comparingByValue());
-					         
-					newHotelList = new ArrayList<HotelDTO>();
-									
-					for(Map.Entry<Integer, Double> entry : orderedByStarCount){
-						int order = entry.getKey();
-						for(HotelDTO hdto : hotelList) {
-							if(order == hdto.getH_num()) {
-								newHotelList.add(hdto);
-								break;
-							}
-						}
-					}
-									
-					hotelList = newHotelList;
-									
+				case "minStar":
+					// 상기 별점 낮은 순으로 정렬된 tmpHotelList2를 hotelList에 저장
+					hotelList = tmpHotelList2;
+					break;
+				default:
 					break;
 			}
-				         
-//			꺼내온 HotelDTO 리스트들의 후기갯수, 별점평균 계산후 map에 담아줌
-//			Map<호텔고유값, 후기갯수>
-			countReview = displayHotelMapper.countReview(hotelList);
-//			Map<호텔고유값, 별점평균>
-			starReview = displayHotelMapper.averageReview(hotelList);
-         
-//			새로고침하거나 다른페이지를 다녀와도, 마지막 검색값이 그대로 남을수 있도록 session에 hotelList등록
-			HttpSession session = req.getSession();
-			req.setAttribute("condition", params.get("condition"));
-			session.setAttribute("hotelList", hotelList);
-         
-			LoginOkBeanUser loginInfo = (LoginOkBeanUser)session.getAttribute("loginOkBean");
-      
-			try{
-				int u_num = loginInfo.getU_num();
-         
-//				회원고유값으로 호텔이 wishList에 등록되어있는지 아닌지 확인(등록 1, 미등록 0)
-				for(HotelDTO hdto : hotelList) {
-					hdto.setWishList(displayHotelMapper.isWishCheck(hdto.getH_num(), u_num));
-				}
-			}catch(Exception e) {};
-			
-			String[] addrs = new String[hotelList.size()];
-			for(int i=0; i<hotelList.size(); i++) {
-				HotelDTO hdto = hotelList.get(i);
-				String addr = hdto.getH_address();
-				String[] fullAddress = addr.split("\\(");
-				addrs[i] = fullAddress[0];
-			}
-			
-			String[] names = new String[hotelList.size()];
-			for(int i=0; i<hotelList.size(); i++) {
-				HotelDTO hdto = hotelList.get(i);
-				names[i] = hdto.getH_name();
-			}
-			
-			req.setAttribute("names", names); 
-			req.setAttribute("addrs", addrs); 
-			req.setAttribute("hotelList", hotelList);
-			req.setAttribute("countReview", countReview);
-			req.setAttribute("averageReview", starReview);
 		}
-		 
-		//		main.jsp검색창에서 설정한 체크인/아웃 날짜들을 session에 넣어둠(user_bookWrite.jsp에서 사용) 
+		
 		HttpSession session = req.getSession();
 		
+		// 로그인이 된 경우, 해당 유저가 호텔을 위시리스트에 등록했는지 아닌지 확인해서 체크 (등록 1, 미등록 0)
+		LoginOkBeanUser loginOkBean = (LoginOkBeanUser)session.getAttribute("loginOkBean");
+		
+		if(loginOkBean != null) {
+			int u_num = loginOkBean.getU_num();
+			
+			for(HotelDTO hdto : hotelList) {
+				hdto.setWishList(displayHotelMapper.isWishCheck(hdto.getH_num(), u_num));
+			}
+		}
+
+		// 지도API에서 쓰기 위한 주소 배열 만들기
+		String[] addrs = new String[hotelList.size()];
+		
+		for(int i=0; i<hotelList.size(); i++) {
+			HotelDTO hdto = hotelList.get(i);
+			String addr = hdto.getH_address();
+			String[] fullAddress = addr.split("\\(");
+			addrs[i] = fullAddress[0];
+		}
+		
 		if(params.get("indate") != null && params.get("outdate") != null ) {
+			// 체크인, 체크아웃 날짜가  지정된 경우
 			session.setAttribute("indate", params.get("indate"));
 			session.setAttribute("outdate", params.get("outdate"));
 		}else {
+			// 지정되지 않으면 오늘, 내일 날짜로 지정
 			if((String)session.getAttribute("indate") == null && (String)session.getAttribute("outdate") == null) {
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 				Date time = new Date();
@@ -231,36 +164,46 @@ public class DisplayHotelController {
 				session.setAttribute("outdate", tmr);
 			}
 		}
+		
 		session.setAttribute("inwon", params.get("inwon"));
+		session.setAttribute("hotelList", hotelList);
+		
+		req.setAttribute("addrs", addrs); 
+		req.setAttribute("hotelList", hotelList);
+		req.setAttribute("countReview", countReview);
+		req.setAttribute("averageReview", averageReview);
+		req.setAttribute("condition", params.get("condition"));
 		
 		return "display/display_hotelSearchOk";
 	}
 	
 	protected void searchResult(HttpServletRequest req, Map<String, String> params) {
 	
-//		DB에서 condition에 맞는 모든 HotelDTO를 꺼내옴
+		// DB에서 condition에 맞는 모든 HotelDTO를 꺼내옴
 		List<HotelDTO> hotelList = displayHotelMapper.listHotelByLocation(params.get("condition"));
 		
-//		꺼내온 HotelDTO 리스트들의 후기갯수, 별점평균 계산후 map에 담아줌
-//		Map<호텔고유값, 후기갯수>
+		// 꺼내온 호텔DTO들에 각 호텔마다의 리뷰 개수를 MAP형태로 저장하는 작업
 		Map<Integer, Integer> countReview = displayHotelMapper.countReview(hotelList);
-//		Map<호텔고유값, 별점평균>
+							
+		// 꺼내온 호텔DTO들에 각 호텔마다의 리뷰 별점평균을 MAP형태로 저장하는 작업 
 		Map<Integer, Double> averageReview = displayHotelMapper.averageReview(hotelList);
 		
-//		새로고침하거나 다른페이지를 다녀와도, 마지막 검색값이 그대로 남을수 있도록 session에 hotelList등록
+		// 새로고침하거나 다른페이지를 다녀와도, 마지막 검색값이 그대로 남을수 있도록 session에 hotelList등록
 		HttpSession session = req.getSession();
 		session.setAttribute("hotelList", hotelList);
 		
-		LoginOkBeanUser loginInfo = (LoginOkBeanUser)session.getAttribute("loginOkBean");
-		try{
-			int u_num = loginInfo.getU_num();
+		LoginOkBeanUser loginOkBean = (LoginOkBeanUser)session.getAttribute("loginOkBean");
 		
-//			회원고유값으로 호텔이 wishList에 등록되어있는지 아닌지 확인(등록 1, 미등록 0)
+		// 로그인이 된 경우, 호텔이 wishList에 등록되어있는지 아닌지 확인(등록 1, 미등록 0)
+		if(loginOkBean != null) {
+			int u_num = loginOkBean.getU_num();
+			
 			for(HotelDTO hdto : hotelList) {
 				hdto.setWishList(displayHotelMapper.isWishCheck(hdto.getH_num(), u_num));
 			}
-		}catch(Exception e) {};
-		
+		}
+
+		// 지도API에서 쓰기 위한 주소 배열
 		String[] addrs = new String[hotelList.size()];
 		
 		for(int i=0; i<hotelList.size(); i++) {
@@ -270,13 +213,6 @@ public class DisplayHotelController {
 			addrs[i] = fullAddress[0];
 		}
 		
-		String[] names = new String[hotelList.size()];
-		
-		for(int i=0; i<hotelList.size(); i++) {
-			HotelDTO hdto = hotelList.get(i);
-			names[i] = hdto.getH_name();
-		}
-		req.setAttribute("names", names); 
 		req.setAttribute("addrs", addrs); 
 		req.setAttribute("hotelList", hotelList);
 		req.setAttribute("countReview", countReview);

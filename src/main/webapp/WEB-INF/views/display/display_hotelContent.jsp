@@ -207,7 +207,7 @@
 		</c:if>
 	<input type="hidden" id="addr" value="${map_addr}">
 	<input type="hidden" id="hotelN" value="${hdto.h_name}">
-	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=2f24176f9573eaaf0fc762f8cebc19f7&libraries=services"></script>
+	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=fe10c33359dd79a3e93e06cb153c4c9a&libraries=services"></script>
 	<div id="map" style="width:1000px;height:500px;"></div>
 	<div id="clickLatlng"></div>
 	

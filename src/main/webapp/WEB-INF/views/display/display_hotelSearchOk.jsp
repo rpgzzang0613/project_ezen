@@ -55,22 +55,20 @@
 			</a>
 		</div>
 		
-<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=2f24176f9573eaaf0fc762f8cebc19f7&libraries=services"></script>
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=fe10c33359dd79a3e93e06cb153c4c9a&libraries=services"></script>
 <div id="map" style="width:100%;height:350px;"></div>	
 <script>
 	const addrs = new Array();
-		<c:forEach var="addr" items="${addrs}" varStatus="listdx">
-			addrs.push("${addr}");
-		</c:forEach>
 	const names = new Array();
-		<c:forEach var="name" items="${names}" varStatus="listdx">
-			names.push("${name}");
-		</c:forEach>
-	
 	const h_num = new Array();
-		<c:forEach var="hdto" items="${hotelList}" varStatus="listdx">
-			h_num.push("${hdto.h_num}");
-		</c:forEach>
+	
+	<c:forEach var="hdto" items="${hotelList}" varStatus="listdx">
+		names.push("${hdto.h_name}")
+		h_num.push("${hdto.h_num}");
+	</c:forEach>
+	<c:forEach var="addr" items="${addrs}" varStatus="listdx">
+		addrs.push("${addr}");
+	</c:forEach>
 		
 	var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
 	   mapOption = {
