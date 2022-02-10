@@ -78,7 +78,7 @@
 			  ) AA
 	</select>
 
-	<select id="wishListActView" resultType="WishListActDTO" parameterType="java.lang.Integer">
+	<select id="listWishListAct" resultType="WishListActDTO" parameterType="java.lang.Integer">
 		SELECT AA.a_image1
 			     , AA.a_name
 			     , AA.a_address   

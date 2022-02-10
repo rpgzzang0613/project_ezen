@@ -106,7 +106,7 @@
 		select count(*) from project_reviewAct where a_num = #{a_num}
 	</select>
 	
-	<select id="reviewActStar" resultType="int">
+	<select id="getReviewActStarAverage" resultType="int">
 		select review_star from project_reviewAct where a_num = #{a_num}
 	</select>
 	

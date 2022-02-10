@@ -201,9 +201,9 @@ public class DisplayActMapper {
 	}
 	
 //	액티비티별 별점 반환
-	public double reviewActStar(int a_num) {
+	public double getReviewActStarAverage(int a_num) {
 		List<Integer> star = new ArrayList<Integer>();
-		star = sqlSession.selectList("reviewActStar", a_num);
+		star = sqlSession.selectList("getReviewActStarAverage", a_num);
 		int totalStar = 0;
 		for(int i = 0; i < star.size(); i++) {
 			totalStar += star.get(i);

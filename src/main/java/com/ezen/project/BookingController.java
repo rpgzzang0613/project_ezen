@@ -170,7 +170,7 @@ public class BookingController {
 		HttpSession session = req.getSession();
 		LoginOkBeanUser loginInfo = (LoginOkBeanUser)session.getAttribute("loginOkBean");
 		
-		BookingDTO bdto = displayHotelMapper.bookInfo(book_num);
+		BookingDTO bdto = displayHotelMapper.getBook(book_num);
 		HotelDTO hdto = hotelMapper.getHotel(h_num);
 		req.setAttribute("hdto", hdto);
 		req.setAttribute("bdto", bdto);
@@ -181,7 +181,7 @@ public class BookingController {
 	@RequestMapping("/user_bookCancel")
 	public String userBookCancel(HttpServletRequest req, int book_num) {
 		//RequestParam값에 h_num 나중에 추가
-		BookingDTO bdto = displayHotelMapper.bookInfo(book_num);
+		BookingDTO bdto = displayHotelMapper.getBook(book_num);
 		HotelDTO hdto = hotelMapper.getHotel(bdto.getH_num());
 		HttpSession session = req.getSession();
 		LoginOkBeanUser loginInfo = (LoginOkBeanUser)session.getAttribute("loginOkBean");

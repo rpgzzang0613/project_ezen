@@ -166,7 +166,7 @@ public class DisplayHotelMapper {
 //	호텔별 별점 반환
 	public double getReviewStarAverage(int h_num) {
 		List<Integer> star = new ArrayList<Integer>();
-		star = sqlSession.selectList("reviewStar", h_num);
+		star = sqlSession.selectList("getReviewStarAverage", h_num);
 		int totalStar = 0;
 		for(int i = 0; i < star.size(); i++) {
 			totalStar += star.get(i);
@@ -207,12 +207,12 @@ public class DisplayHotelMapper {
 	
 //	예약저장&유저 포인트 수정
 	public int insertBook(Map<String,String> params) {
-		return sqlSession.insert("insertBook",params);
+		return sqlSession.insert("insertBook", params);
 	}
 	
 //	유저의 예약정보 반환
-	public BookingDTO bookInfo(int book_num) {
-		BookingDTO bdto = sqlSession.selectOne("bookInfo", book_num);
+	public BookingDTO getBook(int book_num) {
+		BookingDTO bdto = sqlSession.selectOne("getBooking", book_num);
 		return bdto;
 	}
 	

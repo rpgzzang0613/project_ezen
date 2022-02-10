@@ -25,8 +25,8 @@ public class UserMyPageMapper {
 		return sqlSession.selectList("listWishList", u_num);
 	}
 
-	public  List<WishListDTO> wishListActView(int u_num) {
-		return sqlSession.selectList("wishListActView", u_num);
+	public  List<WishListDTO> listWishListAct(int u_num) {
+		return sqlSession.selectList("listWishListAct", u_num);
 	}
 	
 	public List<BookingDTO> listBookingByUser(int start, int end, int u_num){

@@ -471,7 +471,7 @@ public class DisplayHotelController {
 		LoginOkBeanUser loginokbean = (LoginOkBeanUser)session.getAttribute("loginOkBean");
 		int u_num = loginokbean.getU_num();
 		List<WishListDTO> wdto = userMyPageMapper.listWishList(u_num);
-		List<WishListDTO> wdtoAct = userMyPageMapper.wishListActView(u_num);
+		List<WishListDTO> wdtoAct = userMyPageMapper.listWishListAct(u_num);
 		req.setAttribute("wishListAct", wdtoAct);
 		req.setAttribute("wishList", wdto);
 		return new ModelAndView("user/user_wishlist", "wishList", wdto);

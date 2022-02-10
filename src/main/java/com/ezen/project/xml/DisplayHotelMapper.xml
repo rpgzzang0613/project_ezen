@@ -43,7 +43,7 @@
 	</select>
 	
 	<!-- 호텔별점 -->
-	<select id="reviewStar" resultType="int">
+	<select id="getReviewStarAverage" resultType="int">
 		select review_star from project_review where h_num = #{h_num}
 	</select>
 	
@@ -99,7 +99,7 @@
 		update project_useraccount set u_point = #{u_point}
 	</update>
 	
-	<select id="bookInfo" resultType="BookingDTO" parameterType="java.util.Map">
+	<select id="getBook" resultType="BookingDTO" parameterType="java.util.Map">
 		select * from project_booking where book_num = #{book_num}
 	</select>
 	

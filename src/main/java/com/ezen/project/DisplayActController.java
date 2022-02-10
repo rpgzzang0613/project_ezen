@@ -136,7 +136,7 @@ public class DisplayActController {
 		
 		int reviewCount = displayActMapper.getReviewCountByAct(a_num);
 		
-		double starAverage = displayActMapper.reviewActStar(a_num);
+		double starAverage = displayActMapper.getReviewActStarAverage(a_num);
 		starAverage = Math.round(starAverage*10)/10.0;//소수 1번째 자리까지 표기
 		List<ReviewActDTO> reviewList = displayActMapper.listReviewByAct(a_num);
 		
@@ -154,7 +154,7 @@ public class DisplayActController {
 	public String reviewAct(HttpServletRequest req, @RequestParam int a_num) {
 		List<ReviewActDTO> reviewList = displayActMapper.listReviewByAct(a_num);
 		int reviewCount = displayActMapper.getReviewCountByAct(a_num);
-		double starAverage = displayActMapper.reviewActStar(a_num);
+		double starAverage = displayActMapper.getReviewActStarAverage(a_num);
 		starAverage = Math.round(starAverage*10)/10.0;//소수 1번째 자리까지 표기
 		
 		req.setAttribute("reviewCount", reviewCount);
