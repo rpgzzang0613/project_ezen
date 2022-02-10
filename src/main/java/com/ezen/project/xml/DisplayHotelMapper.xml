@@ -66,6 +66,10 @@
 		delete from project_wishlist where h_num=#{h_num} and u_num=#{u_num}
 	</delete>
 	
+	<delete id="wishReleaseWL" parameterType="int">
+		delete from project_wishlist where w_num=#{w_num}
+	</delete>
+	
 	<!-- 위시리스트 추가 -->
 	<insert id="wishCheck" parameterType="java.util.Map">
 		insert into project_wishlist values(project_wishlist_seq.nextval,
@@ -169,14 +173,6 @@
 		#{p_status}, #{p_contents}, #{p_point}, #{p_remaining}, to_char(sysdate, 'YYYY.MM.DD HH24:MI:SS'))
 	</insert>
 	
-	<!-- 위시리스트 찜하기 해제 -->
-	<delete id="wishRelease2" parameterType="int">
-		delete from project_wishlist where w_num=#{w_num}
-	</delete>
-	
-	<delete id="wishRelease3" parameterType="int">
-		delete from project_wishlistact where w_num=#{w_num}
-	</delete>
 	<select id="countBookedRoom" parameterType="java.util.Map" resultType="int">
 		${sql}
 	</select>

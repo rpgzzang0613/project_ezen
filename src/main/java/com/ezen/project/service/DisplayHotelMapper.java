@@ -143,7 +143,7 @@ public class DisplayHotelMapper {
 		Map<Integer, Double> map = new Hashtable<Integer, Double>();
 		
 		for(HotelDTO hdto : hotelList) {
-			double average = reviewStar(hdto.getH_num());
+			double average = getReviewStarAverage(hdto.getH_num());
 			map.put(hdto.getH_num(), Math.round(average*10)/10.0);	// 첫째자리 소수까지 표기
 		}
 		
@@ -164,7 +164,7 @@ public class DisplayHotelMapper {
 	}
 	
 //	호텔별 별점 반환
-	public double reviewStar(int h_num) {
+	public double getReviewStarAverage(int h_num) {
 		List<Integer> star = new ArrayList<Integer>();
 		star = sqlSession.selectList("reviewStar", h_num);
 		int totalStar = 0;
@@ -195,10 +195,14 @@ public class DisplayHotelMapper {
 		sqlSession.delete("wishRelease", params);
 	}
 
-	
-//	해당호텔의 회원번호를 위시리스트에 저장
+//	위시리스트 저장
 	public void wishCheck(Map<String, String> params) {
 		sqlSession.insert("wishCheck", params);
+	}
+	
+//	위시리스트메뉴에서 찜하기 해제
+	public void wishReleaseWL(int w_num) {
+		sqlSession.delete("wishReleaseWL", w_num);
 	}
 	
 //	예약저장&유저 포인트 수정
@@ -313,23 +317,13 @@ public class DisplayHotelMapper {
 		return map;
 	}
 
-//	위시리스트에서 찜하기 해제
-	public void wishRelease2(int w_num) {
-		sqlSession.delete("wishRelease2", w_num);
-	}
-	
-//	위시리스트에서 찜하기 해제
-	public void wishRelease3(int w_num) {
-		sqlSession.delete("wishRelease3", w_num);
-	}
-
 	// 특정 객실그룹에서 예약된 방의 개수를 가져오는 메소드
 	public int countBookedRoom(Map<String,String> map) {
 		String sql = "SELECT count(*) FROM project_booking WHERE room_code='"+map.get("room_code")+"' AND "
 				+ "(book_indate <= '"+map.get("book_outdate")+
 				"' AND book_outdate >= '"+map.get("book_indate")+"') AND book_status <> 'deny'";
-		Map<String, String> map2 = new Hashtable<>();
 		
+		Map<String, String> map2 = new Hashtable<>();
 		map2.put("sql", sql);
 		
 		return sqlSession.selectOne("countBookedRoom", map2);
@@ -342,7 +336,6 @@ public class DisplayHotelMapper {
 				"' AND book_outdate >= '"+map.get("book_indate")+"') AND book_status <> 'deny'";
 		
 		Map<String, String> map2 = new Hashtable<>();
-		System.out.println("isBookedRoom : "+sql);
 		map2.put("sql", sql);
 		
 		int res = sqlSession.selectOne("isBookedRoom", map2);

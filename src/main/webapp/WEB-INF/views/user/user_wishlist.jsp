@@ -8,14 +8,14 @@
 	  const wakeUpTime = Date.now() + ms;
 	  while (Date.now() < wakeUpTime) {}
 	}
-	function wishCheck3(w_num){
-		var child = window.open("wishRelease3?w_num="+w_num, "search","width=10, height=10");
+	function wishReleaseWL(w_num){
+		var child = window.open("wishReleaseWL?w_num="+w_num, "search","width=10, height=10");
 		window.parent.location.reload();
 		sleep(300);
 		child.close();
 	}
-	function wishCheck5(w_num){
-		var child = window.open("wishRelease5?w_num="+w_num, "search","width=10, height=10");
+	function wishActReleaseWL(w_num){
+		var child = window.open("wishActReleaseWL?w_num="+w_num, "search","width=10, height=10");
 		window.parent.location.reload();
 		sleep(300);
 		child.close();
@@ -53,7 +53,7 @@
 							<!-- 누를때마다 이벤트 발생하게 해야함 -->
 							<c:if test="${not empty sessionScope.loginOkBean}">
 								<c:if test="${not empty wdto.h_name}">
-									<a href="javascript:wishCheck3('${wdto.w_num}')">
+									<a href="javascript:wishReleaseWL('${wdto.w_num}')">
 									<i class="fas fa-heart"></i></a>
 								</c:if>
 							</c:if>
@@ -92,7 +92,7 @@
 						<!-- 누를때마다 이벤트 발생하게 해야함 -->
 						<c:if test="${not empty sessionScope.loginOkBean}">
 							<c:if test="${not empty wdto.a_name}">
-								<a href="javascript:wishCheck5('${wdto.w_num}')">
+								<a href="javascript:wishActReleaseWL('${wdto.w_num}')">
 								<i class="fas fa-heart"></i></a>
 							</c:if>
 						</c:if>

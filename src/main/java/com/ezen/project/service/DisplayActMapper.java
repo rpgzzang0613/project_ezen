@@ -63,11 +63,6 @@ public class DisplayActMapper {
 		return sqlSession.selectOne("activityContent", a_num);
 	}
 	
-//	해당엑티비티의 고유번호를 위시리스트에 저장
-	public void wishCheck(Map<String, String> params) {
-		sqlSession.insert("wishCheckAct", params);
-	}
-	
 	public List<ActivityDTO> getActivity(Map<String,String> params){
 		String str = "select count(*) from project_activity where a_name like'%"+
 						params.get("location")+"%' or a_address like '%"+params.get("location")+
@@ -81,8 +76,19 @@ public class DisplayActMapper {
 		return sqlSession.selectList("getWishListAct", params);
 	}
 	
-	public void wishDelete(Map<String,String> params) {
-		sqlSession.delete("wishDelete", params);
+	// 위시리스트 페이지에서 해제
+	public void wishActReleaseWL(int w_num) {
+		sqlSession.delete("wishActReleaseWL", w_num);
+	}
+	
+	// 액티비티 검색결과 페이지에서 위시리스트 해제
+	public void wishActReleaseOK(Map<String,String> params) {
+		sqlSession.delete("wishActRelease", params);
+	}
+	
+	// 액티비티 검색결과 페이지에서 위시리스트 등록
+	public void wishActCheckOK(Map<String, String> params) {
+		sqlSession.insert("wishActCheck", params);
 	}
 	
 //	자동완성

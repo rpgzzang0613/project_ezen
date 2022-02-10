@@ -163,10 +163,17 @@ public class DisplayActController {
 		return "board/reviewAct";
 	}
 	
+//	wishList 페이지에서 액티비티 위시리스트 해제
+	@RequestMapping(value="/wishActReleaseWL")
+	public String wishActReleaseWL(HttpServletRequest req, @RequestParam int w_num) {
+		displayActMapper.wishActReleaseWL(w_num);
+		return "user/user_wishlist";
+	}
+	
 //	ActivitySeachOk 페이지에서 위시리스트 체크/해제
-	@RequestMapping(value="/wishRelease4")
-	public String wishRelease4(HttpServletRequest req, @RequestParam Map<String, String> params) {
-		displayActMapper.wishDelete(params);
+	@RequestMapping(value="/wishActReleaseOK")
+	public String wishActReleaseOK(HttpServletRequest req, @RequestParam Map<String, String> params) {
+		displayActMapper.wishActReleaseOK(params);
 		List<ActivityDTO> actList = displayActMapper.getActivity(params);
 		List<WishListActDTO> wishList = displayActMapper.getWishListAct(params);
 		for(ActivityDTO adto : actList) {
@@ -180,9 +187,9 @@ public class DisplayActController {
 		return "displayact/display_activitySearchOk";
 	}
 	
-	@RequestMapping(value="/wishCheck4")
-	public String wishCheck4(HttpServletRequest req, @RequestParam Map<String, String> params) {
-		displayActMapper.wishCheck(params);
+	@RequestMapping(value="/wishActCheckOK")
+	public String wishActCheckOK(HttpServletRequest req, @RequestParam Map<String, String> params) {
+		displayActMapper.wishActCheckOK(params);
 		List<ActivityDTO> actList = displayActMapper.getActivity(params);
 		List<WishListActDTO> wishList = displayActMapper.getWishListAct(params);
 		for(ActivityDTO adto : actList) {

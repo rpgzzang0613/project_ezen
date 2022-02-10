@@ -99,12 +99,19 @@ public class DisplayHotelController {
 					hotelList = displayHotelMapper.listHotelByMinPrice(params.get("condition"));
 					break;
 				case "maxReview": 
-					// DB에서 리뷰 높은 순으로 다시 뽑아옴
-					hotelList = displayHotelMapper.listHotelByMaxReviewCount(params.get("condition"));
+					// DB에서 리뷰 높은 순으로 다시 뽑아옴 (아래꺼랑 둘중 하나만 써야됨)
+					// hotelList = displayHotelMapper.listHotelByMaxReviewCount(params.get("condition"));
+					
+					// 상기 리뷰 높은 순으로 정렬된 tmpHotelList를 뒤집에서 hotelList에 저장
+					Collections.reverse(tmpHotelList);
+					hotelList = tmpHotelList;
 					break;
 				case "minReview": 
-					// DB에서 리뷰 낮은 순으로 다시 뽑아옴
-					hotelList = displayHotelMapper.listHotelByMinReviewCount(params.get("condition"));
+					// DB에서 리뷰 낮은 순으로 다시 뽑아옴 (아래꺼랑 둘중 하나만 써야됨)
+					// hotelList = displayHotelMapper.listHotelByMinReviewCount(params.get("condition"));
+					
+					// 상기 별점 낮은 순으로 정렬된 tmpHotelList를 hotelList에 저장
+					hotelList = tmpHotelList;
 					break;
 				case "maxStar": 
 					// 상기 별점 낮은 순으로 정렬된 tmpHotelList2를 뒤집에서 hotelList에 저장
@@ -231,7 +238,7 @@ public class DisplayHotelController {
 		int reviewCount = displayHotelMapper.getReviewCountByHotel(h_num);
 		
 //		호텔 별점 평균
-		double starAverage = displayHotelMapper.reviewStar(h_num);
+		double starAverage = displayHotelMapper.getReviewStarAverage(h_num);
 		starAverage = Math.round(starAverage*10)/10.0;//소수 1번째 자리까지 표기
 		
 //		방 타입별 정보
@@ -386,7 +393,7 @@ public class DisplayHotelController {
 		int reviewCount = displayHotelMapper.getReviewCountByHotel(h_num);
 		
 //		호텔 별점 평균
-		double starAverage = displayHotelMapper.reviewStar(h_num);
+		double starAverage = displayHotelMapper.getReviewStarAverage(h_num);
 		starAverage = Math.round(starAverage*10)/10.0;//소수 1번째 자리까지 표기
 		
 		req.setAttribute("reviewCount", reviewCount);
@@ -470,16 +477,23 @@ public class DisplayHotelController {
 		return new ModelAndView("user/user_wishlist", "wishList", wdto);
 	}
 	
+//	wishList 페이지에서 호텔 위시리스트 해제
+	@RequestMapping(value="/wishReleaseWL")
+	public String wishReleaseWL(HttpServletRequest req, @RequestParam int w_num) {
+		displayHotelMapper.wishReleaseWL(w_num);
+		return "user/user_wishlist";
+	}
+	
 //	hotelSeachOk 페이지에서 위시리스트 체크/해제
-	@RequestMapping(value="/wishRelease")
-	public String wishRelease(HttpServletRequest req, @RequestParam Map<String, String> params) {
+	@RequestMapping(value="/wishReleaseOK")
+	public String wishReleaseOK(HttpServletRequest req, @RequestParam Map<String, String> params) {
 		displayHotelMapper.wishRelease(params);
 		searchResult(req, params);
 		return "display/display_hotelSearchOk";
 	}
 	
-	@RequestMapping(value="/wishCheck")
-	public String wishCheck(HttpServletRequest req,@RequestParam Map<String, String> params) {
+	@RequestMapping(value="/wishCheckOK")
+	public String wishCheckOK(HttpServletRequest req,@RequestParam Map<String, String> params) {
 		displayHotelMapper.wishCheck(params);
 		searchResult(req, params);
 		return "display/display_hotelSearchOk";
@@ -509,7 +523,7 @@ public class DisplayHotelController {
 		int reviewCount = displayHotelMapper.getReviewCountByHotel(h_num);
 		
 //		호텔 별점 평균
-		double starAverage = displayHotelMapper.reviewStar(h_num);
+		double starAverage = displayHotelMapper.getReviewStarAverage(h_num);
 		starAverage = Math.round(starAverage*10)/10.0;//소수 1번째 자리까지 표기
 		
 //		방 타입별 정보
@@ -597,17 +611,4 @@ public class DisplayHotelController {
 		req.setAttribute("loginOkBean", loginOkBean);
 	}
 	
-//	wishList페이지 에서 위시리스트 해제
-	@RequestMapping(value="/wishRelease3")
-	public String wishRelease3(HttpServletRequest req, @RequestParam int w_num) {
-		displayHotelMapper.wishRelease2(w_num);
-		return "user/user_wishlist";
-	}
-	
-//	wishList페이지 에서 위시리스트 해제
-	@RequestMapping(value="/wishRelease5")
-	public String wishRelease5(HttpServletRequest req, @RequestParam int w_num) {
-		displayHotelMapper.wishRelease3(w_num);
-		return "user/user_wishlist";
-	}
 }

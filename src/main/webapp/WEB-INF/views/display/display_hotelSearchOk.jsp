@@ -9,14 +9,14 @@
 	  const wakeUpTime = Date.now() + ms;
 	  while (Date.now() < wakeUpTime) {}
 	}
-	function wishCheck1(h_num, u_num){
-		var child = window.open("wishRelease?h_num="+h_num+"&u_num="+u_num, "search", "width=10, height=10");
+	function wishReleaseOK(h_num, u_num){
+		var child = window.open("wishReleaseOK?h_num="+h_num+"&u_num="+u_num, "search", "width=10, height=10");
 		window.parent.location.reload();
 		sleep(300);
 		child.close();
 	}
-	function wishCheck2(h_num, u_num){
-		var child = window.open("wishCheck?h_num="+h_num+"&u_num="+u_num, "search", "width=10, height=10");
+	function wishCheckOK(h_num, u_num){
+		var child = window.open("wishCheckOK?h_num="+h_num+"&u_num="+u_num, "search", "width=10, height=10");
 		window.parent.location.reload();
 		sleep(300);
 		child.close();
@@ -157,11 +157,11 @@
 					<!-- 로그인 회원 표시 -->
 					<!-- 누를때마다 이벤트 발생하게 해야함 -->
 					<c:if test="${not empty loginOkBean}">
-						<c:if test="${hdto.wishList >= '1'}">
-							<a href="javascript:wishCheck1('${hdto.h_num}','${loginOkBean.u_num}','${param.location}')"><i class="fas fa-heart"></i></a>
+						<c:if test="${hdto.wishList ne '0'}">
+							<a href="javascript:wishReleaseOK('${hdto.h_num}','${loginOkBean.u_num}','${param.location}')"><i class="fas fa-heart"></i></a>
 						</c:if>
 						<c:if test="${hdto.wishList eq '0'}">
-							<a href="javascript:wishCheck2('${hdto.h_num}','${loginOkBean.u_num}','${param.location}')"><i class="far fa-heart"></i></a>
+							<a href="javascript:wishCheckOK('${hdto.h_num}','${loginOkBean.u_num}','${param.location}')"><i class="far fa-heart"></i></a>
 						</c:if>
 					</c:if>
 					
