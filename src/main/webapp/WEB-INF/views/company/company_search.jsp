@@ -6,19 +6,19 @@
 <div align="center">
 <form name="f_search" method="POST" action="">
 <input type="hidden" name="mode" value="${param.mode}">
-<table border="0" width="280" align="center">
+<c:if test="${param.mode.equals('c_email')}">
+	<h3>이메일 찾기</h3>
+</c:if>
+<c:if test="${param.mode.equals('c_password')}">
+	<h3>비밀번호 찾기</h3>
+</c:if>
+<table>
+	<c:if test="${param.mode.equals('c_password')}">
 	<tr>
-	<c:if test="${param.mode.equals('c_email')}">
-		<td align="center"><h3>이메일 찾기</h3></td>
-	</c:if>
-	<c:if test="${param.mode.equals('c_password')}">
-		<td align="center"><h3>비밀번호 찾기</h3></td>
-	</c:if>
-	</tr>
-	<c:if test="${param.mode.equals('c_password')}">
 		<td>
-			<input type="text" name="c_email" placeholder="이메일을 입력해 주세요." tabindex="1" style="width:350px;height:50px" required oninvalid="this.setCustomValidity('이메일을 입력해주세요.')" oninput = "setCustomValidity('')">
+		<input type="text" name="c_email" placeholder="이메일을 입력해 주세요." tabindex="1" style="width:350px;height:50px" required oninvalid="this.setCustomValidity('이메일을 입력해주세요.')" oninput = "setCustomValidity('')">
 		</td>
+	</tr>
 	</c:if>
 	<tr>
 		<td>

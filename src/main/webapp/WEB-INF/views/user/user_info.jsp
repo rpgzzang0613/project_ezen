@@ -12,7 +12,7 @@
 	<tr>
 		<td>닉네임</td>
 		<td>
-			<form name="info" method="post" action="user_infoChange">
+			<form name="info" method="post" action="user_nickChange">
 		 		<input type="text" name="nickname" value="${loginOkBean.u_nickname}">
 				<input type="submit" value="수정">
 			</form>

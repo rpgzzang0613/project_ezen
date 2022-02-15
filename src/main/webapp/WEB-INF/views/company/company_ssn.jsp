@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ include file ="company_top.jsp" %>
+<!-- company_ssn.jsp -->
 <script type="text/javascript">
 	function check() {
 		if(f_check.c_name.value=="") {
@@ -23,28 +24,36 @@
 	}
 </script>
 <div align="center">
-	<hr color="black" width="300">
-	<h2>회 원 가 입 유 무</h2>
-	<hr color="black" width="300">
+	<h3>회 원 가 입 유 무</h3>
 	<form name="f_check" action="company_check" method="post">
-		<table width="500" class="outline">
+		<table>
 			<tr>
 				<th>기업명</th>
-				<td><input type="text" name="c_name"></td>
+				<td>
+					<input type="text" name="c_name" placeholder="회사명을 입력해 주세요." 
+					tabindex="2" style="width:300px;height:50px" required oninvalid="this.setCustomValidity('회사명을 입력해주세요.')" oninput = "setCustomValidity('')">
+				</td>
 			</tr>
 			<tr>
 				<th>대표메일</th>
-				<td><input type="text" name="c_email"></td>
+				<td>
+					<input type="text" name="c_email" placeholder="회사 메일을 입력해 주세요." 
+					tabindex="2" style="width:300px;height:50px" required oninvalid="this.setCustomValidity('회사 메일을 입력해주세요.')" oninput = "setCustomValidity('')">
+				</td>
 			<tr>
 				<th>사업자 번호</th>
-				<td><input type="text" name="c_bnum"></td>
+				<td>
+					<input type="text" name="c_bnum" placeholder="사업자 번호를 입력해 주세요." 
+					tabindex="2" style="width:300px;height:50px" required oninvalid="this.setCustomValidity('사업자 번호를 입력해주세요.')" oninput = "setCustomValidity('')">
+				</td>
 			</tr>
 			<tr>
+				<th></th><!--일부러 넣은거임 -->
 				<td colspan="2" align="center">
 					<input type="button" onclick="check()" value="조회"
-					style="width:80px;height:35px;background-color:grey;color:white;border-color:grey">
+					style="width:147.5px;height:35px;background-color:black;color:white;border-color:black">
 					<input type="reset" value="취소"
-					style="width:80px;height:35px;background-color:grey;color:white;border-color:grey">
+					style="width:147.5px;height:35px;background-color:black;color:white;border-color:black">
 				</td>
 			</tr>
 		</table>

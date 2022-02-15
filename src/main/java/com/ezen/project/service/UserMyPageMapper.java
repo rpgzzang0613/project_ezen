@@ -106,12 +106,18 @@ public class UserMyPageMapper {
 		return sqlSession.selectOne("getReview_imageAct", review_num);
 	}
 	
-	public int changeNickName(Map<String, String> params) {
-		return sqlSession.update("changeNickName", params);
+	public int changeNickName(int u_num, String nickname) {
+		Map<String, String> map = new Hashtable <String, String>();
+		map.put("u_num", String.valueOf(u_num));
+		map.put("nickname", nickname);
+		return sqlSession.update("changeNickName", map);
 	}
 
-	public int changeUserTel(Map<String, String> params) {
-		return sqlSession.update("changeUserTel", params);
+	public int changeUserTel(int u_num, String u_tel) {
+		Map<String, String> map = new Hashtable <String, String>();
+		map.put("u_num", String.valueOf(u_num));
+		map.put("u_tel", u_tel);
+		return sqlSession.update("changeUserTel", map);
 	}
 
 	public int countBookingAct(int u_num) {
