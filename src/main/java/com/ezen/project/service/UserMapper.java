@@ -45,8 +45,8 @@ public class UserMapper {
 	}
 	
 	//user 비밀번호 변경
-	public int updateUserPassword(UserDTO dto) {
-		return sqlSession.update("updateUserPassword", dto); 
+	public int updateUserPassword(UserDTO udto) {
+		return sqlSession.update("updateUserPassword", udto); 
 	}
 	
 	//유저 블랙리스트 등록 .   AdminController

@@ -1,7 +1,5 @@
 package com.ezen.project;
 
-import java.util.Hashtable;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -9,10 +7,8 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.ezen.project.model.UserDTO;
 import com.ezen.project.service.UserMapper;
@@ -38,9 +34,7 @@ public class UserController {
 	
 	//user_join_check.jsp에서 보냄 
 	@RequestMapping("/user_join_ok")
-	public ModelAndView UserJoinOk(HttpServletRequest req, 
-			@ModelAttribute UserDTO udto) {
-		ModelAndView mav = new ModelAndView();
+	public String userJoinOk(HttpServletRequest req, UserDTO udto) {
 		
 		// 비밀번호 암호화
 		String u_password = pwdEncoder.encode(udto.getU_password());
@@ -49,16 +43,13 @@ public class UserController {
 		udto.setU_password(u_password);
 		int res = userMapper.insertUser(udto);
 		if (res>0) {
-			mav.addObject("msg", "회원가입성공!! 메인페이지로 이동합니다.");
-			mav.addObject("url", "main");
+			req.setAttribute("msg", "회원가입성공!! 메인페이지로 이동합니다.");
+			req.setAttribute("url", "main");
 		}else {
-			mav.addObject("msg", "회원가입실패!! 다시 입력해 주세요!!");
-			mav.addObject("url", "user_join");
+			req.setAttribute("msg", "회원가입실패!! 다시 입력해 주세요!!");
+			req.setAttribute("url", "user_join");
 		}
-		
-		mav.setViewName("message");
-		return mav;
-
+		return "message";
 	}
 	
 	//회원 탈퇴페이지 user_mypage.jsp에서 보냄 
@@ -174,17 +165,13 @@ public class UserController {
 	}
 	
 	//유저 닉네임 변경
-		@RequestMapping("/user_infoChange")
-		public String userInfoChange(HttpServletRequest req, @RequestParam String nickname) {
+		@RequestMapping("/user_nickChange")
+		public String changeNickName(HttpServletRequest req, @RequestParam String nickname) {
 			HttpSession session = req.getSession();
 			LoginOkBeanUser loginokbean = (LoginOkBeanUser)session.getAttribute("loginOkBean");
 			int u_num = loginokbean.getU_num();
 			
-			Map<String, String> params = new Hashtable<String, String>();
-			params.put("u_num", String.valueOf(u_num));
-			params.put("nickname", nickname);
-			
-			int res = userMyPageMapper.changeNickName(params);
+			int res = userMyPageMapper.changeNickName(u_num, nickname);
 			String msg = null , url = null;
 			if(res > 0) {
 				loginokbean.setU_nickname(nickname);
@@ -209,11 +196,7 @@ public class UserController {
 			LoginOkBeanUser loginokbean = (LoginOkBeanUser)session.getAttribute("loginOkBean");
 			int u_num = loginokbean.getU_num();
 			
-			Map<String, String> params = new Hashtable<String, String>();
-			params.put("u_num", String.valueOf(u_num));
-			params.put("u_tel", u_tel);
-			
-			int res = userMyPageMapper.changeUserTel(params);
+			int res = userMyPageMapper.changeUserTel(u_num, u_tel);
 			String msg = null , url = null;
 			if(res > 0) {
 				loginokbean.setU_tel(u_tel);
@@ -224,7 +207,6 @@ public class UserController {
 				msg="전화번호 수정에 실패했습니다";
 				url="user_info";
 			}
-
 			req.setAttribute("msg", msg);
 			req.setAttribute("url", url);
 			
@@ -233,10 +215,10 @@ public class UserController {
 	
 //	비회원이 회원전용 페이지 들어가려고 할때 실행
 	@RequestMapping("/user_needLogin")
-	public ModelAndView userNeedLogin(HttpServletRequest req) {
+	public String userNeedLogin(HttpServletRequest req) {
 		req.setAttribute("msg", "로그인이 필요한 서비스 입니다");
 		req.setAttribute("url", "user_login");
-		return new ModelAndView("message");
+		return "message";
 	}
 	
 //	비밀번호 변경 전 확인
@@ -250,7 +232,7 @@ public class UserController {
 	public String userPasswordEditOk(HttpServletRequest req, String u_email, 
 			String raw_pre_password, String raw_new_password) {
 		
-		UserDTO dto = userMapper.getUserByEmail(u_email);
+		UserDTO udto = userMapper.getUserByEmail(u_email);
 		
 		HttpSession session = req.getSession();
 		LoginOkBeanUser loginOkBean = (LoginOkBeanUser)session.getAttribute("loginOkBean");
@@ -264,10 +246,10 @@ public class UserController {
 			
 			// DTO에 새 비밀번호 설정
 			String new_password = pwdEncoder.encode(raw_new_password);
-			dto.setU_password(new_password);
+			udto.setU_password(new_password);
 			
 			// 비밀번호 업데이트
-			int res = userMapper.updateUserPassword(dto);
+			int res = userMapper.updateUserPassword(udto);
 			
 			if (res>0) {
 				// 성공시 세션 만료

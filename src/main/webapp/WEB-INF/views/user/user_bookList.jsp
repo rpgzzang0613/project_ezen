@@ -2,17 +2,6 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ include file="user_myPage.jsp" %>
-<script>
-$.ajax({
-	type : "post",
-	url : "/user_bookList",
-	success : function(result){
-	    $("#result").html(
-	            "상품명:"+result.name+",가격:"+result.price);
-	    }
-});
-</script>
-
 <c:if test="${empty bookList}">
 	<h3 align="center" style="color:red">예약하신 호텔이 없습니다.</h3>
 </c:if>	
@@ -42,58 +31,58 @@ $.ajax({
 		<c:set var="num" value = "${num-1}"/>
 	</tr>
 	<tr>
-		<td rowspan="4" width="100">
+		<td rowspan="3" width="100">
 			<img src="resources/images/hotel/${bdto.h_image1}" width="100%" height="100%" > 
 		</td>
 		<td>체크인: ${bdto.book_indate}</td>
 		<td>체크아웃: ${bdto.book_outdate}</td>
-		<td align="right" valign="bottom">
+		<td align="center" rowspan="3">
 			<form name="detailButton" method="POST" action="user_bookDetail">
 				<input type="hidden" name="h_num" value="${bdto.h_num}">
 				<input type="hidden" name="room_num" value="${bdto.room_num}">
 				<input type="hidden" name="book_num" value="${bdto.book_num}">
-				<input type="submit" value="예약상세">
+				<br>
+				<input type="submit" value="예약상세" style="background: #edf2ff;">
 			</form>
-		</td>
-	</tr>
-	<tr>
-		<td>예약번호: ${bdto.book_num}</td>
-		<td>예약 호텔: ${bdto.h_name}</td>
-		<td align = "right" valign="bottom">
 			<form name="reviewbutton" method="POST" action="user_reviewform">
 				<input type="hidden" name="h_num" value="${bdto.h_num}">
 				<input type="hidden" name="room_num" value="${bdto.room_num}">
 				<input type="hidden" name="book_num" value="${bdto.book_num}">
 				<c:if test="${bdto.book_status eq 'checkout'}">
 					<c:if test="${bdto.book_review == 0}">
-						<input type="submit" value="리뷰쓰기">
+						<input type="submit" value="리뷰쓰기" style="background: #edf2ff;">
 					</c:if>
 					<c:if test="${bdto.book_review == 1}">
-						<button type="button">작성완료</button>
+						<button type="button" style="background:white;border:0;">
+						<font color="green"><b>작성완료</b></font></button>
 					</c:if>
 				</c:if>
 				<c:if test="${bdto.book_status eq 'checkin'}">
 					C/I DAY!
 				</c:if>
 			</form>
-		</td>
-	</tr>
-	<tr>
-		<td>${bdto.day}</td>
-		<td>결제일: ${bdto.book_joindate}</td>
-		<td align = "right" valign="bottom">
 			<form name="cancelbutton" method="POST" action="user_bookCancel">
 				<input type="hidden" name="h_num" value="${bdto.h_num}">
 				<input type="hidden" name="room_num" value="${bdto.room_num}">
 				<input type="hidden" name="book_num" value="${bdto.book_num}">
 				<c:if test="${bdto.book_status == 'wait' || bdto.book_status == 'confirm'}">
-					<input type="submit" value="예약취소">
+					<input type="submit" value="예약취소" style="background: #edf2ff;">
 				</c:if>
 				<c:if test="${bdto.book_status == 'deny'}">
-					<button type="button">취소완료</button>
+					<button type="button" style="background:white; border:0;">
+					<font color="red">
+					<b>취소완료</b></font></button>
 				</c:if>
 			</form>
-		</td>	
+		</td>
+	</tr>
+	<tr>
+		<td>예약번호: ${bdto.book_num}</td>
+		<td>예약 호텔: ${bdto.h_name}</td>
+	</tr>
+	<tr>
+		<td>${bdto.day}</td>
+		<td>결제일: ${bdto.book_joindate}</td>
 	</tr>
 </table>
 <br>

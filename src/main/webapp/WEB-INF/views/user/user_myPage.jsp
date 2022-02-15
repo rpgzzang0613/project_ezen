@@ -106,7 +106,7 @@
 					<li onclick="location.href='list_userQnA'">Q&A</li>
 				</ul>
 			</td>
-			<td>
+		<td width="80%" align="center" valign="top">
 <script>
 	function onInfoListClicked() {
 		const infoList = document.querySelectorAll(".infoList")

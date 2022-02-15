@@ -168,6 +168,7 @@ public class CompanyController {
 		LoginOkBeanCompany cpLoginOkBean = (LoginOkBeanCompany)session.getAttribute("companyLoginOkBean");
 		
 		int c_num = cpLoginOkBean.getC_num();
+		//세션의 c_num 값으로 로그인 중인 회사 정보 꺼냄
 		CompanyDTO cdto = companyMapper.getCompanyByCnum(c_num);
 	      
 		if(c_image == null || c_image.trim().equals("")) {
@@ -184,10 +185,7 @@ public class CompanyController {
 				preFile.delete();
 			}
 		}
-		
-		System.out.println(mr.getParameter("addr4"));
-		System.out.println(req.getParameter("addr4"));
-		
+
 		String addr1 = req.getParameter("addr1");
 		String addr2 = req.getParameter("addr2");
 		String addr3 = req.getParameter("addr3");

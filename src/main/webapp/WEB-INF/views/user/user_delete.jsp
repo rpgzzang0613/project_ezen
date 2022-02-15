@@ -3,18 +3,21 @@
 <%@ include file="user_myPage.jsp" %>
 <!-- mypage에서 회원탈퇴 페이지 -->
 <form name="f_userDelete" method="Post" action="user_delete_user">
-	<table align="center" align="top">
-		<caption style="line-height:60px;font-size:25px;"><b>회원탈퇴</b></caption>
+<br><h2>회원탈퇴</h2>
+	<table>
 		<tr>
-			<td colspan="2">회원 탈퇴를 위해 비밀번호를 입력해 주세요.</td>
+			<td colspan="2" style="height: 100px;"><font color="red">
+			<b>회원 탈퇴를 위해 비밀번호를 입력해 주세요.</b></font></td>
 		</tr>
 		<tr>
-			<td style="width: 120px;">비밀번호</td>
+			<td style="width:120px; height: 50px;">비밀번호</td>
 			<td><input type="password" name="raw_password" placeholder="비밀번호를 입력해주세요." required></td>
 		</tr>
 		<tr>
-			<td style="width: 120px;">비밀번호 확인</td>
+			<td style="width:120px; height: 50px;">비밀번호 확인</td>
 			<td><input type="password" name="raw_password2" placeholder="비밀번호를 입력해주세요." required></td>
+		</tr>
+		<tr style="height:50px">
 		</tr>
 		<tr>
 			<td colspan="2" align="center">

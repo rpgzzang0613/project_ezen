@@ -6,20 +6,20 @@
 <div align="center">
 <form name="f_search" method="POST" action="user_search_ok">
 	<input type="hidden" name="mode" value="${param.mode}">
-	<table border="0" width="280" align="center">
-		<tr>
-			<c:if test="${param.mode.equals('u_email')}">
-				<td align="center"><h3>이메일 찾기</h3></td>
-			</c:if>
-			<c:if test="${param.mode.equals('u_password')}">
-				<td align="center"><h3>비밀번호 찾기</h3></td>
-			</c:if>
-		</tr>
+	<c:if test="${param.mode.equals('u_email')}">
+		<h3>이메일 찾기</h3>
+	</c:if>
+	<c:if test="${param.mode.equals('u_password')}">
+		<h3>비밀번호 찾기</h3>
+	</c:if>
+	<table>
 		<c:if test="${param.mode.equals('u_password')}">
+		<tr>
 			<td>
 				<input type="text" name="u_email" placeholder="이메일을 입력해 주세요." tabindex="1" style="width:350px;height:50px" required oninvalid="this.setCustomValidity('이메일을 입력해주세요.')" oninput = "setCustomValidity('')">
-			</td> 
-		</c:if> 
+			</td>
+		</tr>
+		</c:if>  
 		<tr>
 			<td>
 				<input type="text" name="u_name" placeholder="이름을 입력해 주세요." tabindex="2" style="width:350px;height:50px" required oninvalid="this.setCustomValidity('이름을 입력해주세요.')" oninput = "setCustomValidity('')">
