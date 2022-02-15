@@ -239,4 +239,36 @@ public class AdminController {
 	public String adminCompanyQna() {
 		return "board/admin_company_qna";
 	}
+	
+	@RequestMapping("admin_partner_req_list")
+	public String adminPartnerReqList(HttpServletRequest req) {
+		List<CompanyDTO> reqList = companyMapper.listPartnerReqestCompany();
+		
+		req.setAttribute("reqList", reqList);
+		
+		return "admin/admin_partner_req_list";
+	}
+	
+	@RequestMapping("admin_partner_req_detail")
+	public String adminPartnerReqDetail(HttpServletRequest req, int c_num) {
+		CompanyDTO cdto = companyMapper.getCompanyByCnum(c_num);
+		req.setAttribute("cdto", cdto);
+		
+		return "admin/admin_partner_req_detail";
+	}
+	
+	@RequestMapping("admin_partner_req_ok")
+	public String adminPartnerReqOk(HttpServletRequest req, int c_num) {
+		int res = companyMapper.acceptPartnership(c_num);
+		
+		if(res>0) {
+			req.setAttribute("msg", "제휴요청 승인 완료. 제휴 현황 페이지로 이동합니다.");
+			req.setAttribute("url", "admin_partner_req_list");
+		}else {
+			req.setAttribute("msg", "제휴요청 승인 실패. 다시 시도해주시기 바랍니다.");
+			req.setAttribute("url", "admin_partner_req_detail?c_num="+c_num);
+		}
+		
+		return "message";
+	}
 }

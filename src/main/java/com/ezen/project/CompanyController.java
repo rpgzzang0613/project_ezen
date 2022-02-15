@@ -118,8 +118,6 @@ public class CompanyController {
 	//회원탈퇴 company_delete.jsp페이지에서 이동
 	@RequestMapping("/company_delete_ok")
 	public String deleteOkPage(HttpServletRequest req, int c_num, String raw_password) {
-		HttpSession session = req.getSession();
-		
 		String c_password = companyMapper.getCompanyByCnum(c_num).getC_password();
 		String c_image = companyMapper.getCompanyByCnum(c_num).getC_image();
 		
@@ -127,6 +125,7 @@ public class CompanyController {
 			int res = companyMapper.deleteCompany(c_num, c_password);
 			
 			if(res>0){
+				HttpSession session = req.getSession();
 				session.invalidate();
 				
 				File file = new File(upPath+"\\company", c_image);
@@ -151,13 +150,8 @@ public class CompanyController {
 	
 	//company_mypage.jsp c_num값을 받아온다. 
 	@RequestMapping("/company_edit")
-	public String companyEdit(HttpServletRequest req) {
-		HttpSession session = req.getSession(); 
-		LoginOkBeanCompany companyLoginOkBean = (LoginOkBeanCompany)session.getAttribute("companyLoginOkBean");
-		
-		int c_num = companyLoginOkBean.getC_num();
+	public String companyEdit(HttpServletRequest req, int c_num) {
 		CompanyDTO dto = companyMapper.getCompanyByCnum(c_num);
-		
 		req.setAttribute("cdto", dto);
 		
 		return "company/company_edit";
@@ -365,4 +359,67 @@ public class CompanyController {
 		return "company/company_myPage";
 	}
 	
+	@RequestMapping("/company_partner_req")
+	public String companyPartnerReq() {
+		return "company/company_partner_req";
+	}
+	
+	@RequestMapping("/company_partner_req_ok")
+	public String companyPartnerReqOk(HttpServletRequest req, CompanyDTO cdto, BindingResult result) 
+			throws IllegalStateException, IOException {
+		
+		MultipartHttpServletRequest mr = (MultipartHttpServletRequest)req;
+		MultipartFile mf = mr.getFile("c_licenseimage");
+		
+		String c_licenseimage = mf.getOriginalFilename();
+		c_licenseimage = UUID.randomUUID().toString()+"_"+c_licenseimage;
+
+		cdto.setC_licenseimage(c_licenseimage);
+
+		int res = companyMapper.requestPartnership(cdto);
+
+		if(res>0) {
+			File file = new File(upPath+"\\company\\license", c_licenseimage);
+			mf.transferTo(file);
+			
+			HttpSession session = req.getSession();
+			LoginOkBeanCompany loginOkBeanCompany = (LoginOkBeanCompany)session.getAttribute("companyLoginOkBean");
+			loginOkBeanCompany.setA_level("1");
+			
+			req.setAttribute("msg", "제휴 신청 성공!! 마이페이지로 이동합니다.");
+			req.setAttribute("url", "company_myPage");
+		}else {
+			req.setAttribute("msg", "제휴 신청 실패!! 다시 입력해 주세요.");
+			req.setAttribute("url", "company_partner_req");
+		}
+
+		return "message";
+	}
+	
+	@RequestMapping("/company_partner_req_wait")
+	public String companyPartnerReqWait() {
+		return "company/company_partner_req_wait";
+	}
+	
+	@RequestMapping("/company_bank_edit")
+	public String companyBankEdit(HttpServletRequest req, int c_num) {
+		CompanyDTO cdto = companyMapper.getCompanyByCnum(c_num);
+		req.setAttribute("cdto", cdto);
+		return "company/company_bank_edit";
+	}
+	
+	@RequestMapping("company_bank_edit_ok")
+	public String companyBankEditOk(HttpServletRequest req, CompanyDTO cdto, BindingResult result) {
+		int res = companyMapper.editCompanyBankInfo(cdto);
+		
+		if(res>0) {
+			req.setAttribute("msg", "계좌 변경 성공!! 마이페이지로 이동합니다.");
+			req.setAttribute("url", "company_myPage");
+		}else {
+			req.setAttribute("msg", "계좌 변경 실패!! 다시 시도해 주세요.");
+			req.setAttribute("url", "company_bank_edit?c_num="+cdto.getC_num());
+		}
+		
+		return "message";
+	}
 }

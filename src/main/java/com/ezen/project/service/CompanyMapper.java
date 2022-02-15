@@ -18,7 +18,7 @@ public class CompanyMapper {
 	private SqlSession sqlSession;
 	
 	public int insertCompany(CompanyDTO cdto) {
-		return sqlSession.insert("insertCompany", cdto); 
+		return sqlSession.insert("insertCompany", cdto);
 	}
 	
 	//company ¼öÁ¤
@@ -108,5 +108,21 @@ public class CompanyMapper {
 		map.put("c_bnum", c_bnum);
 		map.put("c_email", c_email);
 		return sqlSession.selectOne("countCompanyforPassword", map);
+	}
+	
+	public int requestPartnership(CompanyDTO cdto) {
+		return sqlSession.update("requestPartnership", cdto);
+	}
+
+	public List<CompanyDTO> listPartnerReqestCompany() {
+		return sqlSession.selectList("listPartnerReqestCompany");
+	}
+	
+	public int acceptPartnership(int c_num) {
+		return sqlSession.update("acceptPartnership", c_num);
+	}
+	
+	public int editCompanyBankInfo(CompanyDTO cdto) {
+		return sqlSession.update("editCompanyBankInfo", cdto);
 	}
 } 

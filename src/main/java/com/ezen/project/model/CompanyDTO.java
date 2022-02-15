@@ -12,6 +12,11 @@ public class CompanyDTO {
 	private String a_level;
 	private String c_image;
 	private String c_joindate;
+	private String c_bankaccount1;
+	private String c_bankaccount2;
+	private String c_bankname1;
+	private String c_bankname2;
+	private String c_licenseimage;
 	
 	public int getC_num() {
 		return c_num;
@@ -79,5 +84,34 @@ public class CompanyDTO {
 	public void setC_joindate(String c_joindate) {
 		this.c_joindate = c_joindate;
 	}
-	
+	public String getC_bankaccount1() {
+		return c_bankaccount1;
+	}
+	public void setC_bankaccount1(String c_bankaccount1) {
+		this.c_bankaccount1 = c_bankaccount1;
+	}
+	public String getC_bankaccount2() {
+		return c_bankaccount2;
+	}
+	public void setC_bankaccount2(String c_bankaccount2) {
+		this.c_bankaccount2 = c_bankaccount2;
+	}
+	public String getC_bankname1() {
+		return c_bankname1;
+	}
+	public void setC_bankname1(String c_bankname1) {
+		this.c_bankname1 = c_bankname1;
+	}
+	public String getC_bankname2() {
+		return c_bankname2;
+	}
+	public void setC_bankname2(String c_bankname2) {
+		this.c_bankname2 = c_bankname2;
+	}
+	public String getC_licenseimage() {
+		return c_licenseimage;
+	}
+	public void setC_licenseimage(String c_licenseimage) {
+		this.c_licenseimage = c_licenseimage;
+	}
 }

@@ -68,6 +68,9 @@ public class LoginOkBeanCompany {
 	public String getA_level() {
 		return a_level;
 	}
+	public void setA_level(String a_level) {
+		this.a_level = a_level;
+	}
 
 	public String getC_image() {
 		return c_image;

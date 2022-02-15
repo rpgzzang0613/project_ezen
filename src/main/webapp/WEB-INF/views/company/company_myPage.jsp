@@ -71,11 +71,14 @@
 				<li class="infoListLi" style="display:none;">
 					<ol class="infoList">
 						<li onclick="location.href='company_edit?c_num=${companyLoginOkBean.c_num}'">정보 수정</li>
+						<c:if test="${companyLoginOkBean.a_level eq 2}">
+						<li onclick="location.href='company_bank_edit?c_num=${companyLoginOkBean.c_num}'">계좌 변경</li>
+						</c:if>
 						<li onclick="location.href='company_passwordCheck'">비밀번호 변경</li>
 						<li onclick="location.href='company_delete'">회원탈퇴</li>
 					</ol>
 				</li>
-				
+				<c:if test="${companyLoginOkBean.a_level eq 2}">
 				<li onclick="onContentListClicked()">
 				<span style="display:inline-block; text-indent:0; width:100px;">컨텐츠 관리</span>
 				<span class="arrowIcon">
@@ -88,7 +91,14 @@
 						<li onclick="window.open('hotel_main')">호텔 관리</li>
 						<li onclick="window.open('activity_main')">액티비티 관리</li>
 					</ol>
-				</li> 
+				</li>
+				</c:if>
+				<c:if test="${companyLoginOkBean.a_level eq 1}">
+				<li onclick="location.href='company_partner_req_wait'">제휴 신청 현황</li>
+				</c:if>
+				<c:if test="${companyLoginOkBean.a_level eq 0}">
+				<li onclick="location.href='company_partner_req'">제휴 신청</li>
+				</c:if>
 				<li onclick="location.href='list_companyQnA'">Q&A</li>
 			</ul>
 		</td>
