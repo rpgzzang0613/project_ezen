@@ -93,7 +93,7 @@ public class DisplayHotelController {
 				case "maxPrice":
 					// DB에서 가격 높은 순으로 다시 뽑아옴
 					hotelList = displayHotelMapper.listHotelByMaxPrice(params.get("condition"));
-					break;
+					break; 
 				case "minPrice":
 					// DB에서 가격 낮은 순으로 다시 뽑아옴
 					hotelList = displayHotelMapper.listHotelByMinPrice(params.get("condition"));
