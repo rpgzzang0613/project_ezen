@@ -5,7 +5,14 @@ body{
 	margin: 0;
 	font-familt: 'Source Sans Pro';
 }
-
+.row {
+	display: flex;
+	flex-direction: row;
+}
+.column {
+	display: flex;
+	flex-direction: column;
+}
 /*a 쓸때 스타일*/
 a{
 	text-decoration:none;

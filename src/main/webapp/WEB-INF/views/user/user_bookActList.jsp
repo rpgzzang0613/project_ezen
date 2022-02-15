@@ -2,21 +2,10 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ include file="user_myPage.jsp" %>
-<script>
-$.ajax({
-	type : "post",
-	url : "/user_bookActList",
-	success : function(result){
-	    $("#result").html(
-	            "상품명:"+result.name+",가격:"+result.price);
-	    }
-});
-</script>
-
 <c:if test="${empty bookActList}">
 	<h3 align="center" style="color:red">예약하신 액티비티가 없습니다.</h3>
 </c:if>	
-<div style="text-align: center; font-weight:bold;">액티비티 예약 목록</div><br>
+<br><h2>액티비티 예약 목록</h2>
 <c:set var = "num" value = "${number}"/>
 <c:forEach var="badto" items="${bookActList}">
 <table align="center" valign="top" width="90%" border="1">

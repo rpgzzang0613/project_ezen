@@ -68,10 +68,8 @@ function checkLogin() {
 <input type="hidden" name="kakaoname"> 
 <input type="hidden" name="kakaobirth">
 <input type="hidden" name="kakaobirthyear">
-<table border="0" width="280" align="center">
-<tr>
-	<td colspan="2" align="center"><h3>회원 로그인</h3></td>
-</tr>
+<h3>회원 로그인</h3>
+<table>
 <tr>
 	<!-- cookie로 아이디 기억하기 -->
 	<td colspan="2">
@@ -116,18 +114,17 @@ function checkLogin() {
 	<td colspan="2" align="center">
 		<b>아직 회원이 아니신가요?</b>&nbsp;&nbsp;&nbsp;
 		<button type="button" name="userJoin" onclick="location.href='user_join'" 
-		style="width:80px;height:35px;background-color:grey;color:white;border-color:grey">회원 가입</button>
+		style="width:80px;height:35px;background-color:black;color:white;border-color:black">회원 가입</button>
 	</td>
 </tr>
 <tr>
 	<td colspan="2" align="center">
 	<a id="custom-login-btn" href="javascript:loginWithKakao()">
-  <img
-    src="//k.kakaocdn.net/14/dn/btroDszwNrM/I6efHub1SN5KCJqLm1Ovx1/o.jpg"
-    width=280
-    alt="카카오 로그인 버튼"
-  /> 
-</a>
+  		<img
+    	src="//k.kakaocdn.net/14/dn/btroDszwNrM/I6efHub1SN5KCJqLm1Ovx1/o.jpg"
+    	width = 280px height = 70px
+    	alt="카카오 로그인 버튼"/>
+	</a>
 	</td>
 </tr>
 <tr>
