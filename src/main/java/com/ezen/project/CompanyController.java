@@ -39,16 +39,17 @@ public class CompanyController {
 		return "/company/company_ssn";
 	}
 	@RequestMapping("/company_check")
-	public String companyCheck(String c_name, String c_bnum, HttpServletRequest req) {
-		boolean isDupl = companyMapper.hasCompanyAccount(c_name, c_bnum);
+	public String companyCheck(String c_name, String c_bnum, String c_email, HttpServletRequest req) {
+		boolean isDupl = companyMapper.hasCompanyAccount(c_email, c_bnum);
 		
 		if (isDupl) {
-			req.setAttribute("msg", "이미 가입된 이메일입니다. 로그인을 해 주세요!!");
+			req.setAttribute("msg", "이미 가입된 계정입니다. 로그인을 해 주세요!!");
 			req.setAttribute("url", "company_login");
 		}else {
 			HttpSession session = req.getSession();
 			session.setAttribute("c_name", c_name);
 			session.setAttribute("c_bnum", c_bnum);
+			session.setAttribute("c_email", c_email);
 			req.setAttribute("msg", "회원가입페이지로 이동합니다.");
 			req.setAttribute("url", "company_register");
 		}

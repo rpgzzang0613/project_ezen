@@ -146,35 +146,35 @@
        }).open(); 
    }
 </script>
-<form name="f" method="POST" action="company_register_ok" enctype = "multipart/form-data">
-<table border = "1" align = "center" width = "600" height = "500">
+<form name="f" method="POST" action="company_register_ok" enctype="multipart/form-data">
+<table border="1" align="center" width="600" height="500">
 	<tr>
 		<td colspan="2">기업 정보</td>
 	</tr>
 	<tr> 
 		<td>기업 로고</td>
 		<td>
-			<input type="file" name = "c_image">
+			<input type="file" name="c_image">
 		</td>
 	</tr>
 	<tr>
-		<td width = "50">
+		<td width="50">
 			기업 이름
 		</td>
 		<td>
-			<input type="text" name = "c_name" value="${c_name}" readOnly>
+			<input type="text" name="c_name" value="${c_name}" readOnly>
 		</td>
 	</tr>
 	<tr>
-		<td width = "50">
+		<td width="50">
 			기업 대표번호
 		</td>
 		<td>
-			<input type="text" name = "c_tel">
+			<input type="text" name="c_tel">
 		</td>
 	</tr>
 	<tr> 
-		<td width = "50">
+		<td width="50">
 			본사 주소
 		</td>
 		<td>
@@ -187,53 +187,43 @@
 	</td>
 	</tr>
 	<tr>
-		<td width = "50">
-			대표 이메일
-		</td>
+		<td width="50">대표 이메일</td>
 		<td>
-			<input type="email" name = "c_email">
+			<input type="email" name="c_email" value="${c_email}" readonly>
 		</td> 
 	</tr> 
 	<tr>
-		<td width = "50">
-			비밀번호
-		</td>
+		<td width="50">비밀번호</td>
 		<td>
-			<input type="password" name = "c_password">
+			<input type="password" name="c_password">
 		</td>
 	</tr>
 	<tr>
-		<td width = "50">
-			비밀번호 확인
-		</td>
+		<td width="50">비밀번호 확인</td>
 		<td>
-			<input type="password" name = "c_password2">
+			<input type="password" name="c_password2">
 		</td>
 	</tr>
 	<tr>
-		<td width = "50">
-			대표 이름
-		</td> 
+		<td width="50">대표 이름</td> 
 		<td>
-			<input type="text" name = "c_ceo">
+			<input type="text" name="c_ceo">
 		</td>
 	</tr>
 	<tr> 
-		<td width = "50">
-			사업자 번호
-		</td>
+		<td width="50">사업자 번호</td>
 		<td>  
-			<input type="text" name = "c_bnum" value="${c_bnum}" readonly>
+			<input type="text" name="c_bnum" value="${c_bnum}" readonly>
 		</td>
 	</tr>  
 	<tr>
 		<td colspan="2">
-			<input type = "hidden" name = "addr1"> <!-- db넣을때 addr1,2,3 합쳐서 c_address로 넣기 -->
-			<input type = "hidden" name = "addr2">
-			<input type = "hidden" name = "addr3">
-			<input type = "hidden" name = "addr4">  
-			<input onclick="location.href='company_main'" type = "button" value = "돌아가기">
-			<button type="button"  onclick = "checkpassword()">회원가입</button>                
+			<input type="hidden" name="addr1"> <!-- db넣을때 addr1,2,3 합쳐서 c_address로 넣기 -->
+			<input type="hidden" name="addr2">
+			<input type="hidden" name="addr3">
+			<input type="hidden" name="addr4">  
+			<input onclick="location.href='company_main'" type="button" value="돌아가기">
+			<button type="button"  onclick="checkpassword()">회원가입</button>                
 		</td>
 	</tr>
 </table>
