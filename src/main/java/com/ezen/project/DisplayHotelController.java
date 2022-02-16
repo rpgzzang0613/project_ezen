@@ -408,13 +408,11 @@ public class DisplayHotelController {
 	@RequestMapping(value="/wishReleaseHC")
 	public String wishReleaseHC(HttpServletRequest req, @RequestParam Map<String, String> params) {
 		displayHotelMapper.wishRelease(params);
-		req.setAttribute("h_num", params.get("h_num"));
 		return "display/display_hotelContent";
 	}
 	@RequestMapping(value="/wishCheckHC")
-	public String wishCheckHC(HttpServletRequest req,@RequestParam Map<String, String> params) {
+	public String wishCheckHC(HttpServletRequest req, @RequestParam Map<String, String> params) {
 		displayHotelMapper.wishCheck(params);
-		req.setAttribute("h_num", params.get("h_num"));
 		return "display/display_hotelContent";
 	}
 	
