@@ -66,7 +66,7 @@
 		names.push("${hdto.h_name}")
 		h_num.push("${hdto.h_num}");
 	</c:forEach>
-	<c:forEach var="addr" items="${addrs}" varStatus="listdx">
+	<c:forEach var="addr" items="${addrsForMap}" varStatus="listdx">
 		addrs.push("${addr}");
 	</c:forEach>
 		
@@ -125,12 +125,12 @@
 					<span>
 					<label>
 						<i class="fas fa-star"></i>
-						<c:forEach var="average" items="${averageReview}">
+						<c:forEach var="average" items="${reviewStarAvgMap}">
 							<c:if test="${hdto.h_num eq average.key}">
 								${average.value}/5점
 							</c:if>
 						</c:forEach>
-						<c:forEach var="review" items="${countReview}">
+						<c:forEach var="review" items="${reviewMaxCountMap}">
 							<c:if test="${hdto.h_num eq review.key}">
 								후기 수(${review.value})
 							</c:if>

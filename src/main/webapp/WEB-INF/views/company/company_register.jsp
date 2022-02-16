@@ -151,32 +151,26 @@
 	<tr>
 		<td colspan="2">기업 정보</td>
 	</tr>
-	<tr> 
+	<tr>
 		<td>기업 로고</td>
 		<td>
 			<input type="file" name="c_image">
 		</td>
 	</tr>
 	<tr>
-		<td width="50">
-			기업 이름
-		</td>
+		<td width="50">기업 이름</td>
 		<td>
 			<input type="text" name="c_name" value="${c_name}" readOnly>
 		</td>
 	</tr>
 	<tr>
-		<td width="50">
-			기업 대표번호
-		</td>
+		<td width="50">기업 대표번호</td>
 		<td>
 			<input type="text" name="c_tel">
 		</td>
 	</tr>
-	<tr> 
-		<td width="50">
-			본사 주소
-		</td>
+	<tr>
+		<td width="50">본사 주소</td>
 		<td>
 			<input type="text" id="sample4_postcode" placeholder="우편번호" readonly>
 			<input type="button" onclick="sample4_execDaumPostcode()" value="우편번호 찾기"><br>
@@ -190,8 +184,8 @@
 		<td width="50">대표 이메일</td>
 		<td>
 			<input type="email" name="c_email" value="${c_email}" readonly>
-		</td> 
-	</tr> 
+		</td>
+	</tr>
 	<tr>
 		<td width="50">비밀번호</td>
 		<td>

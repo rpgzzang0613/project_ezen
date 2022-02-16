@@ -50,17 +50,17 @@ public class DisplayHotelController {
 		List<HotelDTO> hotelList = displayHotelMapper.listHotelByLocation(params.get("condition"));
 		
 		// 꺼내온 호텔DTO들에 각 호텔마다의 리뷰 개수를 MAP형태로 저장하는 작업
-		Map<Integer, Integer> countReview = displayHotelMapper.countReview(hotelList);
+		Map<Integer, Integer> reviewMaxCountMap = displayHotelMapper.countReview(hotelList);
 		
 		// 꺼내온 호텔DTO들에 각 호텔마다의 리뷰 별점평균을 MAP형태로 저장하는 작업 
-		Map<Integer, Double> averageReview = displayHotelMapper.averageReview(hotelList);
+		Map<Integer, Double> reviewStarAvgMap = displayHotelMapper.averageReview(hotelList);
 		
 		// 필터를 누를때만 조건문을 타게됨
 		if(params.get("filter") != null) {
 			
 			// 리뷰개수 낮은 순으로 정렬해두기
 			List<HotelDTO> tmpHotelList = new ArrayList<HotelDTO>();
-			List<Map.Entry<Integer, Integer>> orderedByReviewCount = new LinkedList<>(countReview.entrySet());
+			List<Map.Entry<Integer, Integer>> orderedByReviewCount = new LinkedList<>(reviewMaxCountMap.entrySet());
 			orderedByReviewCount.sort(Map.Entry.comparingByValue());
 			
 			for(Map.Entry<Integer, Integer> entry : orderedByReviewCount) {
@@ -75,7 +75,7 @@ public class DisplayHotelController {
 			
 			// 리뷰별점 낮은 순으로 정렬해두기
 			List<HotelDTO> tmpHotelList2 = new ArrayList<HotelDTO>();
-			List<Map.Entry<Integer, Double>> orderedByStarCount = new LinkedList<>(averageReview.entrySet());
+			List<Map.Entry<Integer, Double>> orderedByStarCount = new LinkedList<>(reviewStarAvgMap.entrySet());
 			orderedByStarCount.sort(Map.Entry.comparingByValue());
 			
 			for(Map.Entry<Integer, Double> entry : orderedByStarCount) {
@@ -141,13 +141,13 @@ public class DisplayHotelController {
 		}
 
 		// 지도API에서 쓰기 위한 주소 배열 만들기
-		String[] addrs = new String[hotelList.size()];
+		String[] addrsForMap = new String[hotelList.size()];
 		
 		for(int i=0; i<hotelList.size(); i++) {
 			HotelDTO hdto = hotelList.get(i);
 			String addr = hdto.getH_address();
 			String[] fullAddress = addr.split("\\(");
-			addrs[i] = fullAddress[0];
+			addrsForMap[i] = fullAddress[0];
 		}
 		
 		if(params.get("indate") != null && params.get("outdate") != null ) {
@@ -173,156 +173,63 @@ public class DisplayHotelController {
 		
 		session.setAttribute("inwon", params.get("inwon"));
 		session.setAttribute("hotelList", hotelList);
-		
-		req.setAttribute("addrs", addrs); 
-		req.setAttribute("hotelList", hotelList);
-		req.setAttribute("countReview", countReview);
-		req.setAttribute("averageReview", averageReview);
-		req.setAttribute("condition", params.get("condition"));
+		session.setAttribute("addrsForMap", addrsForMap);	// 타입이 Map이 아니라 카카오맵에 사용될 String배열임
+		session.setAttribute("reviewMaxCountMap", reviewMaxCountMap);
+		session.setAttribute("reviewStarAvgMap", reviewStarAvgMap);
+		session.setAttribute("condition", params.get("condition"));
 		
 		return "display/display_hotelSearchOk";
 	}
 	
-	protected void searchResult(HttpServletRequest req, Map<String, String> params) {
-	
-		// DB에서 condition에 맞는 모든 HotelDTO를 꺼내옴
-		List<HotelDTO> hotelList = displayHotelMapper.listHotelByLocation(params.get("condition"));
-		
-		// 꺼내온 호텔DTO들에 각 호텔마다의 리뷰 개수를 MAP형태로 저장하는 작업
-		Map<Integer, Integer> countReview = displayHotelMapper.countReview(hotelList);
-							
-		// 꺼내온 호텔DTO들에 각 호텔마다의 리뷰 별점평균을 MAP형태로 저장하는 작업 
-		Map<Integer, Double> averageReview = displayHotelMapper.averageReview(hotelList);
-		
-		// 새로고침하거나 다른페이지를 다녀와도, 마지막 검색값이 그대로 남을수 있도록 session에 hotelList등록
-		HttpSession session = req.getSession();
-		session.setAttribute("hotelList", hotelList);
-		
-		LoginOkBeanUser loginOkBean = (LoginOkBeanUser)session.getAttribute("loginOkBean");
-		
-		// 로그인이 된 경우, 호텔이 wishList에 등록되어있는지 아닌지 확인(등록 1, 미등록 0)
-		if(loginOkBean != null) {
-			int u_num = loginOkBean.getU_num();
-			
-			for(HotelDTO hdto : hotelList) {
-				hdto.setWishList(displayHotelMapper.isWishCheck(hdto.getH_num(), u_num));
-			}
-		}
-
-		// 지도API에서 쓰기 위한 주소 배열
-		String[] addrs = new String[hotelList.size()];
-		
-		for(int i=0; i<hotelList.size(); i++) {
-			HotelDTO hdto = hotelList.get(i);
-			String addr = hdto.getH_address();
-			String[] fullAddress = addr.split("\\(");
-			addrs[i] = fullAddress[0];
-		}
-		
-		req.setAttribute("addrs", addrs); 
-		req.setAttribute("hotelList", hotelList);
-		req.setAttribute("countReview", countReview);
-		req.setAttribute("averageReview", averageReview);
-	}
-	
-	
 //	h_num으로 호텔 상세정보 찾기
 	@RequestMapping("/display_hotelContent")
-	public String hotelContent(HttpServletRequest req, @RequestParam int h_num, String indate, String outdate, int inwon) {
+	public String hotelContent(HttpServletRequest req, int h_num) {
 		HttpSession session = req.getSession();
-		session.setAttribute("indate", indate);
-		session.setAttribute("outdate", outdate);
-		session.setAttribute("inwon", inwon);
 
-//		호텔 리뷰 갯수
+		// 호텔 리뷰 개수 가져오기
 		int reviewCount = displayHotelMapper.getReviewCountByHotel(h_num);
 		
-//		호텔 별점 평균
+		// 호텔 별점 평균 가져오기
 		double starAverage = displayHotelMapper.getReviewStarAverage(h_num);
-		starAverage = Math.round(starAverage*10)/10.0;//소수 1번째 자리까지 표기
+		starAverage = Math.round(starAverage*10)/10.0; // 소수 1번째 자리까지 표기
 		
-//		방 타입별 정보
-		List<RoomDTO> twinRoom = displayHotelMapper.listRoomByType(h_num, "TWIN");
-		List<RoomDTO> doubleRoom = displayHotelMapper.listRoomByType(h_num, "DOUBLE");
-		List<RoomDTO> deluxeRoom = displayHotelMapper.listRoomByType(h_num, "DELUXE");
+		// 객실 타입별로 List 뽑아오기
+		List<RoomDTO> twinList = displayHotelMapper.listRoomByType(h_num, "TWIN");
+		List<RoomDTO> doubleList = displayHotelMapper.listRoomByType(h_num, "DOUBLE");
+		List<RoomDTO> deluxeList = displayHotelMapper.listRoomByType(h_num, "DELUXE");
 		
-//		위시리스트 체크
 		LoginOkBeanUser loginOkBean = (LoginOkBeanUser)session.getAttribute("loginOkBean");
-		List<HotelDTO> hotelList = (List<HotelDTO>)session.getAttribute("hotelList");
+		HotelDTO hdto = hotelMapper.getHotel(h_num);
 		
-		try {
-			//회원로그인시 u_num으로 확인
-			int u_num = loginOkBean.getU_num();
-			for(HotelDTO hdto : hotelList) {
-				if(hdto.getH_num() == h_num) {
-					hdto.setWishList(displayHotelMapper.isWishCheck(h_num, u_num));
-					req.setAttribute("hdto", hdto);
-				}
-			}
-		
-		}catch(Exception e) {
-//			비회원은 u_num에서 error발생 위시리스트 체크 필요없음
-			HotelDTO hdto = hotelMapper.getHotel(h_num);
-			req.setAttribute("hdto", hdto);
+		// 로그인할 경우만 위시리스트 체크
+		if(loginOkBean != null) {
+			hdto.setWishList(displayHotelMapper.isWishCheck(h_num, loginOkBean.getU_num()));
 		}
 		
-//		호텔에 대한 리뷰 리스트
+		// 호텔에 대한 리뷰 리스트
 		List<ReviewDTO> reviewList = displayHotelMapper.listReviewByHotel(h_num);
-		
-//		비교할 오늘내일날짜 내려주기
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		Date time = new Date();
-		String today = sdf.format(time);
-		Calendar cal = new GregorianCalendar();
-		cal.add(Calendar.DATE, 1);
-		Date date = cal.getTime();
-		String tmr = sdf.format(date);
-		
-//      맵에 쓸 주소값
-		HotelDTO hdtoForAddress = null;
-		
-		try{
-			//회원로그인시 u_num으로 확인
-			int u_num = loginOkBean.getU_num();
-			for(HotelDTO hdto : hotelList) {
-				if(hdto.getH_num() == h_num) {
-					hdto.setWishList(displayHotelMapper.isWishCheck(h_num, u_num));
-					hdtoForAddress = hdto;
-					req.setAttribute("hdto", hdto);
-				}
-			}
-		}catch(Exception e) {
-//	         비회원은 u_num에서 error발생 위시리스트 체크 필요없음
-			HotelDTO hdto = hotelMapper.getHotel(h_num);
-			hdtoForAddress = hdto;
-			req.setAttribute("hdto", hdto);
-		}
 	      
-		String addr = "";
-		String h_address = hdtoForAddress.getH_address();
+		String addrForMap = "";
+		String h_address = hdto.getH_address();
 
 		for(int i=0; i<h_address.length(); i++) {
 			String letter = String.valueOf(h_address.charAt(i));
 			
 			if(!letter.equals("@")) {
-				addr += letter;
+				addrForMap += letter;
 			} else {
 				break;
 			}
 		}
 		
-		req.setAttribute("map_addr", addr);
-		
-		req.setAttribute("today", today);
-		req.setAttribute("tmr", tmr);
-
-		req.setAttribute("reviewCount", reviewCount);
-		req.setAttribute("starAverage", starAverage);
-		req.setAttribute("twinRoom", twinRoom);
-		req.setAttribute("doubleRoom", doubleRoom);
-		req.setAttribute("deluxeRoom", deluxeRoom);
-		req.setAttribute("reviewList", reviewList);
-		req.setAttribute("loginOkBean", loginOkBean);
+		session.setAttribute("hdto", hdto);
+		session.setAttribute("map_addr", addrForMap);
+		session.setAttribute("reviewCount", reviewCount);
+		session.setAttribute("starAverage", starAverage);
+		session.setAttribute("twinRoom", twinList);
+		session.setAttribute("doubleRoom", doubleList);
+		session.setAttribute("deluxeRoom", deluxeList);
+		session.setAttribute("reviewList", reviewList);
 		
 		return "display/display_hotelContent";
 	}
@@ -488,127 +395,27 @@ public class DisplayHotelController {
 	@RequestMapping(value="/wishReleaseOK")
 	public String wishReleaseOK(HttpServletRequest req, @RequestParam Map<String, String> params) {
 		displayHotelMapper.wishRelease(params);
-		searchResult(req, params);
 		return "display/display_hotelSearchOk";
 	}
 	
 	@RequestMapping(value="/wishCheckOK")
 	public String wishCheckOK(HttpServletRequest req,@RequestParam Map<String, String> params) {
 		displayHotelMapper.wishCheck(params);
-		searchResult(req, params);
 		return "display/display_hotelSearchOk";
 	}
 	
-//	hotelContent 페이지에서 위시리스트 체크/해제
+	// hotelContent 페이지에서 위시리스트 체크/해제
 	@RequestMapping(value="/wishReleaseHC")
 	public String wishReleaseHC(HttpServletRequest req, @RequestParam Map<String, String> params) {
 		displayHotelMapper.wishRelease(params);
-		hotelContentWish(req, Integer.parseInt(params.get("h_num")), params.get("indate"), params.get("outdate"), Integer.parseInt(params.get("inwon")));
+		req.setAttribute("h_num", params.get("h_num"));
 		return "display/display_hotelContent";
 	}
 	@RequestMapping(value="/wishCheckHC")
 	public String wishCheckHC(HttpServletRequest req,@RequestParam Map<String, String> params) {
 		displayHotelMapper.wishCheck(params);
-		hotelContentWish(req, Integer.parseInt(params.get("h_num")), params.get("indate"), params.get("outdate"), Integer.parseInt(params.get("inwon")));
+		req.setAttribute("h_num", params.get("h_num"));
 		return "display/display_hotelContent";
-	}
-	
-	protected void hotelContentWish(HttpServletRequest req, @RequestParam int h_num, String indate, String outdate, int inwon) {
-		HttpSession session = req.getSession();
-		session.setAttribute("indate", indate);
-		session.setAttribute("outdate", outdate);
-		session.setAttribute("inwon", inwon);
-
-//		호텔 리뷰 갯수
-		int reviewCount = displayHotelMapper.getReviewCountByHotel(h_num);
-		
-//		호텔 별점 평균
-		double starAverage = displayHotelMapper.getReviewStarAverage(h_num);
-		starAverage = Math.round(starAverage*10)/10.0;//소수 1번째 자리까지 표기
-		
-//		방 타입별 정보
-		List<RoomDTO> twinRoom = displayHotelMapper.listRoomByType(h_num, "TWIN");
-		List<RoomDTO> doubleRoom = displayHotelMapper.listRoomByType(h_num, "DOUBLE");
-		List<RoomDTO> deluxeRoom = displayHotelMapper.listRoomByType(h_num, "DELUXE");
-		
-//		위시리스트 체크
-		LoginOkBeanUser loginOkBean = (LoginOkBeanUser)session.getAttribute("loginOkBean");
-		List<HotelDTO> hotelList = (List<HotelDTO>)session.getAttribute("hotelList");
-		
-		try {
-			//회원로그인시 u_num으로 확인
-			int u_num = loginOkBean.getU_num();
-			for(HotelDTO hdto : hotelList) {
-				if(hdto.getH_num() == h_num) {
-					hdto.setWishList(displayHotelMapper.isWishCheck(h_num, u_num));
-					req.setAttribute("hdto", hdto);
-				}
-			}
-		
-		}catch(Exception e) {
-//			비회원은 u_num에서 error발생 위시리스트 체크 필요없음
-			HotelDTO hdto = hotelMapper.getHotel(h_num);
-			req.setAttribute("hdto", hdto);
-		}
-		
-		
-//		호텔에 대한 리뷰 리스트
-		List<ReviewDTO> reviewList = displayHotelMapper.listReviewByHotel(h_num);
-		
-//		비교할 오늘내일날짜 내려주기
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		Date time = new Date();
-		String today = sdf.format(time);
-		Calendar cal = new GregorianCalendar();
-		cal.add(Calendar.DATE, 1);
-		Date date = cal.getTime();
-		String tmr = sdf.format(date);
-		
-//      맵에 쓸 주소값
-		HotelDTO hdtoForAddress = null;
-		
-		try{
-			//회원로그인시 u_num으로 확인
-			int u_num = loginOkBean.getU_num();
-			for(HotelDTO hdto : hotelList) {
-				if(hdto.getH_num() == h_num) {
-					hdto.setWishList(displayHotelMapper.isWishCheck(h_num, u_num));
-					hdtoForAddress = hdto;
-					req.setAttribute("hdto", hdto);
-				}
-			}
-		}catch(Exception e) {
-//	         비회원은 u_num에서 error발생 위시리스트 체크 필요없음
-			HotelDTO hdto = hotelMapper.getHotel(h_num);
-			hdtoForAddress = hdto;
-			req.setAttribute("hdto", hdto);
-		}
-	      
-		String addr = "";
-		String h_address = hdtoForAddress.getH_address();
-
-		for(int i=0; i<h_address.length(); i++) {
-			String letter = String.valueOf(h_address.charAt(i));
-			
-			if(!letter.equals("@")) {
-				addr += letter;
-			} else {
-				break;
-			}
-		}
-		
-		req.setAttribute("map_addr", addr);
-		
-		req.setAttribute("today", today);
-		req.setAttribute("tmr", tmr);
-
-		req.setAttribute("reviewCount", reviewCount);
-		req.setAttribute("starAverage", starAverage);
-		req.setAttribute("twinRoom", twinRoom);
-		req.setAttribute("doubleRoom", doubleRoom);
-		req.setAttribute("deluxeRoom", deluxeRoom);
-		req.setAttribute("reviewList", reviewList);
-		req.setAttribute("loginOkBean", loginOkBean);
 	}
 	
 }
