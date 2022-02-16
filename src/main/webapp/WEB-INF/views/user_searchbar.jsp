@@ -33,10 +33,6 @@
 			var outdate = $("#outdate").val();
 			var today = new Date(+new Date() + 3240 * 10000).toISOString().split("T")[0];
 			
-			console.log(indate);
-			console.log(today);
-			console.log(indate > today);
-			
 			if(indate >= outdate) {
 				alert('체크아웃 날짜를 확인해주세요.');
 				return false;
