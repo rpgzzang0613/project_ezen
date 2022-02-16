@@ -37,14 +37,14 @@ public class DisplayActController {
 		
 		List<ActivityDTO> activityList = null;
 		
-		if(search.contains(", ")){
+		if(search.contains(", ")) {
 			String[]array = search.split(", ");
 			String a_name = array[0];
 			String addr = array[1];
 			activityList = displayActMapper.activityDoubleSearchOk(a_name, addr);
 		}else if(!code.equals("")) {
 			activityList = displayActMapper.activitySearchOkfilterall(code);
-		}else{
+		}else {
 			activityList = displayActMapper.activitySearchOk(search);
 		}
 		
