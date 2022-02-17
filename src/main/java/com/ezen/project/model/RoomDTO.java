@@ -17,6 +17,7 @@ public class RoomDTO {
 	
 	// DB에 없는 컬럼
 	private int max_count;
+	private int booked_count;
 	private String room_booked;
 	
 	public int getRoom_num() {
@@ -109,6 +110,12 @@ public class RoomDTO {
 	}
 	public void setMax_count(int max_count) {
 		this.max_count = max_count;
+	}
+	public int getBooked_count() {
+		return booked_count;
+	}
+	public void setBooked_count(int booked_count) {
+		this.booked_count = booked_count;
 	}
 	public String getRoom_booked() {
 		return room_booked;

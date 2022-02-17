@@ -116,7 +116,6 @@
 		
 	}
 </script>
-		
 		<c:forEach var="hdto" items="${hotelList}">
 		<div class="column review border-bottom">	
 			<div class="row">
@@ -125,16 +124,8 @@
 					<span>
 					<label>
 						<i class="fas fa-star"></i>
-						<c:forEach var="average" items="${reviewStarAvgMap}">
-							<c:if test="${hdto.h_num eq average.key}">
-								${average.value}/5점
-							</c:if>
-						</c:forEach>
-						<c:forEach var="review" items="${reviewMaxCountMap}">
-							<c:if test="${hdto.h_num eq review.key}">
-								후기 수(${review.value})
-							</c:if>
-						</c:forEach>
+								${hdto.reviewAvg}/5점
+								후기 수(${hdto.reviewCount})
 					</label>
 					</span>
 					<span>

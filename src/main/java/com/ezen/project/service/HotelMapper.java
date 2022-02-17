@@ -129,11 +129,6 @@ public class HotelMapper {
 		return sqlSession.selectOne("getRoomType", room_num);
 	}
 	
-	// room_code를 통해 특정 객실그룹의 객실리스트를 가져오는 메소드
-	public List<RoomDTO> listRoomInGroupByRoomCode(String room_code) {
-		return sqlSession.selectList("listRoomInGroupByRoomCode", room_code);
-	}
-	
 	// 객실 비활성화를 위한 메소드
 	public int disableRoom(int room_num) {
 		return sqlSession.update("disableRoom", room_num);
