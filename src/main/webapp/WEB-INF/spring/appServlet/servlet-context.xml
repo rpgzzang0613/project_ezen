@@ -26,7 +26,7 @@
 	</beans:bean>
 	
 	<beans:bean id="uploadPath" class="java.lang.String">
-		<beans:constructor-arg value="C:\Users\rpgzz\spring_study\project\src\main\webapp\resources\images" />
+		<beans:constructor-arg value="C:\Users\ktony\spring\9th\src\main\webapp\resources\images" />
 	</beans:bean> 
 	 
 	<context:component-scan base-package="com.ezen.project" />
