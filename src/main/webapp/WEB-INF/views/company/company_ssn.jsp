@@ -37,7 +37,7 @@
 			<tr>
 				<th>대표메일</th>
 				<td>
-					<input type="text" name="c_email" placeholder="회사 메일을 입력해 주세요." 
+					<input type="email" name="c_email" placeholder="회사 메일을 입력해 주세요." 
 					tabindex="2" style="width:300px;height:50px" required oninvalid="this.setCustomValidity('회사 메일을 입력해주세요.')" oninput = "setCustomValidity('')">
 				</td>
 			<tr>

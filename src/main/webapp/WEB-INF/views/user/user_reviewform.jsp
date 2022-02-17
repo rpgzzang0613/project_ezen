@@ -1,14 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ include file="user_myPage.jsp" %>
-	<div style="text-align:center;">
-	<h3>리뷰게시판</h3>
-	<form name="f" method="post" action="user_reviewOk" enctype="multipart/form-data" style="margin-left:145px;">
+<link rel="stylesheet" href="css/ReviewStar.css">
+	<div style="text-align:center; margin-top: 10px;" >  
+	<h3>리뷰 작성</h3>  
+	<form name="form_review" method="post" action="user_reviewOk" enctype="multipart/form-data" style="margin-left:145px;">
 	<input input type="hidden" name="h_num" value="${h_num}">
 	<input input type="hidden" name="room_type" value="${room_type}">
 	<input input type="hidden" name="u_num" value="${u_num}">
 	<input input type="hidden" name="book_num" value="${book_num}">
-	<table border="0" >
+	<table border="0"> 
 		<tr>  
 			<th>닉네임</th>
 			<td>${review_nickname}
@@ -22,30 +23,33 @@
 			<input type="hidden" name="room_type" value="${room_type}">
 			</td>
 		</tr>
-		<tr>
+		<tr> 
 			<th>사진추가</th>
 			<td><input type="file" name="review_image"></td>
 		</tr>
 		<tr>
-			<th>별점</th>
+			<th>별점</th> 
 			<td>
-				<select name="star">
-					<option value="1">★</option>
-					<option value="2">★★</option>
-					<option value="3">★★★</option>
-					<option value="4">★★★★</option>
-					<option value="5">★★★★★</option>
-				</select>
+			    <fieldset> 
+			        <input type="radio" name="star" value="5" id="rate1"><label for="rate1">⭐</label> 
+			        <input type="radio" name="star" value="4" id="rate2"><label for="rate2">⭐</label>
+			        <input type="radio" name="star" value="3" id="rate3"><label for="rate3">⭐</label>
+			        <input type="radio" name="star" value="2" id="rate4"><label for="rate4">⭐</label>
+			        <input type="radio" name="star" value="1" id="rate5"><label for="rate5">⭐</label>
+			    </fieldset>  
 			</td>
-		</tr> 
+		</tr>  
 		<tr>
 			<th>리뷰작성</th>
-			<td><textarea name="review_contents" rows="13" cols="55"></textarea>
-			</td>
+			<td><textarea style="resize:none; height:190px; width:400px;" name="review_contents" rows="13" cols="55"></textarea>
+			</td> 
 		</tr>
-		<tr>
-			<th colspan="2"><input type="submit" value="작성완료" style="margin-left:30px; margin-top:13px;"></th>
-		</tr>
+		<tr align="right">    
+			<th colspan="2">
+				<input type="button" value="뒤로가기" onClick="history.go(-1)">
+				<input type="submit" value="글 등록" style="margin-left:3px; margin-top:15px;">
+			</th>
+		</tr> 
 		</table>
 		</form>
 		</div>
