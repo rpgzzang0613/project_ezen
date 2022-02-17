@@ -1,6 +1,5 @@
 package com.ezen.project;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Hashtable;
 import java.util.List;
@@ -8,6 +7,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -218,7 +218,7 @@ public class DisplayHotelController {
 	
 	// h_num과 room_num에 일치하는 결과 찾기
 	@RequestMapping("/display_roomContent")
-	public String roomContent(HttpServletRequest req, @RequestParam(required=false) String room_code, 
+	public String roomContent(HttpServletRequest req, HttpServletResponse resp, @RequestParam(required=false) String room_code, 
 			int h_num) {
 		// 호텔 정보 (h_num, h_address)
 		HotelDTO hdto = hotelMapper.getHotel(h_num);
@@ -251,6 +251,11 @@ public class DisplayHotelController {
 		req.setAttribute("hotelInfo", hotelInfo);
 		req.setAttribute("hotelNotice", hotelNotice);
 		req.setAttribute("bookable_roomCount", roomList.size());
+		
+		resp.setHeader("Expires", "Sat, 6 May 1995 12:00:00 GMT"); 
+		resp.setHeader("Cache-Control", "no-store, no-cache, must-revalidate");
+		resp.addHeader("Cache-Control", "post-check=0, pre-check=0"); 
+		resp.setHeader("Pragma", "no-cache");
 		
 		return "display/display_roomContent";
 	}

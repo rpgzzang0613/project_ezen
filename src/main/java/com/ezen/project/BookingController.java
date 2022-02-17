@@ -139,11 +139,20 @@ public class BookingController {
 //	예약확정 확인, bookWriteform에서 적은 정보 db에 저장시킴(잘못되거나 오류나면 취소됨)
 	@RequestMapping(value="/user_bookConfirm")
 	public String bookConfirm(HttpServletRequest req, @RequestParam Map<String, String> params) {
-		//예약한 회원 정보
+		// 예약한 회원 정보
 		HttpSession session = req.getSession();
 		LoginOkBeanUser loginInfo = (LoginOkBeanUser)session.getAttribute("loginOkBean");
 		
-//		DB에 저장시도
+		// DB에 저장 전 해당 예약정보가 중복되지 않는지 다시 확인
+		boolean isDupl = displayHotelMapper.isDuplBook(params);
+		
+		if(isDupl) {
+			req.setAttribute("msg", "이미 예약된 객실입니다. 다시 확인해 주세요.");
+			req.setAttribute("url", "display_roomContent?h_num="+params.get("h_num")+"&room_code="+params.get("room_code"));
+			
+			return "message";
+		}
+		
 		int res = displayHotelMapper.insertBook(params);
 		
 		if(res>0) {
@@ -281,7 +290,7 @@ public class BookingController {
 	public String userBookActConfirm(HttpServletRequest req, BookingActDTO badto) {
 		int res = displayActMapper.insertBookAct(badto);
 		
-		if(res > 0) {
+		if(res>0) {
 			req.setAttribute("msg", "예약 성공");
 		}else {
 			req.setAttribute("msg", "예약 실패");

@@ -144,6 +144,14 @@ public class DisplayHotelMapper {
 		sqlSession.delete("wishReleaseWL", w_num);
 	}
 	
+	// 예약 중복 있는지 확인
+	public boolean isDuplBook(Map<String, String> params) {
+		int duplCount = sqlSession.selectOne("isDuplBook", params);
+		boolean isDupl = duplCount > 0 ? true : false;
+		
+		return isDupl;
+	}
+	
 //	예약저장&유저 포인트 수정
 	public int insertBook(Map<String,String> params) {
 		return sqlSession.insert("insertBook", params);
@@ -151,7 +159,7 @@ public class DisplayHotelMapper {
 	
 //	유저의 예약정보 반환
 	public BookingDTO getBook(int book_num) {
-		BookingDTO bdto = sqlSession.selectOne("getBooking", book_num);
+		BookingDTO bdto = sqlSession.selectOne("getBook", book_num);
 		return bdto;
 	}
 	
@@ -165,9 +173,9 @@ public class DisplayHotelMapper {
 		map.put("u_num", u_num);
 		sqlSession.update("updatePoint", map);
 		
-		//취소 포인트 파라미터값 만들어주기
+		// 취소 포인트 파라미터값 만들어주기
 		Map<String, String> params = new Hashtable<String, String>();
-		BookingDTO bdto = sqlSession.selectOne("getBooking", book_num);
+		BookingDTO bdto = sqlSession.selectOne("getBook", book_num);
 		String p_status = "취소";
 		String h_name = sqlSession.selectOne("getHotelName",bdto.getH_num());
 		String p_contents = h_name + " 예약 취소";
