@@ -216,4 +216,7 @@ public class DisplayActMapper {
 		List<ReviewActDTO> reviewList = sqlSession.selectList("listReviewByAct", a_num);
 		return reviewList;
 	}
+	public ActivityDTO getActivityContent(int a_num) {
+		return sqlSession.selectOne("getActivityContent", a_num);
+	}
 }

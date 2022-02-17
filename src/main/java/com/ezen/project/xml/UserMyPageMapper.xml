@@ -187,4 +187,9 @@
 		review_image=#{review_image}, review_star=#{review_star} 
 		where review_num=#{review_num}
 	</update>
+	
+	<select id="getReviewList" parameterType="java.util.Map" resultType="ReviewDTO">
+		select * from project_review where u_num = #{u_num} and h_num=#{h_num}
+	</select>
+	
 </mapper>

@@ -114,6 +114,11 @@ public class DisplayActController {
 	
 	@RequestMapping("/display_activityContent")
 	public String activityContent(HttpServletRequest req, int a_num) {
+		activityContentInfo(req, a_num);
+		return "display/display_activityContent";
+	}
+	
+	protected void activityContentInfo(HttpServletRequest req, int a_num) {
 		HttpSession session = req.getSession();
 		
 		ActivityDTO adto = activityMapper.getActivity(a_num);
@@ -134,6 +139,23 @@ public class DisplayActController {
 			pdto.setP_currentbooker(currentBooker);
 		}
 		
+		LoginOkBeanUser loginOkBean = (LoginOkBeanUser)session.getAttribute("loginOkBean");
+		
+		if(loginOkBean != null) {
+			int u_num = loginOkBean.getU_num();
+			
+			Map<String,String> params = new Hashtable<String, String>();
+			params.put("u_num", String.valueOf(u_num));
+			
+			List<WishListActDTO> wishList = displayActMapper.getWishListAct(params);
+			
+			for(WishListActDTO wdto : wishList) {
+				if(adto.getA_num() == wdto.getA_num()) {
+					adto.setWishList(1);
+				}
+			}
+			
+		}
 		int reviewCount = displayActMapper.getReviewCountByAct(a_num);
 		
 		double starAverage = displayActMapper.getReviewActStarAverage(a_num);
@@ -146,8 +168,6 @@ public class DisplayActController {
 		req.setAttribute("showAddr", addr[0]);
 		req.setAttribute("adto", adto);
 		req.setAttribute("programList", programList);
-		
-		return "display/display_activityContent";
 	}
 	
 	@RequestMapping("/reviewAct")
@@ -201,5 +221,20 @@ public class DisplayActController {
 		}
 		req.setAttribute("activityList", actList);
 		return "displayact/display_activitySearchOk";
+	}
+	
+//	ActivityContent 페이지에서 위시리스트 체크/해제
+	@RequestMapping(value="/wishActCCheckOK")
+	public String wishActCCheckOK(HttpServletRequest req, @RequestParam Map<String, String> params) {
+		displayActMapper.wishActCheckOK(params);
+		activityContentInfo(req, Integer.parseInt(params.get("a_num")));
+		return "displayact/display_activityContent";
+	}
+	
+	@RequestMapping(value="/wishActCReleaseOK")
+	public String wishActCReleaseOK(HttpServletRequest req, @RequestParam Map<String, String> params) {
+		displayActMapper.wishActReleaseOK(params);
+		activityContentInfo(req, Integer.parseInt(params.get("a_num")));
+		return "displayact/display_activityContent";
 	}
 }

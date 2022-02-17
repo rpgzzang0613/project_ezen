@@ -149,6 +149,7 @@
 <input type="hidden" id="u_name" value="${loginOkBean.u_name}">
 <input type="hidden" id="u_tel" value="${loginOkBean.u_tel}">
 <input type="hidden" name="room_price" value="${Room.room_price}">
+
 	<div style="width: 650px; margin: 0 auto;">
 		<div class="row book-detail">
 			<div class="first">
@@ -209,14 +210,6 @@
 						<%-- <input type="hidden" name="book_totalprice" value="${(Room.room_price + (Room.room_extraprice * 1)) - udto.u_point}"> --%>
 					</div>
 					
-				</div>
-				<div class="section">
-					<div class="row" style="font-weight: bold; font-size:20px; padding-left: 35px;">결제수단 선택</div>
-					<div class="column align-center gutter-y-10" style="height: auto;">
-						<button type="button" style="width: 200px; background:#F5C736;">카카오 페이(book_payment)</button>
-						<input type="hidden" name="book_payment" value="카카오페이">
-						<button style="width: 200px; background:#4AEB54;">네이버 페이(book_payment)</button>
-					</div>
 				</div>
 			</div>
 			

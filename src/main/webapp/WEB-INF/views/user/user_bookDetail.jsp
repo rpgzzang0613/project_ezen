@@ -5,25 +5,30 @@
 <%@ include file="user_myPage.jsp" %>
 <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
 <link rel="stylesheet" href="resources/LJWstyle.css"/>
+<<style>
+	.text_left{
+		text_align: left;
+	}
+</style>
 <form name="f_bookDetail" method="post" action="user_bookCancel">
 	<input type="hidden" name="book_num" value="${bdto.book_num}">
 	<div style="width: 400px; margin: 0 auto;">
 		<div class="row justify-center align-center border-bottom" style="height: 80px;">
-			예약 상세 내역
+			<font size="5"><b>예약 상세 내역</b></font>
 		</div>
 		<div class="column review border-bottom">
 					<div class="row">
 						<div class="flex column">
-							<span>
+							<span class="test_left">
 										<!-- 경로수정필요 -->
 							<label><img src="resources/images/hotel/${hdto.h_image1}" width="390"></label>
-							<label>${hdto.h_name}</label>
-							<label>${hdto.h_grade}</label>
-							<label>${bdto.book_roomtype}</label>
+							<label><font><b>호텔명: </b></font> ${hdto.h_name}<br></label>
+							<label><font><b>성급: </b></font>${hdto.h_grade}<br></label>
+							<label><font><b>객실타입: </b></font>${bdto.book_roomtype}<br></label>
 							
 							</span>
 							<span>
-							${fn:replace(hdto.h_address, '@', ' ')}
+							<font><b>호텔주소: </b></font>${fn:replace(hdto.h_address, '@', ' ')}
 							</span>
 						</div>
 					</div>

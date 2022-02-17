@@ -58,7 +58,7 @@ public class DisplayHotelMapper {
 		
 		String str = "SELECT h.* "
 					+ "FROM project_hotel h INNER JOIN ("
-					+ "SELECT h_num, MAX(room_price) as topprice "
+					+ "SELECT h_num, MAX(to_number(room_price)) as topprice "
 					+ "FROM project_room "
 					+ "GROUP BY h_num"
 					+ ")r "
@@ -76,7 +76,7 @@ public class DisplayHotelMapper {
 		Map<String,String> sql = new Hashtable<String, String>();
 		String str = "SELECT h.* "
 					+ "FROM project_hotel h INNER JOIN ("
-					+ "SELECT h_num, MIN(room_price) as lowprice "
+					+ "SELECT h_num, MIN(to_number(room_price)) as lowprice "
 					+ "FROM project_room "
 					+ "GROUP BY h_num"
 					+ ")r "
@@ -103,15 +103,9 @@ public class DisplayHotelMapper {
 	}
 	
 	// 호텔 하나의 별점 평균 반환
-	public double getReviewStarAverage(int h_num) {
+	public List<Integer> getReviewStarAverage(int h_num) {
 		List<Integer> star = sqlSession.selectList("getReviewStarAverage", h_num);
-
-		int totalStar = 0;
-		for(int i=0; i<star.size(); i++) {
-			totalStar += star.get(i);
-		}
-		double averageStar = (double)totalStar/star.size();
-		return averageStar;
+		return star;
 	}
 	
 	//	객실 타입을 기준으로 해당 호텔의 객실 그룹 리스트를 가져옴

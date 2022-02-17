@@ -179,4 +179,11 @@ public class UserMyPageMapper {
 	    
 		return sqlSession.update("editActReview", map);
 	}
+
+	public List<ReviewDTO> getReviewList(int u_num, int h_num) {
+		Hashtable<String, Integer> map = new Hashtable<String, Integer>();
+		map.put("u_num", u_num);
+		map.put("h_num", h_num);		
+		return sqlSession.selectList("getReviewList", map);
+	}
 }
