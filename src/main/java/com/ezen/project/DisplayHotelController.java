@@ -41,7 +41,13 @@ public class DisplayHotelController {
 		for(HotelDTO hdto : hotelList) {
 			hdto.setReviewCount(displayHotelMapper.getReviewCountByHotel(hdto.getH_num()));
 			
-			double starAverage = Math.round(displayHotelMapper.getReviewStarAverage(hdto.getH_num())*10)/10.0;
+			//호텔 별점 평균
+			List<Integer> star = displayHotelMapper.listReviewStar(hdto.getH_num());
+			int totalStar = 0;
+			for(int i=0; i<star.size(); i++) {
+				totalStar += star.get(i);
+			}
+			double starAverage = Math.round((double)totalStar/star.size()*10)/10.0;
 			hdto.setReviewAvg(starAverage);
 			
 			if(loginOkBean != null) {
@@ -147,8 +153,13 @@ public class DisplayHotelController {
 		int reviewCount = displayHotelMapper.getReviewCountByHotel(h_num);
 		
 		// 호텔 별점 평균 가져오기
-		double starAverage = displayHotelMapper.getReviewStarAverage(h_num);
-		starAverage = Math.round(starAverage*10)/10.0; // 소수 1번째 자리까지 표기
+		List<Integer> star = displayHotelMapper.listReviewStar(h_num);
+		int totalStar = 0;
+		for(int i=0; i<star.size(); i++) {
+			totalStar += star.get(i);
+		}
+		double starAverage = Math.round((double)totalStar/star.size()*10)/10.0;
+
 		
 		// 객실 타입별로 List 뽑아오기
 		List<RoomDTO> twinList = displayHotelMapper.listRoomByType(h_num, "TWIN");
@@ -270,8 +281,13 @@ public class DisplayHotelController {
 		int reviewCount = displayHotelMapper.getReviewCountByHotel(h_num);
 		
 //		호텔 별점 평균
-		double starAverage = displayHotelMapper.getReviewStarAverage(h_num);
-		starAverage = Math.round(starAverage*10)/10.0;//소수 1번째 자리까지 표기
+		List<Integer> star = displayHotelMapper.listReviewStar(h_num);
+		int totalStar = 0;
+		for(int i=0; i<star.size(); i++) {
+			totalStar += star.get(i);
+		}
+		double starAverage = Math.round((double)totalStar/star.size()*10)/10.0;
+
 		
 		req.setAttribute("reviewCount", reviewCount);
 		req.setAttribute("reviewList", reviewList);

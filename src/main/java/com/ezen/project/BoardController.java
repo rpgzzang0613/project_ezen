@@ -2,11 +2,14 @@ package com.ezen.project;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -372,9 +375,24 @@ public class BoardController {
 	//리뷰 실행될 때
 	@RequestMapping("/user_reviewOk")
 	public String user_reviewOk(HttpServletRequest req) throws IllegalStateException, IOException {
-		 
+		
 		MultipartHttpServletRequest mr = (MultipartHttpServletRequest)req;
 		MultipartFile mf = mr.getFile("review_image");
+		
+//		같은 날에 해당 유저가 쓴 리뷰가 있는지 확인하고 있으면 바로 리스트로 보냄
+		SimpleDateFormat format = new SimpleDateFormat ("yyyy.MM.dd");
+		Date time = new Date();
+		String today = format.format(time);
+		
+		List<ReviewDTO> reviewList = userMyPageMapper.listReview(Integer.parseInt(mr.getParameter("u_num")), Integer.parseInt(mr.getParameter("h_num")));
+		for(ReviewDTO rdto : reviewList) {
+			if(rdto.getReview_joindate().contains(today)) {
+				req.setAttribute("msg", "해당 호텔에 대한 리뷰를 이미 작성하셨습니다.");
+				req.setAttribute("url", "user_reviewList");
+				return "message";
+			}
+		}
+		
 		
 		String review_image = mf.getOriginalFilename();
 		
@@ -471,7 +489,7 @@ public class BoardController {
 
 	//내가쓴 리뷰 페이지로 이동
 	@RequestMapping("/user_reviewList")
-	public ModelAndView user_reviewList(HttpServletRequest req, @RequestParam(required = false) String pageNum) {
+	public ModelAndView user_reviewList(HttpServletResponse resp, HttpServletRequest req, @RequestParam(required = false) String pageNum) {
 		HttpSession session = req.getSession();
 		LoginOkBeanUser loginOkBean = (LoginOkBeanUser)session.getAttribute("loginOkBean");
 		int u_num = loginOkBean.getU_num();
@@ -480,7 +498,7 @@ public class BoardController {
 		if(pageNum == null) {
 			pageNum = "1";
 		}
-		int pageSize = 2;
+		int pageSize = 5;
 		int currentPage = Integer.parseInt(pageNum);
 		int startRow = (currentPage-1) * pageSize + 1;
 		int endRow = startRow + pageSize - 1;
@@ -500,7 +518,7 @@ public class BoardController {
 		
 		if (rowCount>0){
 //				[1] [2] [3]
-			int pageBlock = 2;
+			int pageBlock = 5;
 //				31(게시글수) / 5  =  몫 : 6, 나머지 = 1
 			int pageCount = rowCount / pageSize;
 //				나머지가 0이 아니면, 나머지 게시글 보여주기 위해 몫++ 해줌
@@ -587,7 +605,7 @@ public class BoardController {
 			if(pageNum == null) {
 				pageNum = "1";
 			}
-			int pageSize = 2;
+			int pageSize = 5;
 			int currentPage = Integer.parseInt(pageNum);
 			int startRow = (currentPage-1) * pageSize + 1;
 			int endRow = startRow + pageSize - 1;
@@ -607,7 +625,7 @@ public class BoardController {
 			
 			if (rowCount>0){
 //					[1] [2] [3]
-				int pageBlock = 2;
+				int pageBlock = 5;
 //					31(게시글수) / 5  =  몫 : 6, 나머지 = 1
 				int pageCount = rowCount / pageSize;
 //					나머지가 0이 아니면, 나머지 게시글 보여주기 위해 몫++ 해줌

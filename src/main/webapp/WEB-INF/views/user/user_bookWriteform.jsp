@@ -210,14 +210,6 @@
 					</div>
 					
 				</div>
-				<div class="section">
-					<div class="row" style="font-weight: bold; font-size:20px; padding-left: 35px;">결제수단 선택</div>
-					<div class="column align-center gutter-y-10" style="height: auto;">
-						<button type="button" style="width: 200px; background:#F5C736;">카카오 페이(book_payment)</button>
-						<input type="hidden" name="book_payment" value="카카오페이">
-						<button style="width: 200px; background:#4AEB54;">네이버 페이(book_payment)</button>
-					</div>
-				</div>
 			</div>
 			
 			<div class="second">

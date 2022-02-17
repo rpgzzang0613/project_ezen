@@ -38,7 +38,7 @@
 	</select>
 	
 	<!-- 호텔별점 -->
-	<select id="getReviewStarAverage" resultType="int">
+	<select id="listReviewStar" resultType="int">
 		select review_star from project_review where h_num = #{h_num}
 	</select>
 	

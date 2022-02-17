@@ -16,31 +16,24 @@
 		}); 
 	}); </script>
 
-<div align="center"><font size="3">리뷰 게시판</font></div><br>	
+<div align="center"><font size="6"><b>리뷰 게시판</b></font></div><br>	
 <div class="row align-center justify-between border-bottom" style="width:1000px; height: 80px; margin-right:auto; margin-left:auto;">
 	<div class="row align-center">
-		<i class="fas fa-star fa-2x" style="margin-right: 5px;"></i>${starAverage}/5
+		<i class="fas fa-star fa-2x" style="margin-right: 5px;"></i><font size="5"><b>${starAverage}</b></font><font size="4"><b>/5</b></font>
 	</div>
-	<span>총리뷰건수(${reviewCount}개)</span>
-</div>
-<div class="row align-center justify-between" style="width:1000px; height: 40px;margin-top: 10px; margin-right:auto; margin-left:auto;">
-	<SELECT NAME="review" SIZE="1">
-		<OPTION VALUE="recently">최근 작성순
-		<OPTION VALUE="HighStar">별점 높은순
-		<OPTION VALUE="LowStar">별점 낮은순
-	</SELECT>
+	<span><font size="5"><b>총리뷰건수(${reviewCount}개)</b></font></span>
 </div>
 <div>
 	<c:forEach var="review" items="${reviewList}">
 	<!-- 리뷰 하나 시작 -->
-	<div class="column review border-bottom" style="width: 1000px; margin-left: 450px;">
+	<div class="column review border-bottom" style="width: 800px; margin-left: 450px;">
 		<span>
-			<i class="fas fa-star"></i>${review.review_star}
+			<i class="fas fa-star"></i><font size="4"><b>${review.review_star}</b></font>/5
 			<!-- review.review_nickname수정 -->
-			<label>${review.review_nickname}</label>
+			<label><b>${review.review_nickname}님</b></label>
 			<!-- review,review_roomtype수정 -->
-			<label>${review.review_roomtype}</label>
-			<label>${review.review_joindate} 작성일</label>
+			<label><b>객실 타입:${review.review_roomtype}</b></label>
+			<label align="right"><b>작성일:${review.review_joindate}</b></label>
 		</span>
 		<div class="row">
 			<div class="flex">

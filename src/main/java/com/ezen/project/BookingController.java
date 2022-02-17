@@ -58,7 +58,7 @@ public class BookingController {
 		if(pageNum == null) {
 			pageNum = "1";
 		}
-		int pageSize = 3;
+		int pageSize = 4;
 		int currentPage = Integer.parseInt(pageNum);
 		int startRow = (currentPage-1) * pageSize + 1;
 		int endRow = startRow + pageSize - 1;
@@ -78,7 +78,7 @@ public class BookingController {
 		
 		if (rowCount>0){
 //				[1] [2] [3]
-			int pageBlock = 2;
+			int pageBlock = 5;
 //				31(게시글수) / 5  =  몫 : 6, 나머지 = 1
 			int pageCount = rowCount / pageSize;
 //				나머지가 0이 아니면, 나머지 게시글 보여주기 위해 몫++ 해줌
@@ -233,7 +233,7 @@ public class BookingController {
 		if(pageNum == null) {
 			pageNum = "1";
 		}
-		int pageSize = 3;
+		int pageSize = 4;
 		int currentPage = Integer.parseInt(pageNum);
 		int startRow = (currentPage-1) * pageSize + 1;
 		int endRow = startRow + pageSize - 1;
@@ -251,7 +251,7 @@ public class BookingController {
 		
 		if (rowCount>0){
 //			[1] [2] [3]
-			int pageBlock = 2;
+			int pageBlock = 5;
 //			31(게시글수) / 5  =  몫 : 6, 나머지 = 1
 			int pageCount = rowCount / pageSize;
 //			나머지가 0이 아니면, 나머지 게시글 보여주기 위해 몫++ 해줌

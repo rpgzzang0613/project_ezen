@@ -102,16 +102,10 @@ public class DisplayHotelMapper {
 		return sqlSession.selectOne("getReviewCountByHotel", h_num);
 	}
 	
-	// 호텔 하나의 별점 평균 반환
-	public double getReviewStarAverage(int h_num) {
-		List<Integer> star = sqlSession.selectList("getReviewStarAverage", h_num);
-
-		int totalStar = 0;
-		for(int i=0; i<star.size(); i++) {
-			totalStar += star.get(i);
-		}
-		double averageStar = (double)totalStar/star.size();
-		return averageStar;
+	// 호텔 하나의 별점들을 List로 반환
+	public List<Integer> listReviewStar(int h_num) {
+		List<Integer> star = sqlSession.selectList("listReviewStar", h_num);
+		return star;
 	}
 	
 	//	객실 타입을 기준으로 해당 호텔의 객실 그룹 리스트를 가져옴

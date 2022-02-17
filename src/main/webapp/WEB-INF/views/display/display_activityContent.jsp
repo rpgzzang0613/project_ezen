@@ -7,6 +7,24 @@
 <%@ include file="../activitymain/activity_searchbar.jsp"%>
 <link rel="stylesheet" href="resources/LJWstyle.css"/>
 <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"/>
+<script>
+	function sleep(ms) {
+	  const wakeUpTime = Date.now() + ms;
+	  while (Date.now() < wakeUpTime) {}
+	}
+	function wishActCReleaseOK(a_num, u_num){
+		var child = window.open("wishActCReleaseOK?a_num="+a_num+"&u_num="+u_num, "search", "width=10, height=10");
+		window.parent.location.reload();
+		sleep(300);
+		child.close();
+	}
+	function wishActCCheckOK(a_num, u_num){
+		var child = window.open("wishActCCheckOK?a_num="+a_num+"&u_num="+u_num, "search", "width=10, height=10");
+		window.parent.location.reload();
+		sleep(300);
+		child.close();
+	}
+</script>
 	<div style="width: 1000; margin: 0 auto;">
 		<div class="booking">
 			<div class="selectedImage">
@@ -23,20 +41,36 @@
 			<!-- 추가내용 -->
 		<div class="row align-center" style="margin-top: 10px; justify-content:flex-end;">
 			<span>
-			<i class="fas fa-share-alt-square"></i>
+				<i class="fas fa-share-alt-square"></i>
+				<!-- wishList가 체크된 방은 검은하트, 체크안된방은 빈 하트로 표시 -->
+				<!-- 비회원 표시 -->
+				<c:if test="${empty loginOkBean}">
+					<!-- 로그인 화면으로 보내거나, 이전페이지로 보내면 될듯 -->
+					<a href="user_needLogin"><i class="far fa-heart"></i></a>
+				</c:if>
+				<!-- 로그인 회원 표시 -->
+				<!-- 누를때마다 이벤트 발생하게 해야함 -->
+				<c:if test="${not empty loginOkBean}">
+					<c:if test="${adto.wishList ne '0'}">
+						<a href="javascript:wishActCReleaseOK('${adto.a_num}','${loginOkBean.u_num}')"><i class="fas fa-heart"></i></a>
+					</c:if>
+					<c:if test="${adto.wishList eq '0'}">
+						<a href="javascript:wishActCCheckOK('${adto.a_num}','${loginOkBean.u_num}')"><i class="far fa-heart"></i></a>
+					</c:if>
+				</c:if>						
 			</span>		
 		</div>
 		<div class="border-bottom">
 			<span class="spanLeft">
-				${adto.a_name}
+				<b>프로그램명: ${adto.a_name}</b>
 			</span>
 			&nbsp;&nbsp;&nbsp;&nbsp;
 			<span class="spanLeft">
-				${adto.a_manager} 
+				<b>담당자: ${adto.a_manager}</b>
 			</span>
 			&nbsp;&nbsp;&nbsp;&nbsp;
 			<span>
-				${adto.a_tel}
+				<b>고객센터: ${adto.a_tel}</b>
 			</span>
 		</div>
 		<div class="border-bottom">
@@ -45,14 +79,63 @@
 			</span>
 			&nbsp;&nbsp;&nbsp;&nbsp;
 			<span>
-				${reviewCount}
+				후기(${reviewCount}개)
 			</span>
 		</div>
 		<div>
-			${adto.a_address}
+			상세주소: ${adto.a_address}
+		</div>
+		<c:if test="${empty programList}">
+			<h2 align="center">등록된 프로그램이 없습니다</h2>
+		</c:if>
+		<c:if test="${not empty programList}">
+			<c:forEach var="pdto" items="${programList}">
+			<c:if test="${empty loginOkBean}">	
+			<form name="f" method="POST" action="user_needLogin">
+			</c:if>
+			<c:if test="${not empty loginOkBean}">	
+			<form name="f_bookingAct" method="POST" action="user_bookActWriteForm">
+			</c:if>
+				<table align="center" width="1000" style="cursor:pointer;" 
+				onmouseover="this.bgColor='#F9EDA5'" onmouseout="this.bgColor=''">
+					<tr>
+						<td rowspan="3" width="200">
+							<img class="picture" src="resources/images/activity/${adto.a_image1}" width="160" height="90">
+						</td>
+						<td width="600">프로그램명 : ${pdto.p_name}</td>
+						<td rowspan="3" align="center">
+						<c:set var="left" value="${pdto.p_maxbooker - pdto.p_currentbooker}"/>
+						<c:if test="${left <= 3}">
+						<b><font color="red" size="4">매진임박!</font></b><br>남은자리: <b><font color="red" size="5">${left}</font></b>개<br>
+						</c:if>
+						<c:if test="${left > 3}">
+						남은 자리: <b><font size="4">${left}</font></b>개<br>
+						</c:if>
+						<c:if test="${pdto.p_maxbooker - pdto.p_currentbooker > 0}">
+							<input type="submit" value="예약하기">
+							<input type="hidden" value="${pdto.p_num}" name="p_num">
+							<input type="hidden" name="canBooker" value=" ${pdto.p_maxbooker - pdto.p_currentbooker}">
+						</c:if>
+						<c:if test="${pdto.p_maxbooker - pdto.p_currentbooker <= 0}">
+							<input type="button" value="매진" onclick="#">
+						</c:if>
+						</td>
+					</tr>
+					<tr>
+						<td>프로그램 가격 : ${pdto.p_price}원 / (1인)</td>
+					</tr>
+				</table>
+			</form>
+			</c:forEach>
+		</c:if>
+		<div class="booking border row">
+			<b>프로그램 정보 : </b><br>${adto.a_info}
 		</div>
 		<div class="booking border row">
-			 프로그램 위치지도
+			<b>공지사항 : </b><br>${adto.a_notice}
+		</div>
+		<div class="booking border row">
+			<b>프로그램 위치지도</b>
 		</div>
 		<input type="hidden" id="addr" value="${showAddr}">
 		<input type="hidden" id="hotelN" value="${adto.a_name}">
@@ -103,50 +186,6 @@
 		  	  	} 
 			});	
 		</script>
-		<c:if test="${empty programList}">
-			<h2 align="center">등록된 프로그램이 없습니다</h2>
-		</c:if>
-		<c:if test="${not empty programList}">
-			<c:forEach var="pdto" items="${programList}">
-			<c:if test="${empty loginOkBean}">	
-			<form name="f" method="POST" action="user_needLogin">
-			</c:if>
-			<c:if test="${not empty loginOkBean}">	
-			<form name="f_bookingAct" method="POST" action="user_bookActWriteForm">
-			</c:if>
-				<table align="center" width="1000">
-					<tr>
-						<td rowspan="3" width="200">
-							<img class="picture" src="resources/images/activity/${adto.a_image1}" width="160" height="90">
-						</td>
-						<td width="600">프로그램 명 : ${pdto.p_name}</td>
-						<td rowspan="3" align="center">
-						<c:if test="${pdto.p_maxbooker - pdto.p_currentbooker > 0}">
-							<input type="submit" value="예약하기">
-							<input type="hidden" value="${pdto.p_num}" name="p_num">
-							<input type="hidden" name="canBooker" value=" ${pdto.p_maxbooker - pdto.p_currentbooker}">
-						</c:if>
-						<c:if test="${pdto.p_maxbooker - pdto.p_currentbooker <= 0}">
-							<input type="button" value="매진" onclick="#">
-						</c:if>
-						</td>
-					</tr>
-					<tr>
-						<td>프로그램 가격 : ${pdto.p_price}원 / (1인)</td>
-					</tr>
-					<tr>
-						<td>예약 가능 인원 : ${pdto.p_maxbooker - pdto.p_currentbooker}명</td>
-					</tr>
-				</table>
-			</form>
-			</c:forEach>
-		</c:if>
-		<div class="booking border row">
-			${adto.a_info}
-		</div>
-		<div class="booking border row">
-			${adto.a_notice}
-		</div>
 		<table align="center" width="1000">
 			<tr>
 				<td align="left">후기(${reviewCount}개)</td>

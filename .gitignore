@@ -10,6 +10,7 @@ pom.properties
 .classpath
 MANIFEST.MF
 servlet-context.xml
+images/
 
 ### Eclipse ###
 .metadata

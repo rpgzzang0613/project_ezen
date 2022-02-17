@@ -71,5 +71,9 @@
 	<update id="checkoutBookingAct" parameterType="int">
 		update project_bookingAct set ba_status='checkout' where ba_num=#{ba_num}
 	</update>
+	
+	<select id="getActivityContent" parameterType="int">
+		select * from project_activity where a_num=#{a_num}
+	</select>
 
 </mapper> 
