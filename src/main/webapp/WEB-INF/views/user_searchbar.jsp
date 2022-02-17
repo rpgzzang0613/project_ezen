@@ -1,8 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
-<link rel="stylesheet" href="resources/LJWstyle.css"/>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<link rel="stylesheet" href="resources/LJWstyle.css"/>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.8.18/themes/base/jquery-ui.css" /> 
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script src="//code.jquery.com/ui/1.8.18/jquery-ui.min.js"></script>
 <script type="text/javascript">
 	$(document).ready(function(){
 		$("#plus").click(function(){
@@ -28,21 +31,62 @@
 				$("#inwon").attr('value',inwon2);
 			}
 		});
-		$("#mForm").submit(function(){
-			var indate = $("#indate").val();
-			var outdate = $("#outdate").val();
-			var today = new Date(+new Date() + 3240 * 10000).toISOString().split("T")[0];
-			
-			if(indate >= outdate) {
-				alert('체크아웃 날짜를 확인해주세요.');
-				return false;
-			}
-			if(indate < today) {
-				alert('지난 날짜는 선택할 수 없습니다.');
-				return false;
-			}
-		});
 	});
+	/* 캘린더 */ 
+	$( function() {
+  
+	    var dateFormat = "yy-mm-dd",
+	      from = $( "#from" )
+	        .datepicker({
+	          changeYear: true,
+	          changeMonth: true,//달 변경 지정
+	          dateFormat:"yy-mm-dd",//날짜 포맷
+	          prevText: '이전 달',
+		      nextText: '다음 달',
+			  currentText: '오늘 날짜',
+			  closeText: '닫기',
+			  monthNames: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
+			  monthNamesShort: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
+			  dayNames: ['일','월','화','수','목','금','토'],
+			  dayNamesMin: ['일','월','화','수','목','금','토'],
+	          minDate:0 //오늘 이전 날짜를 선택할 수 없음
+	        })
+	        .on( "change", function() {
+	          to.datepicker( "option", "minDate", getDate(this) );//종료일의 minDate 지정
+	        }),
+	      to = $( "#to" ).datepicker({
+	  	    changeYear: true,
+	        changeMonth: true,
+	        dateFormat:"yy-mm-dd",
+	        prevText: '이전 달',
+			nextText: '다음 달',
+			currentText: '오늘 날짜',
+			closeText: '닫기',
+			monthNames: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
+			monthNamesShort: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
+			dayNames: ['일','월','화','수','목','금','토'],
+			dayNamesMin: ['일','월','화','수','목','금','토'],
+	        minDate:'+1D' //내일부터 선택가능, 지정형식 예(+1D +1M +1Y)
+	      })
+	      .on( "change", function() {
+	        from.datepicker( "option", "maxDate", getDate(this) );//시작일의 maxDate 지정
+	      });
+	 
+	    function getDate(element) {
+	      var date;
+	      try {
+	        date = $.datepicker.parseDate( dateFormat, element.value );
+	        if(element.id == 'from'){
+	         date.setDate(date.getDate()+1);//종료일은 시작보다 하루 이후부터 지정할 수 있도록 설정
+	        }else{
+	         date.setDate(date.getDate()-1);//시작일은 종료일보다 하루 전부터 지정할 수 있도록 설정
+	        }
+	      } catch( error ) {
+	        date = null;
+	      }
+	      return date;
+	    }
+	} );
 </script>
 <style>
 .search-box {
@@ -72,7 +116,7 @@
 	<div class="row search-box">
 		<div>
 			지역 혹은 숙소 입력<br/>
-			<input type="text" name="condition" id="location" placeholder="전체 검색" list="options" style="width: 300px;">
+			<input type="text" name="condition" list="options" id="location" placeholder="전체 검색" style="width: 300px;">
 			<datalist id="options">
 				<c:forEach var="option" items="${sessionScope.allOptions}">
 					<option value="${option}">
@@ -81,11 +125,13 @@
 		</div>
 		<div>
 			체크인 <br/>
-			<input type="date" id="indate" name="indate" value="${indate}">
+			<%-- <input type="date" id="indate1" name="indate" value="${indate}"> --%>
+			<input type="date" id="from" name="indate" value="${indate}" autocomplete="off" readonly>
 		</div>
 		<div>
 			체크아웃<br/>
-			<input type="date" id="outdate" name="outdate" value="${outdate}">
+			<%-- <input type="date" id="outdate1" name="outdate" value="${outdate}"> --%>
+			<input type="date" id="to" name="outdate" value="${outdate}" autocomplete="off" readonly>
 		</div>
 		<div style="width: 80px;">
 			인원<br>
