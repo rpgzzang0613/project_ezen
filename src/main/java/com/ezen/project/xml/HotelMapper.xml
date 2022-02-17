@@ -104,16 +104,16 @@
        select * from project_room where room_code=#{room_code} order by room_num asc
     </select>
 	
+	<select id="listRoomInGroupByRoomCode" parameterType="String" resultType="RoomDTO">
+		select * from project_room where room_code=#{room_code}
+	</select>
+	
 	<select id="getRoomByRoomNum" parameterType="int" resultType="RoomDTO">
 		select * from project_room where room_num=#{room_num}
 	</select>
 	
 	<select id="getRoomType" parameterType="int" resultType="String">
 		select room_type from project_room where room_num = #{room_num}
-	</select>
-	
-	<select id="listRoomInGroupByRoomCode" parameterType="String" resultType="RoomDTO">
-		select * from project_room where room_code=#{room_code}
 	</select>
 	
 	<update id="disableRoom" parameterType="int">

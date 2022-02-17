@@ -190,57 +190,44 @@ public class DisplayHotelController {
 	}
 	
 	
-//	h_num과 room_num에 일치하는 결과 찾기
+	// h_num과 room_num에 일치하는 결과 찾기
 	@RequestMapping("/display_roomContent")
 	public String roomContent(HttpServletRequest req, @RequestParam(required=false) String room_code, 
 			int h_num) {
-//		호텔정보
+		// 호텔 정보 (h_num, h_address)
 		HotelDTO hdto = hotelMapper.getHotel(h_num);
-		List<RoomDTO> roomList = hotelMapper.listRoomInGroupByRoomCode(room_code);
+		List<RoomDTO> roomList = hotelMapper.listRoom(room_code);
 		RoomDTO room = roomList.get(0);
 		
 		HttpSession session = req.getSession();
 		
-		Map<String, String> map = new Hashtable<>();
-		map.put("book_indate", (String)session.getAttribute("indate"));
-		map.put("book_outdate", (String)session.getAttribute("outdate"));
+		// 예약여부 확인
+		Map<String, String> params = new Hashtable<>();
+		params.put("book_indate", (String)session.getAttribute("indate"));
+		params.put("book_outdate", (String)session.getAttribute("outdate"));
+		params.put("room_code", room_code);
 		
 		for(RoomDTO rdto : roomList) {
-			map.put("room_num", String.valueOf(rdto.getRoom_num()));
-			rdto.setRoom_booked(displayHotelMapper.isBookedRoom(map));
+			params.put("room_num", String.valueOf(rdto.getRoom_num()));
+			rdto.setRoom_booked(displayHotelMapper.isBookedRoom(params));
 		}
 		
-		List<RoomDTO> roomList2 = new ArrayList<RoomDTO>();
-		for(RoomDTO rdto : roomList) {
-			if(rdto.getRoom_booked().equals("n")) {
-				roomList2.add(rdto);
-			}
-		}
+		// 예약된 객실은 List에서 삭제
+		roomList.removeIf(k -> k.getRoom_booked().equals("y"));
 		
-		roomList = roomList2;
+		// 최대 객실 수
+		// int max_roomCount = hotelMapper.countRoomOnGroup(room_code);
 		
-		req.setAttribute("hdto", hdto);
-		req.setAttribute("Room", room);
-		req.setAttribute("roomList", roomList);
-		
-		
-		Map<String, String> map2 = new Hashtable<String, String>();
-		
-		map2.put("book_indate", (String)session.getAttribute("indate"));
-		map2.put("book_outdate", (String)session.getAttribute("outdate"));
-		map2.put("room_code", room.getRoom_code());
-		
-		int max_roomCount = hotelMapper.countRoomOnGroup(room.getRoom_code());
-		int booked_roomCount = displayHotelMapper.countBookedRoom(map2);
-		int bookable_roomCount = max_roomCount - booked_roomCount;
-		
-//		호텔기본정보
-//		@구분자로 사항들을 나눠서 배열에 담아줌 -> jsp에서 배열 하나씩 출력+줄개행
+		// 호텔 정보와 공지를 @ 기준으로 나눠서 배열에 담음
 		String[] hotelInfo = hdto.getH_info().split("@");
 		String[] hotelNotice = hdto.getH_notice().split("@");
+		
+		req.setAttribute("hdto", hdto);
+		req.setAttribute("rdto", room);
+		req.setAttribute("roomList", roomList);
 		req.setAttribute("hotelInfo", hotelInfo);
 		req.setAttribute("hotelNotice", hotelNotice);
-		req.setAttribute("bookable_roomCount", bookable_roomCount);
+		req.setAttribute("bookable_roomCount", roomList.size());
 		
 		return "display/display_roomContent";
 	}

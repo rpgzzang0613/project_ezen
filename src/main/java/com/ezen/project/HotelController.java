@@ -378,7 +378,7 @@ public class HotelController {
 	@RequestMapping("/room_input_ok")
 	public String roomInputOk(HttpServletRequest req, String room_code) {
 		// 객실 등록을 위해 동일한 정보를 가진 객실리스트를 room_code를 통해 가져옴
-		List<RoomDTO> rList = hotelMapper.listRoomInGroupByRoomCode(room_code);
+		List<RoomDTO> rList = hotelMapper.listRoom(room_code);
 		
 		// 객실 등록
 		int res = hotelMapper.inputRoom(rList.get(0));

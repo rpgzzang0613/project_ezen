@@ -11,22 +11,22 @@
 	<div style="width: 1000; margin: 0 auto; ">
 		<div class="Roomcontent"> 
 		<span class="row align-center" style="font-weight:bold; margin-top: 10px;">
-			[${Room.room_name}]${Room.room_type}
+			[${rdto.room_name}]${rdto.room_type}
 		</span> 
 		<span class="row align-center" style="font-weight:bold; margin-top: 10px;">
-			객실 최대 인원 ${Room.room_capacity}명
+			객실 최대 인원 ${rdto.room_capacity}명
 		</span> 
 		<span class="row align-center" style="font-weight:bold; margin-top: 10px;">
 			${fn:replace(hdto.h_address, '@', ' ')}
 		</span> 
 		 
 			<div class="selectedImage" style="margin-top:10px;">
-				<img src="resources/images/room/${Room.room_image1}" id="selectedImage">
+				<img src="resources/images/room/${rdto.room_image1}" id="selectedImage">
 			</div>
 			<div style="margin-top:3px;" class="row justify-end flex-grow images" id="roomcontentImages">
-				<img style="width:18%; margin-left:2px;" src="resources/images/room/${Room.room_image1}">
-				<img style="width:18%; margin-left:2px;" src="resources/images/room/${Room.room_image2}">
-				<img style="width:18%; margin-left:2px;" src="resources/images/room/${Room.room_image3}">
+				<img style="width:18%; margin-left:2px;" src="resources/images/room/${rdto.room_image1}">
+				<img style="width:18%; margin-left:2px;" src="resources/images/room/${rdto.room_image2}">
+				<img style="width:18%; margin-left:2px;" src="resources/images/room/${rdto.room_image3}">
 			</div>
 		</div>
 	<div class="row" style="justify-content: space-between;">
@@ -40,7 +40,7 @@
 		<div class="row" style="justify-content: flex-end;" >	
 			<div class="column" style="display: flex;">		 
 					<div class="column" style="font-size:larger; font-weight:bold; text-align:right; width: 180px; margin-top: 10px; align-items: revert;"> 
-						${Room.room_price} 원 
+						${rdto.room_price} 원 
 					</div>
 					<div class="column align-center" style="flex-direction:row-reverse;margin-right:6px; margin-top:10px;">
 						<select id="room_num" name="room_num" style="width:120px; height: 30px;">
