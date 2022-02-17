@@ -136,11 +136,13 @@ public class DisplayHotelController {
 		return "display/display_hotelSearchOk";
 	}
 	
-//	h_num으로 호텔 상세정보 찾기
+	// 호텔 상세정보 페이지
 	@RequestMapping("/display_hotelContent")
 	public String hotelContent(HttpServletRequest req, int h_num) {
-		HttpSession session = req.getSession();
-
+		
+		// 호텔에 리뷰 리스트 가져오기
+		List<ReviewDTO> reviewList = displayHotelMapper.listReviewByHotel(h_num);
+		
 		// 호텔 리뷰 개수 가져오기
 		int reviewCount = displayHotelMapper.getReviewCountByHotel(h_num);
 		
@@ -153,20 +155,44 @@ public class DisplayHotelController {
 		List<RoomDTO> doubleList = displayHotelMapper.listRoomByType(h_num, "DOUBLE");
 		List<RoomDTO> deluxeList = displayHotelMapper.listRoomByType(h_num, "DELUXE");
 		
+		// List에 전체 객실 수와 예약된 객실 수 담기
+		HttpSession session = req.getSession();
+		
+		Map<String, String> params = new Hashtable<>();
+		params.put("book_indate", (String)session.getAttribute("indate"));
+		params.put("book_outdate", (String)session.getAttribute("outdate"));
+		
+		for(RoomDTO rdto : twinList) {
+			params.put("room_code", rdto.getRoom_code());
+			
+			rdto.setMax_count(hotelMapper.countRoomOnGroup(rdto.getRoom_code()));
+			rdto.setBooked_count(displayHotelMapper.countBookedRoom(params));
+		}
+		for(RoomDTO rdto : doubleList) {
+			params.put("room_code", rdto.getRoom_code());
+			
+			rdto.setMax_count(hotelMapper.countRoomOnGroup(rdto.getRoom_code()));
+			rdto.setBooked_count(displayHotelMapper.countBookedRoom(params));
+		}
+		for(RoomDTO rdto : deluxeList) {
+			params.put("room_code", rdto.getRoom_code());
+			
+			rdto.setMax_count(hotelMapper.countRoomOnGroup(rdto.getRoom_code()));
+			rdto.setBooked_count(displayHotelMapper.countBookedRoom(params));
+		}
+		
+		// 로그인할 경우만 위시리스트 체크
 		LoginOkBeanUser loginOkBean = (LoginOkBeanUser)session.getAttribute("loginOkBean");
 		HotelDTO hdto = hotelMapper.getHotel(h_num);
 		
-		// 로그인할 경우만 위시리스트 체크
 		if(loginOkBean != null) {
 			hdto.setWishList(displayHotelMapper.isWishCheck(h_num, loginOkBean.getU_num()));
 		}
 		
-		// 호텔에 대한 리뷰 리스트
-		List<ReviewDTO> reviewList = displayHotelMapper.listReviewByHotel(h_num);
-	      
+		// 지도에 쓸 주소값 뽑기
 		String addrForMap = "";
 		String h_address = hdto.getH_address();
-
+		
 		for(int i=0; i<h_address.length(); i++) {
 			String letter = String.valueOf(h_address.charAt(i));
 			
@@ -214,9 +240,6 @@ public class DisplayHotelController {
 		
 		// 예약된 객실은 List에서 삭제
 		roomList.removeIf(k -> k.getRoom_booked().equals("y"));
-		
-		// 최대 객실 수
-		// int max_roomCount = hotelMapper.countRoomOnGroup(room_code);
 		
 		// 호텔 정보와 공지를 @ 기준으로 나눠서 배열에 담음
 		String[] hotelInfo = hdto.getH_info().split("@");

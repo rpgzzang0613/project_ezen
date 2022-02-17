@@ -51,7 +51,7 @@
 						<c:forEach var="rdto" items="${roomList}">
 							<option value="${rdto.room_num}">
 								객실 [${rdto.room_num}]
-							</option>  
+							</option>
 						</c:forEach>
 						</c:if>  
 						</select>

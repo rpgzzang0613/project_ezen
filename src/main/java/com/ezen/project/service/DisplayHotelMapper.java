@@ -255,6 +255,18 @@ public class DisplayHotelMapper {
 		}
 		return map;
 	}
+
+	// 특정 객실그룹에서 예약된 방의 개수를 가져오는 메소드
+	public int countBookedRoom(Map<String,String> map) {
+		String sql = "SELECT count(*) FROM project_booking WHERE room_code='"+map.get("room_code")+"' AND "
+				+ "(book_indate <= '"+map.get("book_outdate")+
+				"' AND book_outdate >= '"+map.get("book_indate")+"') AND book_status <> 'deny'";
+		
+		Map<String, String> map2 = new Hashtable<>();
+		map2.put("sql", sql);
+		
+		return sqlSession.selectOne("countBookedRoom", map2);
+	}
 	
 	// 특정 객실이 예약중인지 아닌지 리턴하는 메소드
 	public String isBookedRoom(Map<String,String> map) {

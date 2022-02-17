@@ -2,13 +2,14 @@
     pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri = "http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
- <script type="text/javascript">
- 	function sleep(ms) {
+<script type="text/javascript">
+	function sleep(ms) {
 	  const wakeUpTime = Date.now() + ms;
 	  while (Date.now() < wakeUpTime) {}
 	}
- 	function wishReleaseHC(h_num, u_num, location, inwon){
+	function wishReleaseHC(h_num, u_num, location, inwon){
 		var child = window.open("wishReleaseHC?h_num="+h_num+"&u_num="+u_num+"&location="+location+"&inwon="+inwon, "search","width=10, height=10");
 		window.parent.location.reload();
 		sleep(300);
@@ -20,41 +21,8 @@
 		sleep(300);
 		child.close();
 	}
-	
- 	$(document).ready(function(){
- 		$("#mForm").submit(function(){
- 			var indate2 = $("#indate1").val();
- 			var outdate2 = $("#outdate1").val();
- 			var date1 = indate2.split('-');
-			var in_date = new Date(indate2);
- 			var date2 = outdate2.split('-');
- 			var out_date = new Date(outdate2);
- 			
-    		var date = new Date();
-    		if(indate2 != ''){
-        		if(outdate2 != ''){
-		    		if(date.getDay() <= in_date.getDay()){
-		    			if(in_date.getDay() > out_date.getDay()){
-		     				alert("체크인아웃 날짜보다 체크인 날짜가 먼저여야 합니다");
-		     				return false;
-		     			}
-		    		} else {
-		    			alert("지난 날짜는 선택 할 수 없습니다.");
-		    			return false;
-		    		}
-        		}else{
-        			alert('체크아웃 날짜를 지정해주세요');
-        			return false;
-        		}
-        	}else{
-        		alert('체크인 날짜를 지정해주세요');
-        		return false;
-        	}
- 		});
- 	});
- </script>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-	
+</script>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>	
 <%@ include file="../user_top.jsp" %>
 <%@ include file="../user_searchbar.jsp" %>
 <link rel="stylesheet" href="resources/LJWstyle.css"/>
@@ -78,7 +46,6 @@
 			<i class="fas fa-share-alt-square"></i>
 				<!-- 비회원 표시 -->
 				<c:if test="${empty loginOkBean}">
-					<!-- 로그인 화면으로 보내거나, 이전페이지로 보내면 될듯 -->
 					<a href="user_needLogin"><i class="far fa-heart"></i></a>
 				</c:if>
 				<!-- 로그인 회원 표시 -->
@@ -93,29 +60,23 @@
 			</span>
 		</div>
 		<div class="border-bottom">
-			<span class="spanLeft">
-				${hdto.h_name}
-			</span>
+			<span class="spanLeft">${hdto.h_name}</span>
 			&nbsp;&nbsp;&nbsp;&nbsp;
-			<span class="spanLeft">
-				${hdto.h_grade}성급
-			</span>
+			<span class="spanLeft">${hdto.h_grade}성급</span>
 			<br>
 			<span>
 				<i class="far fa-star"></i>${starAverage} / 5
 			</span>
 			&nbsp;&nbsp;&nbsp;&nbsp;
-			<span>
-				${reviewCount}
-			</span>
+			<span>${reviewCount}</span>
 		</div> 
-		<div>
-			${fn:replace(hdto.h_address, '@', ' ')}
-		</div>
+		<div>${fn:replace(hdto.h_address, '@', ' ')}</div>
+		
 		<c:if test="${not empty twinRoom}">
 		<div style="text-align: center; font-weight:bold;">TWIN ROOM</div>
 			<c:forEach var="tRoom" items="${twinRoom}">
-				<c:if test="${tRoom.room_capacity+2 >= sessionScope.inwon}">
+				<c:set var="bookable_count" value="${tRoom.max_count - tRoom.booked_count}"/>
+				<c:if test="${tRoom.room_capacity+2 >= sessionScope.inwon and bookable_count > 0}">
 				<table class="roomTable" align="center" style="cursor:pointer;" 
 				onmouseover="this.bgColor='#F9EDA5'" onmouseout="this.bgColor=''"
 				onclick="location.href='display_roomContent?room_code=${tRoom.room_code}&h_num=${hdto.h_num}' " width="800">
@@ -128,11 +89,45 @@
 					</tr>
 					<tr>
 						<td>Late&nbsp;Check-in&nbsp;18시</td>
-						<td align="right">판매가</td>
+						<td align="right">
+							<c:if test="${bookable_count > 5}">
+								${bookable_count} 개 남음
+							</c:if>
+							<c:if test="${bookable_count > 0 and bookable_count <= 5}">
+								<span style="color:red;font-weight:bold">${bookable_count} 개 남음</span>
+							</c:if>
+						</td>
 					</tr>
 					<tr>
-						<td>기준&nbsp;${tRoom.room_capacity}명&nbsp;/&nbsp;최대&nbsp;${tRoom.room_capacity + 2}명</td>
-						<td align="right">${tRoom.room_price}원</td>					
+						<td>기준 ${tRoom.room_capacity}명 / 최대 ${tRoom.room_capacity + 2}명</td>
+						<td align="right"><fmt:formatNumber value="${tRoom.room_price}" pattern="###,### 원"/></td>
+					</tr>
+					<tr>
+						<td>숙박&nbsp;18:00&nbsp;부터</td>
+						<td></td>
+					</tr>
+				</table>
+				</c:if>
+				<c:if test="${tRoom.room_capacity+2 >= sessionScope.inwon and bookable_count <= 0}">
+				<table class="roomTable" align="center" style="cursor:pointer;" 
+				onmouseover="this.bgColor='#CFCFCF'" onmouseout="this.bgColor=''"
+				onclick="alert('매진된 객실입니다.')" width="800">
+					<tr>
+						<td width="25%" rowspan="4">
+							<img class="picture" src="resources/images/room/${tRoom.room_image1}" width="160" height="90"/>
+						</td>
+						<td width="50%">${tRoom.room_type}&nbsp;[${tRoom.room_name}]</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>Late&nbsp;Check-in&nbsp;18시</td>
+						<td align="right">
+							<span style="color:red;font-weight:bold">매진</span>
+						</td>
+					</tr>
+					<tr>
+						<td>기준 ${tRoom.room_capacity}명 / 최대 ${tRoom.room_capacity + 2}명</td>
+						<td align="right"><fmt:formatNumber value="${tRoom.room_price}" pattern="###,### 원"/></td>
 					</tr>
 					<tr>
 						<td>숙박&nbsp;18:00&nbsp;부터</td>
@@ -141,12 +136,14 @@
 				</table>
 				</c:if>
 			</c:forEach>
-			<br>
 		</c:if>
+		<br>
+		
 		<c:if test="${not empty doubleRoom}">
-			<div style="text-align: center; font-weight:bold;">DOUBLE ROOM</div>
+		<div style="text-align: center; font-weight:bold;">DOUBLE ROOM</div>
 			<c:forEach var="dbRoom" items="${doubleRoom}">
-				<c:if test="${dbRoom.room_capacity+2 >= sessionScope.inwon}">
+				<c:set var="bookable_count" value="${dbRoom.max_count - dbRoom.booked_count}"/>
+				<c:if test="${dbRoom.room_capacity+2 >= sessionScope.inwon and bookable_count > 0}">
 				<table class="roomTable" align="center" style="cursor:pointer;" 
 				onmouseover="this.bgColor='#F9EDA5'" onmouseout="this.bgColor=''"
 				onclick="location.href='display_roomContent?room_code=${dbRoom.room_code}&h_num=${hdto.h_num}' " width="800">
@@ -159,11 +156,45 @@
 					</tr>
 					<tr>
 						<td>Late&nbsp;Check-in&nbsp;18시</td>
-						<td align="right">판매가</td>
+						<td align="right">
+							<c:if test="${bookable_count > 5}">
+								${bookable_count} 개 남음
+							</c:if>
+							<c:if test="${bookable_count > 0 and bookable_count <= 5}">
+								<span style="color:red;font-weight:bold">${bookable_count} 개 남음</span>
+							</c:if>
+						</td>
 					</tr>
 					<tr>
-						<td>기준&nbsp;${dbRoom.room_capacity}명&nbsp;/&nbsp;최대&nbsp;${dbRoom.room_capacity + 2}명</td>
-						<td align="right">${dbRoom.room_price}원</td>					
+						<td>기준 ${dbRoom.room_capacity}명 / 최대 ${dbRoom.room_capacity + 2}명</td>
+						<td align="right"><fmt:formatNumber value="${dbRoom.room_price}" pattern="###,### 원"/></td>
+					</tr>
+					<tr>
+						<td>숙박&nbsp;18:00&nbsp;부터</td>
+						<td></td>
+					</tr>
+				</table>
+				</c:if>
+				<c:if test="${dbRoom.room_capacity+2 >= sessionScope.inwon and bookable_count <= 0}">
+				<table class="roomTable" align="center" style="cursor:pointer;" 
+				onmouseover="this.bgColor='#CFCFCF'" onmouseout="this.bgColor=''"
+				onclick="alert('매진된 객실입니다.')" width="800">
+					<tr>
+						<td width="25%" rowspan="4">
+							<img class="picture" src="resources/images/room/${dbRoom.room_image1}" width="160" height="90"/>
+						</td>
+						<td width="50%">${dbRoom.room_type}&nbsp;[${dbRoom.room_name}]</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>Late&nbsp;Check-in&nbsp;18시</td>
+						<td align="right">
+							<span style="color:red;font-weight:bold">매진</span>
+						</td>
+					</tr>
+					<tr>
+						<td>기준 ${dbRoom.room_capacity}명 / 최대 ${dbRoom.room_capacity + 2}명</td>
+						<td align="right"><fmt:formatNumber value="${dbRoom.room_price}" pattern="###,### 원"/></td>
 					</tr>
 					<tr>
 						<td>숙박&nbsp;18:00&nbsp;부터</td>
@@ -172,12 +203,14 @@
 				</table>
 				</c:if>
 			</c:forEach>
-			<br>
 		</c:if>
+		<br>
+		
 		<c:if test="${not empty deluxeRoom}">
 		<div style="text-align: center; font-weight:bold;">DELUXE ROOM</div>
 			<c:forEach var="dxRoom" items="${deluxeRoom}">
-				<c:if test="${dxRoom.room_capacity+2 >= sessionScope.inwon}">
+				<c:set var="bookable_count" value="${dxRoom.max_count - dxRoom.booked_count}"/>
+				<c:if test="${dxRoom.room_capacity+2 >= sessionScope.inwon and bookable_count > 0}">
 				<table class="roomTable" align="center" style="cursor:pointer;" 
 				onmouseover="this.bgColor='#F9EDA5'" onmouseout="this.bgColor=''"
 				onclick="location.href='display_roomContent?room_code=${dxRoom.room_code}&h_num=${hdto.h_num}' " width="800">
@@ -190,11 +223,45 @@
 					</tr>
 					<tr>
 						<td>Late&nbsp;Check-in&nbsp;18시</td>
-						<td align="right">판매가</td>
+						<td align="right">
+							<c:if test="${bookable_count > 5}">
+								${bookable_count} 개 남음
+							</c:if>
+							<c:if test="${bookable_count > 0 and bookable_count <= 5}">
+								<span style="color:red;font-weight:bold">${bookable_count} 개 남음</span>
+							</c:if>
+						</td>
 					</tr>
 					<tr>
-						<td>기준&nbsp;${dxRoom.room_capacity}명&nbsp;/&nbsp;최대&nbsp;${dxRoom.room_capacity + 2}명</td>
-						<td align="right">${dxRoom.room_price}원</td>					
+						<td>기준 ${dxRoom.room_capacity}명 / 최대 ${dxRoom.room_capacity + 2}명</td>
+						<td align="right"><fmt:formatNumber value="${dxRoom.room_price}" pattern="###,### 원"/></td>
+					</tr>
+					<tr>
+						<td>숙박&nbsp;18:00&nbsp;부터</td>
+						<td></td>
+					</tr>
+				</table>
+				</c:if>
+				<c:if test="${dxRoom.room_capacity+2 >= sessionScope.inwon and bookable_count <= 0}">
+				<table class="roomTable" align="center" style="cursor:pointer;" 
+				onmouseover="this.bgColor='#CFCFCF'" onmouseout="this.bgColor=''"
+				onclick="alert('매진된 객실입니다.')" width="800">
+					<tr>
+						<td width="25%" rowspan="4">
+							<img class="picture" src="resources/images/room/${dxRoom.room_image1}" width="160" height="90"/>
+						</td>
+						<td width="50%">${dxRoom.room_type}&nbsp;[${dxRoom.room_name}]</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>Late&nbsp;Check-in&nbsp;18시</td>
+						<td align="right">
+							<span style="color:red;font-weight:bold">매진</span>
+						</td>
+					</tr>
+					<tr>
+						<td>기준 ${dxRoom.room_capacity}명 / 최대 ${dxRoom.room_capacity + 2}명</td>
+						<td align="right"><fmt:formatNumber value="${dxRoom.room_price}" pattern="###,### 원"/></td>
 					</tr>
 					<tr>
 						<td>숙박&nbsp;18:00&nbsp;부터</td>
@@ -203,8 +270,8 @@
 				</table>
 				</c:if>
 			</c:forEach>
-			<br>
 		</c:if>
+		<br>
 	<input type="hidden" id="addr" value="${map_addr}">
 	<input type="hidden" id="hotelN" value="${hdto.h_name}">
 	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=fe10c33359dd79a3e93e06cb153c4c9a&libraries=services"></script>
