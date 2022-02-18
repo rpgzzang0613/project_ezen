@@ -38,19 +38,9 @@
 				<label>${bdto.book_totalprice}</label>
 			</div>
 			
-			<div class="border-bottom">
-				<label>결제수단</label>
-				<label>${bdto.book_payment}</label>
-			</div>
-			
 			<div>
 				<label>포인트환금(사용포인트-적립포인트)</label>
 				<label>${bdto.book_usepoint - bdto.book_savepoint}</label>
-			</div>
-			
-			<div>
-				<label>환불방법</label>
-				<label>${bdto.book_payment}</label>
 			</div>
 			
 			<div class="border-bottom">

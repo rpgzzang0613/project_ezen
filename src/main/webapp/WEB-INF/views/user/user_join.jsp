@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-
+<!-- user_join.jsp -->
 <style>
 .outer {
   display: flex;
@@ -19,18 +18,17 @@ ajax로 페이지와 DB직접적으로 연결해서 한페이지로 통합할 �
 (코드 간결하게 진행 할 수 있을 것으로 보임)
 -->
 <form name="f_userJoin" method="POST" action="user_join_ok" onsubmit="return send(this)">
-<table border="0" align="center">
-<tr>
-   <td colspan="3" align="center"><h3>회원 가입</h3></td>
-</tr>
-<tr>
-   <td colspan="3" align="center">약관 동의</td>
-</tr>
-<tr> 
-   <td colspan="3">
-
-<textarea class="outer" style="width: 80%; height:50px; resize: none;"cols="100" readonly>
- 제 1 조 (목적)
+<table align="center">
+	<tr>
+		<td colspan="3" align="center"><h3>회원 가입</h3></td>
+	</tr>
+	<tr>
+		<td colspan="3" align="center">약관 동의</td>
+	</tr>
+	<tr> 
+		<td colspan="3">
+			<textarea class="outer" style="width: 80%; height:50px; resize: none;" cols="100" readonly>
+제 1 조 (목적)
 1. 본 약관은 해당 사이트가 제공하는 모든 서비스(이하 "서비스")의 이용조건 및 절차, 이용자와 해당 사이트의 권리, 의무, 책임사항과 기타 필요한 사항을 규정함을 목적으로 합니다.
 제 2 조 (약관의 효력과 변경)
 1. 해당 사이트는 귀하가 본 약관 내용에 동의하는 경우 해당 사이트의 서비스 제공 행위 및 귀하의 서비스 사용 행위에 본 약관이 우선적으로 적용됩니다.
@@ -89,101 +87,103 @@ ajax로 페이지와 DB직접적으로 연결해서 한페이지로 통합할 �
 제 15 조 (면책조항)
 1. 해당 사이트는 회원이나 제3자에 의해 표출된 의견을 승인하거나 반대하거나 수정하지 않습니다. 해당 사이트는 어떠한 경우라도 회원이 서비스에 담긴 정보에 의존해 얻은 이득이나 입은 손해에 대해 책임이 없습니다. 금전적 거래등과 관련하여 어떠한 책임도 부담하지 아니하고, 회원이 서비스의 이용과 관련하여 기대하는 이익에 관하여 책임을 부담하지 않습니다.
 제 16 조 (재판관할)
-1. 해당 사이트와 이용자 간에 발생한 서비스 이용에 관한 분쟁에 대하여는 대한민국 법을 적용하며, 본 분쟁으로 인한 소는 대한민국의 법원에 제기합니다.</textarea><br>
-<input type="checkbox" name ="agree">약관에 동의합니다.
-</td>
-</tr>
-<tr>
-	<td width="130" align="right">이메일</td>
-    <td width="200">
-	<c:if test="${not empty kakaoEmail}">
-      <input type="text" id="email_input" name="u_email"  tabindex="1" 
-      readonly value="${kakaoEmail}"
-      style="width:200px;height:40px">
-     </c:if>
-     <c:if test="${empty kakaoEmail}">
-       <input type="text" id="email_input" name="u_email"  tabindex="1"
-       placeholder="이메일을 입력해 주세요" 
-      style="width:200px;height:40px">
-      </c:if>
-   </td>
-   <td width="100">
-      <button type="submit" formaction="checkUseremail" 
-      style="cursor:pointer;width:100px;height:40px;background-color:black;color:white;border-color:black">중복체크</button>
-   </td>
-</tr>
-<tr>
-   <td width="130" align="right">비밀번호</td>
-   <td width="200">
-      <input type="password" name="u_password" id="password1" class="pw" 
-      placeholder="비밀번호를 입력해 주세요." tabindex="1" 
-      style="width:200px;height:40px">
-   </td>
-</tr>
-<tr>
-   <td width="130" align="right">비밀번호 확인</td>
-   <td width="200">
-      <input type="password" name="u_password2" id="password2" class="pw"
-       placeholder="비밀번호를 다시 입력해 주세요." tabindex="1" 
-      style="width:200px;height:40px">
-      <span id="alert-success" style="display: none; color:blue">비밀번호가 일치합니다.</span>
-         <span id="alert-danger" style="display: none; color: #d92742; font-weight: bold; ">
-            비밀번호가 일치하지 않습니다.
-         </span>
-   </td>
-</tr>
-<tr>
-   <td width="130" align="right">이름</td>
-   <td width="300" colspan="2">
-      <c:if test="${not empty kakaoname}">
-      <input type="text" name="u_name" value="${kakaoname}"placeholder="이름을 입력해 주세요." tabindex="1" 
-      style="width:200px;height:40px">
-      </c:if> 
-      <c:if test="${kakaoname==undefined}">
-      <input type="text" name="u_name" placeholder="이름을 입력해 주세요." tabindex="1" 
-      style="width:200px;height:40px">
-      </c:if>
-   </td>
-</tr>
-<tr>
-   <td width="130" align="right">닉네임</td>
-   <td width="200">
-      <c:if test="${not empty kakaonickname}">
-      <input type="text" name="u_nickname" value="${kakaonickname}"placeholder="별명을 입력해 주세요." tabindex="1" 
-      style="width:200px;height:40px">
-      </c:if>
-      <c:if test="${empty kakaonickname}">
-      <input type="text" name="u_nickname" placeholder="별명을 입력해 주세요." tabindex="1" 
-      style="width:200px;height:40px">
-   		</c:if>
-   </td>
-   
-</tr>
-<tr>
-   <td width="130" align="right">핸드폰 번호</td>
-   <td width="200">
-      <input type="text" name="u_tel" placeholder="-없이 입력해주세요." tabindex="1" 
-      style="width:200px;height:40px">
-   </td> 
-</tr>
-<tr>
-   <td width="130" align="right">생년월일</td>
-   <td width="200">
-      <c:if test="${not empty kakaobirth}">
-      <input type="text" name="u_birth" value="${kakaobirth}" placeholder="생년월일을 입력해 주세요." tabindex="1" 
-      style="width:200px;height:40px">
-      </c:if>
-      <c:if test="${empty kakaobirth}">
-      <input type="text" name="u_birth" placeholder="생년월일을 입력해 주세요." tabindex="1" 
-      style="width:200px;height:40px">
-      </c:if> 
-   </td>
-</tr>
-<tr>
-   <td colspan="3" align="center">
-      <button type="button" name="userJoin" disabled>회원 가입</button>
-   </td>
-</tr>
+1. 해당 사이트와 이용자 간에 발생한 서비스 이용에 관한 분쟁에 대하여는 대한민국 법을 적용하며, 본 분쟁으로 인한 소는 대한민국의 법원에 제기합니다.
+			</textarea>
+			<br>
+			<input type="checkbox" name="agree">약관에 동의합니다.
+		</td>
+	</tr>
+	<tr>
+		<td width="130" align="right">이메일</td>
+		<td width="200">
+		<c:if test="${not empty kakaoEmail}">
+			<input type="text" id="email_input" name="u_email"  tabindex="1" 
+			value="${kakaoEmail}" style="width:200px;height:40px" readOnly>
+		</c:if>
+		<c:if test="${empty kakaoEmail}">
+			<input type="text" id="email_input" name="u_email"  tabindex="1" 
+			placeholder="이메일을 입력해 주세요" 
+			style="width:200px;height:40px" 
+			onKeyup="this.value=this.value.replace(/[^a-zA-Z0-9]/g,'');">
+		</c:if>
+		</td>
+		<td width="100">
+			<button type="submit" formaction="checkUseremail" 
+			style="cursor:pointer;width:100px;height:40px;background-color:black;
+			color:white;border-color:black">중복체크</button>
+		</td>
+	</tr>
+	<tr>
+		<td width="130" align="right">비밀번호</td>
+		<td width="200">
+			<input type="password" name="u_password" id="password1" class="pw" 
+			placeholder="비밀번호를 입력해 주세요." tabindex="1" 
+			style="width:200px;height:40px">
+		</td>
+	</tr>
+	<tr>
+		<td width="130" align="right">비밀번호 확인</td>
+		<td width="200">
+			<input type="password" name="u_password2" id="password2" class="pw" 
+			placeholder="비밀번호를 다시 입력해 주세요." tabindex="1" style="width:200px;height:40px">
+			<span id="alert-success" style="display: none; color:blue">비밀번호가 일치합니다.</span>
+			<span id="alert-danger" style="display: none; color: #d92742; font-weight: bold; ">
+				비밀번호가 일치하지 않습니다.
+			</span>
+		</td>
+	</tr>
+	<tr>
+		<td width="130" align="right">이름</td>
+		<td width="300" colspan="2">
+		<c:if test="${not empty kakaoname}">
+			<input type="text" name="u_name" value="${kakaoname}"placeholder="이름을 입력해 주세요." 
+			tabindex="1" style="width:200px;height:40px">
+		</c:if> 
+		<c:if test="${kakaoname==undefined}">
+			<input type="text" name="u_name" placeholder="이름을 입력해 주세요." 
+			tabindex="1" style="width:200px;height:40px">
+		</c:if>
+		</td>
+	</tr>
+	<tr>
+		<td width="130" align="right">닉네임</td>
+		<td width="200">
+		<c:if test="${not empty kakaonickname}">
+			<input type="text" name="u_nickname" value="${kakaonickname}" placeholder="별명을 입력해 주세요." 
+			tabindex="1" style="width:200px;height:40px">
+		</c:if>
+		<c:if test="${empty kakaonickname}">
+			<input type="text" name="u_nickname" placeholder="별명을 입력해 주세요." tabindex="1" 
+			style="width:200px;height:40px">
+		</c:if>
+		</td>
+	</tr>
+	<tr>
+		<td width="130" align="right">핸드폰 번호</td>
+		<td width="200">
+			<input type="text" name="u_tel" placeholder="-없이 입력해주세요." tabindex="1" 
+			style="width:200px;height:40px" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');">
+		</td> 
+	</tr>
+	<tr>
+		<td width="130" align="right">생년월일</td>
+		<td width="200">
+		<c:if test="${not empty kakaobirth}">
+			<input type="text" name="u_birth" value="${kakaobirth}" 
+			placeholder="생년월일을 입력해 주세요." tabindex="1" 
+			style="width:200px;height:40px">
+		</c:if>
+		<c:if test="${empty kakaobirth}">
+			<input type="text" name="u_birth" placeholder="1988년 6월 13일  : 19880613" tabindex="1" 
+			style="width:200px;height:40px" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');">
+		</c:if> 
+		</td>
+	</tr>
+	<tr>
+		<td colspan="3" align="center">
+			<button type="button" name="userJoin" disabled>회원 가입</button>
+		</td>
+	</tr>
 </table>
 </form>
 <%@ include file="../bottom.jsp" %>

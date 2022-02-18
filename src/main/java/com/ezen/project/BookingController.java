@@ -107,22 +107,23 @@ public class BookingController {
 		return mav;
 	}
 	
-//	bookWriteform페이지, roomContents페이지에서 h_num과 room_num으로 상세정보 보내줌
+	// 객실상세 페이지 -> 예약 페이지로
 	@RequestMapping("/user_bookWriteform")
 	public String userBookWriteform(HttpServletRequest req, @RequestParam int h_num, int room_num) {
 		HotelDTO hdto = hotelMapper.getHotel(h_num);
 		RoomDTO rdto = hotelMapper.getRoomByRoomNum(room_num);
-//		회원, 비회원 구분
+		
 		HttpSession session = req.getSession();
-		LoginOkBeanUser loginInfo = (LoginOkBeanUser)session.getAttribute("loginOkBean");
-		try {
-			int u_num = loginInfo.getU_num();
-			UserDTO udto = userMapper.getUserByUnum(u_num);
-			req.setAttribute("udto", udto);
-		}catch(Exception e) {
+		LoginOkBeanUser loginOkBean = (LoginOkBeanUser)session.getAttribute("loginOkBean");
+		
+		if(loginOkBean == null) {
 			req.setAttribute("msg", "로그인이 필요한 서비스 입니다");
 			req.setAttribute("url", "user_login");
 			return "message";
+		}else {
+			int u_num = loginOkBean.getU_num();
+			UserDTO udto = userMapper.getUserByUnum(u_num);
+			req.setAttribute("udto", udto);
 		}
 		
 //		indate, outdate session에서 꺼내서 따로 보냄
@@ -132,16 +133,14 @@ public class BookingController {
 		req.setAttribute("indate", indate);
 		req.setAttribute("outdate", outdate);	
 		req.setAttribute("hdto", hdto);
-		req.setAttribute("Room", rdto);
+		req.setAttribute("rdto", rdto);
+		
 		return "user/user_bookWriteform";
 	}
 	
 //	예약확정 확인, bookWriteform에서 적은 정보 db에 저장시킴(잘못되거나 오류나면 취소됨)
 	@RequestMapping(value="/user_bookConfirm")
 	public String bookConfirm(HttpServletRequest req, @RequestParam Map<String, String> params) {
-		// 예약한 회원 정보
-		HttpSession session = req.getSession();
-		LoginOkBeanUser loginInfo = (LoginOkBeanUser)session.getAttribute("loginOkBean");
 		
 		// DB에 저장 전 해당 예약정보가 중복되지 않는지 다시 확인
 		boolean isDupl = displayHotelMapper.isDuplBook(params);
@@ -203,6 +202,7 @@ public class BookingController {
 		req.setAttribute("bdto", bdto);
 		req.setAttribute("h_image1", hdto.getH_image1());
 		req.setAttribute("room_price", room_price);
+		
 		return "user/user_bookCancel";
 	}
 
@@ -288,6 +288,17 @@ public class BookingController {
 	
 	@RequestMapping("/user_bookActConfirm")
 	public String userBookActConfirm(HttpServletRequest req, BookingActDTO badto) {
+		
+		// DB에 저장 전 해당 예약정보가 중복되지 않는지 다시 확인
+		boolean isDupl = displayActMapper.isDuplBookAct(badto);
+		
+		if(isDupl) {
+			req.setAttribute("msg", "이미 예약된 프로그램입니다. 다시 확인해 주세요.");
+			req.setAttribute("url", "display_activityContent?a_num="+badto.getA_num());
+			
+			return "message";
+		}
+		
 		int res = displayActMapper.insertBookAct(badto);
 		
 		if(res>0) {
@@ -295,7 +306,9 @@ public class BookingController {
 		}else {
 			req.setAttribute("msg", "예약 실패");
 		}
+		
 		req.setAttribute("url", "display_activityContent?a_num="+badto.getA_num());
+		
 		return "message";
 	}
 	

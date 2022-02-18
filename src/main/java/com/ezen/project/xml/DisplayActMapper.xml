@@ -70,6 +70,11 @@
 		select a_address from project_activity 
 	</select>
 	
+	<select id="isDuplBookAct" parameterType="BookingActDTO" resultType="int">
+		select count(*) from project_bookingact where ba_bookdate=#{ba_bookdate} 
+		and p_num=#{p_num} and u_num=#{u_num} and ba_status != 'deny'
+	</select>
+	
 	<insert id="insertBookAct" parameterType="BookingActDTO">
 		insert into project_bookingact values(project_bookingact_seq.nextval, 
 		#{p_num}, #{a_num}, #{u_num}, #{ba_bookdate}, #{ba_totalprice}, 

@@ -24,7 +24,7 @@ public class DisplayHotelMapper {
 		sqlSession.update("checkToday", today);
 	}
 	
-	//	자동완성
+	// 자동완성
 	public List<String> allOptions(){
 		List<String> totalList = new ArrayList<String>();
 		List<String> allOptions = sqlSession.selectList("getHotelNames");

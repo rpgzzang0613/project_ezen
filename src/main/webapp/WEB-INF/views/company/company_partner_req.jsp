@@ -56,7 +56,9 @@
 				<option value="카카오">카카오</option>
 				<option value="토스">토스</option>
 			</select>
-			<input type="text" name="c_bankaccount1" style="width:300px; margin:0 auto;">
+			<input type="text" name="c_bankaccount1" 
+			style="width:300px; margin:0 auto;" 
+			onKeyup="this.value=this.value.replace(/[^a-zA-Z0-9]/g,'');">
 		</td>
 	</tr>
 	<tr>
@@ -72,7 +74,9 @@
 				<option value="카카오">카카오</option>
 				<option value="토스">토스</option>
 			</select>
-			<input type="text" name="c_bankaccount2" style="width:300px; margin:0 auto;">
+			<input type="text" name="c_bankaccount2" 
+			style="width:300px; margin:0 auto;" 
+			onKeyup="this.value=this.value.replace(/[^a-zA-Z0-9]/g,'');">
 		</td>
 	</tr>
 	<tr>

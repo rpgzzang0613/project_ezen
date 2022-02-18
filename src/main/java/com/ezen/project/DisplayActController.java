@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,7 @@ import com.ezen.project.service.DisplayActMapper;
 
 @Controller
 public class DisplayActController {
+	
 	@Autowired
 	private DisplayActMapper displayActMapper;
 	
@@ -113,8 +115,14 @@ public class DisplayActController {
 	}
 	
 	@RequestMapping("/display_activityContent")
-	public String activityContent(HttpServletRequest req, int a_num) {
+	public String activityContent(HttpServletRequest req, HttpServletResponse resp, int a_num) {
 		activityContentInfo(req, a_num);
+		
+		resp.setHeader("Expires", "Sat, 6 May 1995 12:00:00 GMT"); 
+		resp.setHeader("Cache-Control", "no-store, no-cache, must-revalidate");
+		resp.addHeader("Cache-Control", "post-check=0, pre-check=0"); 
+		resp.setHeader("Pragma", "no-cache");
+		
 		return "display/display_activityContent";
 	}
 	

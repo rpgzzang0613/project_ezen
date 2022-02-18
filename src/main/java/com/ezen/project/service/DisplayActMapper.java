@@ -103,6 +103,13 @@ public class DisplayActMapper {
 		return totalList;
 	}
 	
+	public boolean isDuplBookAct(BookingActDTO badto) {
+		int duplCount = sqlSession.selectOne("isDuplBookAct", badto);
+		boolean isDupl = duplCount > 0 ? true : false;
+		
+		return isDupl;
+	}
+	
 	public int insertBookAct(BookingActDTO badto) {
 		return sqlSession.insert("insertBookAct", badto);
 	}

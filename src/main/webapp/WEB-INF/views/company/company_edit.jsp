@@ -102,7 +102,6 @@
 	    }).open();  
 	}
 </script>
-
 <form action="company_edit_ok" method="POST" name="f" enctype="multipart/form-data">
 	<table border="1" align="center" width="600" height="500">
 		<tr>
@@ -118,13 +117,13 @@
 		<tr>
 			<td width="50">기업 이름</td>
 			<td colspan="2">
-				<input type="text" name="c_name" value ="${cdto.c_name}">
+				<input type="text" name="c_name" value="${cdto.c_name}">
 			</td>
 		</tr>
 		<tr>
 			<td width="50">기업 대표번호</td>
 			<td colspan="2">
-				<input type="text" name = "c_tel" value ="${cdto.c_tel}">
+				<input type="text" name="c_tel" value ="${cdto.c_tel}" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');">
 			</td>
 		</tr>
 		<tr>
@@ -142,13 +141,13 @@
 		<tr>
 			<td width="50">대표 이메일</td>
 			<td colspan="2">
-				<input type="text" name = "c_email" value="${cdto.c_email}" readonly>
+				<input type="text" name="c_email" value="${cdto.c_email}" readonly>
 			</td>
 		</tr>
 		<tr>
 			<td width="50">사업자 번호</td>
 			<td colspan="2">
-				<input type="text" name = "c_bnum" value="${cdto.c_bnum}" readonly>
+				<input type="text" name="c_bnum" value="${cdto.c_bnum}" readonly>
 			</td>
 		</tr>
 		<tr> 

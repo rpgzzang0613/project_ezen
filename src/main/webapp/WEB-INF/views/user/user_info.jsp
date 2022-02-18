@@ -25,7 +25,7 @@
 	<tr height="20%">
 		<td align="center">휴대폰 번호</td>
 		<td align="center"><form name="tel" method="post" action="user_telChange">
-				<br><input type="text" name="u_tel" value="${loginOkBean.u_tel}">
+				<br><input type="text" name="u_tel" value="${loginOkBean.u_tel}" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');">
 				<input type="submit" value="수정">
 			</form>
 		</td>

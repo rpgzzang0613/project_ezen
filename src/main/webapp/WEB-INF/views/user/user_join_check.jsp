@@ -11,69 +11,64 @@
 </style>
 <%@ include file="../user_top.jsp"%>
 <script>
-		function check(){
-			if(f_userJoin_check.agree.checked==false){
-				alert("약관에 동의해주시기 바랍니다.");
-				return
-			}
-			
-			if (f_userJoin_check.u_email.value==""){
-				alert("아이디를 입력하셔야 합니다.")
-				f_userJoin_check.u_email.focus() 
-				return
-			}
-			if (f_userJoin_check.u_password.value==""){
-				alert("비밀번호를 입력하셔야 합니다.")
-				f_userJoin_check.u_password.focus()
-				return
-			}
-			if (f_userJoin_check.u_password.value!=f_userJoin_check.u_password2.value){
-				alert("비밀번호가 일치하지 않습니다.")
-				f_userJoin_check.u_password2.focus()
-				return
-			}
-			if (f_userJoin_check.u_name.value==""){
-				alert("이름을 입력하셔야 합니다.")
-				f_userJoin_check.u_name.focus()
-				return
-			} 
-			if (f_userJoin_check.u_nickname.value==""){
-				alert("닉네임을 입력하셔야 합니다.")
-				f_userJoin_check.u_nickname.focus()
-				return
-			}
-			if (f_userJoin_check.u_tel.value==""){
-				alert("전화번호를 입력하셔야 합니다.")
-				f_userJoin_check.u_tel.focus()
-				return
-			}
-			if (f_userJoin_check.u_birth.value==""){
-				alert("생년월일을 입력하셔야 합니다.")
-				f_userJoin_check.u_birth.focus()
-				return
-			}
-			
-			
-			document.f_userJoin_check.submit()
+	function check(){
+		if(f_userJoin_check.agree.checked==false){
+			alert("약관에 동의해주시기 바랍니다.");
+			return
 		}
 		
-</script>
-		 
+		if (f_userJoin_check.u_email.value==""){
+			alert("아이디를 입력하셔야 합니다.")
+			f_userJoin_check.u_email.focus() 
+			return
+		}
+		if (f_userJoin_check.u_password.value==""){
+			alert("비밀번호를 입력하셔야 합니다.")
+			f_userJoin_check.u_password.focus()
+			return
+		}
+		if (f_userJoin_check.u_password.value!=f_userJoin_check.u_password2.value){
+			alert("비밀번호가 일치하지 않습니다.")
+			f_userJoin_check.u_password2.focus()
+			return
+		}
+		if (f_userJoin_check.u_name.value==""){
+			alert("이름을 입력하셔야 합니다.")
+			f_userJoin_check.u_name.focus()
+			return
+		} 
+		if (f_userJoin_check.u_nickname.value==""){
+			alert("닉네임을 입력하셔야 합니다.")
+			f_userJoin_check.u_nickname.focus()
+			return
+		}
+		if (f_userJoin_check.u_tel.value==""){
+			alert("전화번호를 입력하셔야 합니다.")
+			f_userJoin_check.u_tel.focus()
+			return
+		}
+		if (f_userJoin_check.u_birth.value==""){
+			alert("생년월일을 입력하셔야 합니다.")
+			f_userJoin_check.u_birth.focus()
+			return
+		}
+		document.f_userJoin_check.submit()
+	}
+</script>	 
 <form name="f_userJoin_check" method="POST" action="user_join_ok" >
 	<input type="hidden" name="a_level" value="1"/>
 	<input type="hidden" name="u_point" value="0"/>
 	<input type="hidden" name="u_black" value="None"/>
-	 
-<table border="0" align="center">
-<tr>
-	<td colspan="3" align="center"><h3>회원 가입</h3></td>
-</tr>
-<tr>
-	<td colspan="3" align="center">약관 동의</td>
-</tr>
-<tr>
-	<td colspan="3">
-		<textarea class = "outer" style="width: 80%; height:50px; resize: none;"cols="100" readonly>
+<table align="center">
+	<tr>
+		<td colspan="3" align="center"><h3>회원 가입</h3></td>
+	</tr>
+	<tr>
+		<td colspan="3" align="center">약관 동의</td>
+	</tr>
+	<tr>
+		<td colspan="3">
+			<textarea class="outer" style="width: 80%; height:50px; resize: none;" cols="100" readonly>
 제 1 조 (목적)
 1. 본 약관은 해당 사이트가 제공하는 모든 서비스(이하 "서비스")의 이용조건 및 절차, 이용자와 해당 사이트의 권리, 의무, 책임사항과 기타 필요한 사항을 규정함을 목적으로 합니다.
 제 2 조 (약관의 효력과 변경)
@@ -133,72 +128,76 @@
 제 15 조 (면책조항)
 1. 해당 사이트는 회원이나 제3자에 의해 표출된 의견을 승인하거나 반대하거나 수정하지 않습니다. 해당 사이트는 어떠한 경우라도 회원이 서비스에 담긴 정보에 의존해 얻은 이득이나 입은 손해에 대해 책임이 없습니다. 금전적 거래등과 관련하여 어떠한 책임도 부담하지 아니하고, 회원이 서비스의 이용과 관련하여 기대하는 이익에 관하여 책임을 부담하지 않습니다.
 제 16 조 (재판관할)
-1. 해당 사이트와 이용자 간에 발생한 서비스 이용에 관한 분쟁에 대하여는 대한민국 법을 적용하며, 본 분쟁으로 인한 소는 대한민국의 법원에 제기합니다.</textarea><br>
-		<input type="checkbox" name ="agree">약관에 동의합니다.
-	</td>
-</tr>
-<tr>
-	<td width="130" align="right">이메일</td>
-	<td width="200">
-		<input type="text" id="email_input" name="u_email" value="${u_email}" 
-		style="width:200px;height:40px">
-	</td>
-	<td width="100">
-		<button type="submit" formaction="checkUseremail"
-		style="cursor:pointer;width:100px;height:40px;background-color:black;color:white;border-color:black">중복체크</button>
-	</td>
-</tr>
-<tr>
-	<td width="130" align="right">비밀번호</td>
-	<td width="200">
-		<input type="password" name="u_password" id="password1" class="pw" value="${u_password}"
-		placeholder="비밀번호를 입력해 주세요." tabindex="1" 
-		style="width:200px;height:40px">
-	</td>
-</tr>
-<tr>
-	<td width="130" align="right">비밀번호 확인</td>
-	<td width="200">
-		<input type="password" name="u_password2" id="password2" class="pw" value="${u_password2}"
-		placeholder="비밀번호를 다시 입력해 주세요." tabindex="1" 
-		style="width:200px;height:40px">
-
-	</td>
-</tr>
-<tr>
-	<td width="130" align="right">이름</td>
-	<td width="300" colspan="2">
-		<input type="text" name="u_name" placeholder="이름을 입력해 주세요." tabindex="1" value="${u_name}"
-		style="width:200px;height:40px">
-	</td>
-</tr>
-<tr>
-	<td width="130" align="right">닉네임</td>
-	<td width="200">
-		<input type="text" name="u_nickname" placeholder="별명을 입력해 주세요." tabindex="1" value="${u_nickname}"
-		style="width:200px;height:40px">
-	</td>
-</tr>
-<tr>
-	<td width="130" align="right">핸드폰 번호</td>
-	<td width="200">
-		<input type="text" name="u_tel" placeholder="-없이 입력해주세요." tabindex="1" value="${u_tel}"
-		style="width:200px;height:40px">
-	</td>
-</tr>
-<tr>
-	<td width="130" align="right">생년월일</td>
-	<td width="200">
-		<input type="text" name="u_birth" placeholder="생년월일을 입력해 주세요." tabindex="1" value="${u_birth}"
-		style="width:200px;height:40px">
-	</td>
-</tr>
-<tr>
-	<td colspan="3" align="center">
-		<button type="button" name="userJoin" onclick="check()"  
-		style="width:350px;height:50px;background-color:black;color:white;border-color:black">회원 가입</button>
-	</td>
-</tr>
+1. 해당 사이트와 이용자 간에 발생한 서비스 이용에 관한 분쟁에 대하여는 대한민국 법을 적용하며, 본 분쟁으로 인한 소는 대한민국의 법원에 제기합니다.
+			</textarea>
+			<br>
+			<input type="checkbox" name="agree">약관에 동의합니다.
+		</td>
+	</tr>
+	<tr>
+		<td width="130" align="right">이메일</td>
+		<td width="200">
+			<input type="text" id="email_input" name="u_email" value="${u_email}" 
+			style="width:200px;height:40px" readOnly>
+		</td>
+		<td width="100">
+			<button type="button"
+			style="cursor:pointer;width:100px;height:40px;background-color:black;
+			color:white;border-color:black" disabled>
+				체크완료
+			</button>
+		</td>
+	</tr>
+	<tr>
+		<td width="130" align="right">비밀번호</td>
+		<td width="200">
+			<input type="password" name="u_password" id="password1" class="pw" value="${u_password}"
+			placeholder="비밀번호를 입력해 주세요." tabindex="1" 
+			style="width:200px;height:40px">
+		</td>
+	</tr>
+	<tr>
+		<td width="130" align="right">비밀번호 확인</td>
+		<td width="200">
+			<input type="password" name="u_password2" id="password2" class="pw" value="${u_password2}"
+			placeholder="비밀번호를 다시 입력해 주세요." tabindex="1" 
+			style="width:200px;height:40px">
+		</td>
+	</tr>
+	<tr>
+		<td width="130" align="right">이름</td>
+		<td width="300" colspan="2">
+			<input type="text" name="u_name" placeholder="이름을 입력해 주세요." tabindex="1" value="${u_name}"
+			style="width:200px;height:40px">
+		</td>
+	</tr>
+	<tr>
+		<td width="130" align="right">닉네임</td>
+		<td width="200">
+			<input type="text" name="u_nickname" placeholder="별명을 입력해 주세요." tabindex="1" value="${u_nickname}"
+			style="width:200px;height:40px">
+		</td>
+	</tr>
+	<tr>
+		<td width="130" align="right">핸드폰 번호</td>
+		<td width="200">
+			<input type="text" name="u_tel" placeholder="-없이 입력해주세요." tabindex="1" value="${u_tel}"
+			style="width:200px;height:40px" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');">
+		</td>
+	</tr>
+	<tr>
+		<td width="130" align="right">생년월일</td>
+		<td width="200">
+			<input type="text" name="u_birth" placeholder="1988년 6월 13일  : 19880613" tabindex="1" value="${u_birth}"
+			style="width:200px;height:40px" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');">
+		</td>
+	</tr>
+	<tr>
+		<td colspan="3" align="center">
+			<button type="button" name="userJoin" onclick="check()"  
+			style="width:350px;height:50px;background-color:black;color:white;border-color:black">회원 가입</button>
+		</td>
+	</tr>
 </table>
-</form> 
+</form>
 <%@ include file="../bottom.jsp" %>

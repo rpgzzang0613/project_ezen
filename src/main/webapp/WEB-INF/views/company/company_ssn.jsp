@@ -31,24 +31,30 @@
 				<th>기업명</th>
 				<td>
 					<input type="text" name="c_name" placeholder="회사명을 입력해 주세요." 
-					tabindex="2" style="width:300px;height:50px" required oninvalid="this.setCustomValidity('회사명을 입력해주세요.')" oninput = "setCustomValidity('')">
+					tabindex="2" style="width:300px;height:50px" 
+					required oninvalid="this.setCustomValidity('회사명을 입력해주세요.')" 
+					oninput="setCustomValidity('')">
 				</td>
 			</tr>
 			<tr>
 				<th>대표메일</th>
 				<td>
 					<input type="email" name="c_email" placeholder="회사 메일을 입력해 주세요." 
-					tabindex="2" style="width:300px;height:50px" required oninvalid="this.setCustomValidity('회사 메일을 입력해주세요.')" oninput = "setCustomValidity('')">
+					tabindex="2" style="width:300px;height:50px" 
+					required oninvalid="this.setCustomValidity('회사 메일을 입력해주세요.')" 
+					oninput="setCustomValidity('')" onKeyup="this.value=this.value.replace(/[^a-zA-Z0-9]/g,'');">
 				</td>
 			<tr>
 				<th>사업자 번호</th>
 				<td>
 					<input type="text" name="c_bnum" placeholder="사업자 번호를 입력해 주세요." 
-					tabindex="2" style="width:300px;height:50px" required oninvalid="this.setCustomValidity('사업자 번호를 입력해주세요.')" oninput = "setCustomValidity('')">
+					tabindex="2" style="width:300px;height:50px" 
+					required oninvalid="this.setCustomValidity('사업자 번호를 입력해주세요.')" 
+					oninput="setCustomValidity('')" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');">
 				</td>
 			</tr>
 			<tr>
-				<th></th><!--일부러 넣은거임 -->
+				<th></th>
 				<td colspan="2" align="center">
 					<input type="button" onclick="check()" value="조회"
 					style="width:147.5px;height:35px;background-color:black;color:white;border-color:black">

@@ -31,12 +31,12 @@
 			<td colspan="2">
 				<c:if test = "${empty cookie.saveEmail.value}">
 				<input type="text" name="c_email" placeholder="이메일을 입력해 주세요." tabindex="1" 
-				style="width:350px;height:50px">
+				style="width:350px;height:50px" onKeyup="this.value=this.value.replace(/[^a-zA-Z0-9]/g,'');">
 				</c:if>
-				
 				<c:if test = "${not empty cookie.saveEmail.value}">
-				<input type="text" name="c_email" value= "${cookie.saveEmail.value}" placeholder="이메일을 입력해 주세요." tabindex="1" 
-				style="width:350px;height:50px">
+				<input type="text" name="c_email" value="${cookie.saveEmail.value}" 
+				placeholder="이메일을 입력해 주세요." tabindex="1" 
+				style="width:350px;height:50px" onKeyup="this.value=this.value.replace(/[^a-zA-Z0-9]/g,'');">
 				</c:if>
 			</td> 
 		</tr>
@@ -49,18 +49,19 @@
 		<tr>
 			<td colspan="2">
 				<button type="button" name="companyLogin" onclick="checkLogin()"
-				style="width:350px;height:50px;background-color:black;color:white;border-color:black">로그인</button>
+				style="width:350px;height:50px;background-color:black;
+				color:white;border-color:black">로그인</button>
 			</td>
 		</tr>
 		<tr>
 			<td>
-				<c:if test="${empty cookie.saveEmail.value}">
-					<input type="checkbox" name="saveEmail">
-				</c:if>
-				<c:if test="${not empty cookie.saveEmail.value}">
-					<input type="checkbox" name="saveEmail" checked>
-				</c:if>	
-					<font face="굴림" size="2">이메일 기억하기</font>
+			<c:if test="${empty cookie.saveEmail.value}">
+				<input type="checkbox" name="saveEmail">
+			</c:if>
+			<c:if test="${not empty cookie.saveEmail.value}">
+				<input type="checkbox" name="saveEmail" checked>
+			</c:if>	
+				<font face="굴림" size="2">이메일 기억하기</font>
 			</td>
 			<td align="right">
 				<a href="javascript:searchCompany('c_email')">이메일 찾기</a>
@@ -71,7 +72,8 @@
 			<td colspan="2" align="center">
 				<b>아직 회원이 아니신가요?</b>&nbsp;&nbsp;&nbsp;
 				<button type="button" name="companyRegister" onclick="location.href='company_ssn'" 
-				style="width:80px;height:35px;background-color:black;color:white;border-color:black">회원 가입</button>
+				style="width:80px;height:35px;background-color:black;
+				color:white;border-color:black">회원 가입</button>
 			</td>
 		</tr>
 	</table>

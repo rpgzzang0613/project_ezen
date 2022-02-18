@@ -140,15 +140,15 @@
 <form name="f_bookWriteform" id="bwform" method="post" action="user_bookConfirm">
 <input type="hidden" name="h_num" value="${hdto.h_num}">
 <input type="hidden" name="u_num" value="${loginOkBean.u_num}">
-<input type="hidden" name="room_num" value="${Room.room_num}">
-<input type="hidden" name="room_code" value="${Room.room_code}">
-<input type="hidden" id="room_price" name="room_price" value="${Room.room_price}">
-<input type="hidden" id="room_extraprice" value="${Room.room_extraprice}">
+<input type="hidden" name="room_num" value="${rdto.room_num}">
+<input type="hidden" name="room_code" value="${rdto.room_code}">
+<input type="hidden" id="room_price" name="room_price" value="${rdto.room_price}">
+<input type="hidden" id="room_extraprice" value="${rdto.room_extraprice}">
 <input type="hidden" id="userPoint" value="${udto.u_point}">
 <input type="hidden" id="u_email" value="${loginOkBean.u_email}">
 <input type="hidden" id="u_name" value="${loginOkBean.u_name}">
 <input type="hidden" id="u_tel" value="${loginOkBean.u_tel}">
-<input type="hidden" name="room_price" value="${Room.room_price}">
+<input type="hidden" name="room_price" value="${rdto.room_price}">
 	<div style="width: 650px; margin: 0 auto;">
 		<div class="row book-detail">
 			<div class="first">
@@ -164,7 +164,7 @@
 					</div>
 					<div class="row">
 						<label>객실 인원</label>
-						<label>${Room.room_capacity}</label>
+						<label>${rdto.room_capacity}</label>
 					</div>
 		<!-- 추가인원, 사용포인트, 총결제금액, 포인트적립칸 모두 jQuery로 수정할것 -->
 					<div class="row">
@@ -187,7 +187,7 @@
 						<!-- book_totalprice -->
 						<label>
 							<input type="text" name="room_price" id="room_price2"
-							 value="${Room.room_price}" readonly>원
+							 value="${rdto.room_price}" readonly>원
 						</label>
 					</div>
 					<div class="row">
@@ -204,9 +204,9 @@
 					<div class="row">
 						<label>총 결제금액</label>
 						<label>
-						<input type="text" name="book_totalprice" id="totalPrice" value="${Room.room_price}" readOnly>
+						<input type="text" name="book_totalprice" id="totalPrice" value="${rdto.room_price}" readOnly>
 						</label>
-						<%-- <input type="hidden" name="book_totalprice" value="${(Room.room_price + (Room.room_extraprice * 1)) - udto.u_point}"> --%>
+						<%-- <input type="hidden" name="book_totalprice" value="${(rdto.room_price + (rdto.room_extraprice * 1)) - udto.u_point}"> --%>
 					</div>
 					
 				</div>
@@ -221,8 +221,8 @@
 					</div>
 					<div class="column">
 						<label>방타입</label>
-						<label>${Room.room_type}</label>
-						<input id="room_type" type="hidden" name="book_roomtype" value="${Room.room_type}">
+						<label>${rdto.room_type}</label>
+						<input id="room_type" type="hidden" name="book_roomtype" value="${rdto.room_type}">
 					</div>
 					<!-- indate, outdate session에서 받아오는걸로 처리해야할것같음 -->
 					<div class="column">
@@ -252,12 +252,12 @@
 					<div class="column">
 						<!-- 총 결제금액 수정 끝나면 use_bookCancel로 값 넘기기 -->
 						<label>총 결제금액</label>
-						<label><input type="text" id="finalPrice" value="${Room.room_price}" readonly></label>
+						<label><input type="text" id="finalPrice" value="${rdto.room_price}" readonly></label>
 					</div>
 					<div class="column">
 						<label>포인트적립</label>
 						<label>
-							<input type="text" id="savePoint" name="book_savepoint" value="${Room.room_price * 0.1}" size="5" readonly>적립
+							<input type="text" id="savePoint" name="book_savepoint" value="${rdto.room_price * 0.1}" size="5" readonly>적립
 						</label>
 					</div>
 					<div class="row justify-center" style="padding: 15px;">

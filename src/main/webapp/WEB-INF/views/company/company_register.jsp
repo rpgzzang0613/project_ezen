@@ -166,7 +166,7 @@
 	<tr>
 		<td width="50">기업 대표번호</td>
 		<td>
-			<input type="text" name="c_tel">
+			<input type="text" name="c_tel" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');">
 		</td>
 	</tr>
 	<tr>

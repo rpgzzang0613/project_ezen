@@ -74,13 +74,13 @@ function checkLogin() {
 	<!-- cookie로 아이디 기억하기 -->
 	<td colspan="2">
 		<c:if test = "${empty cookie.saveEmail.value}">
-		<input type="text" name="u_email" placeholder="이메일을 입력해 주세요." tabindex="1" 
-		style="width:350px;height:50px">
+		<input type="text" id="u_email" name="u_email" placeholder="이메일을 입력해 주세요." tabindex="1" 
+		style="width:350px;height:50px" onKeyup="this.value=this.value.replace(/[^a-zA-Z0-9]/g,'');">
 		</c:if>
 		
 		<c:if test = "${not empty cookie.saveEmail.value}">
-		<input type="text" name="u_email" value= "${cookie.saveEmail.value}" placeholder="이메일을 입력해 주세요." tabindex="1" 
-		style="width:350px;height:50px">
+		<input type="text" id="u_email" name="u_email" value="${cookie.saveEmail.value}" placeholder="이메일을 입력해 주세요." tabindex="1" 
+		style="width:350px;height:50px" onKeyup="this.value=this.value.replace(/[^a-zA-Z0-9]/g,'');">
 		</c:if>
 	</td> 
 </tr>

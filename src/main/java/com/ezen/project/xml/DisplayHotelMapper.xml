@@ -83,7 +83,7 @@
 	
 	<select id="isDuplBook" parameterType="java.util.Map" resultType="int">
 		select count(*) from project_booking where book_indate=#{indate} 
-		and book_outdate=#{outdate} and room_num=#{room_num}
+		and book_outdate=#{outdate} and room_num=#{room_num} and book_status != 'deny'
 	</select>
 	
 	<!-- 예약insert -->
