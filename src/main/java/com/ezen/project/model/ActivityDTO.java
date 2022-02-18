@@ -17,6 +17,9 @@ public class ActivityDTO {
     private String a_extracode;
     private String a_manager;
     private String a_joindate;
+	
+    private int reviewCount;
+	private double avgReviewPoint;
     
     private int wishList = 0;
     
@@ -130,4 +133,17 @@ public class ActivityDTO {
 	public void setWishList(int wishList) {
 		this.wishList = wishList;
 	}
+	public int getReviewCount() {
+		return reviewCount;
+	}
+	public void setReviewCount(int reviewCount) {
+		this.reviewCount = reviewCount;
+	}
+	public double getAvgReviewPoint() {
+		return avgReviewPoint;
+	}
+	public void setAvgReviewPoint(double avgReviewPoint) {
+		this.avgReviewPoint = avgReviewPoint;
+	}
 }
+

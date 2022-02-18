@@ -1,6 +1,5 @@
 package com.ezen.project;
 
-import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 
@@ -36,9 +35,9 @@ public class DisplayActController {
 		
 		HttpSession session = req.getSession();
 		session.setAttribute("bookdate", bookdate);
+		LoginOkBeanUser loginOkBean = (LoginOkBeanUser)session.getAttribute("loginOkBean");
 		
 		List<ActivityDTO> activityList = null;
-		
 		if(search.contains(", ")) {
 			String[]array = search.split(", ");
 			String a_name = array[0];
@@ -49,18 +48,22 @@ public class DisplayActController {
 		}else {
 			activityList = displayActMapper.activitySearchOk(search);
 		}
-		
-		LoginOkBeanUser loginOkBean = (LoginOkBeanUser)session.getAttribute("loginOkBean");
-		
-		if(loginOkBean != null) {
-			int u_num = loginOkBean.getU_num();
+		for(ActivityDTO adto : activityList) {
+			int reviewCount = displayActMapper.countReview(adto.getA_num());
+			List<Integer> allRPList = displayActMapper.allReviewPointList(adto.getA_num());
+			int totalPoint = 0;
+			for(int i : allRPList) {
+				totalPoint += i;
+			}
+			double avgReviewPoint = (double)totalPoint/reviewCount;
+			avgReviewPoint = Math.round(avgReviewPoint*10)/10.0;
 			
-			Map<String,String> params = new Hashtable<String, String>();
-			params.put("u_num", String.valueOf(u_num));
+			adto.setReviewCount(reviewCount);
+			adto.setAvgReviewPoint(avgReviewPoint);
 			
-			List<WishListActDTO> wishList = displayActMapper.getWishListAct(params);
-			
-			for(ActivityDTO adto : activityList) {
+			if(loginOkBean != null) {
+				int u_num = loginOkBean.getU_num();
+				List<WishListActDTO> wishList = displayActMapper.getWishListAct(u_num);
 				for(WishListActDTO wdto : wishList) {
 					if(adto.getA_num() == wdto.getA_num()) {
 						adto.setWishList(1);
@@ -68,12 +71,6 @@ public class DisplayActController {
 				}
 			}
 		}
-		
-		Map<Integer, Integer> countReview = displayActMapper.countReview(activityList);
-		Map<Integer, Double> averageReview = displayActMapper.averageReview(activityList);
-		
-		req.setAttribute("countReview", countReview);
-		req.setAttribute("averageReview", averageReview);
 		req.setAttribute("activityList", activityList);
 		req.setAttribute("search", search);
 		return "display/display_activitySearchOk";
@@ -94,11 +91,7 @@ public class DisplayActController {
 		
 		if(loginOkBean != null) {
 			int u_num = loginOkBean.getU_num();
-			
-			Map<String,String> params = new Hashtable<String, String>();
-			params.put("u_num", String.valueOf(u_num));
-			
-			List<WishListActDTO> wishList = displayActMapper.getWishListAct(params);
+			List<WishListActDTO> wishList = displayActMapper.getWishListAct(u_num);
 			
 			for(ActivityDTO adto : activityList) {
 				for(WishListActDTO wdto : wishList) {
@@ -151,11 +144,7 @@ public class DisplayActController {
 		
 		if(loginOkBean != null) {
 			int u_num = loginOkBean.getU_num();
-			
-			Map<String,String> params = new Hashtable<String, String>();
-			params.put("u_num", String.valueOf(u_num));
-			
-			List<WishListActDTO> wishList = displayActMapper.getWishListAct(params);
+			List<WishListActDTO> wishList = displayActMapper.getWishListAct(u_num);
 			
 			for(WishListActDTO wdto : wishList) {
 				if(adto.getA_num() == wdto.getA_num()) {
@@ -164,14 +153,19 @@ public class DisplayActController {
 			}
 			
 		}
-		int reviewCount = displayActMapper.getReviewCountByAct(a_num);
-		
-		double starAverage = displayActMapper.getReviewActStarAverage(a_num);
-		starAverage = Math.round(starAverage*10)/10.0;//소수 1번째 자리까지 표기
+			
+		int reviewCount = displayActMapper.countReview(a_num);
+		List<Integer> allRPList = displayActMapper.allReviewPointList(a_num);
+		int totalPoint = 0;
+		for(int i : allRPList) {
+			totalPoint += i;
+		}
+		double avgReviewPoint = (double)totalPoint/reviewCount;
+		avgReviewPoint = Math.round(avgReviewPoint*10)/10.0;
 		List<ReviewActDTO> reviewList = displayActMapper.listReviewByAct(a_num);
 		
 		req.setAttribute("reviewCount", reviewCount);
-		req.setAttribute("starAverage", starAverage);
+		req.setAttribute("avgReviewPoint", avgReviewPoint);
 		req.setAttribute("reviewList", reviewList);
 		req.setAttribute("showAddr", addr[0]);
 		req.setAttribute("adto", adto);
@@ -182,12 +176,17 @@ public class DisplayActController {
 	public String reviewAct(HttpServletRequest req, @RequestParam int a_num) {
 		List<ReviewActDTO> reviewList = displayActMapper.listReviewByAct(a_num);
 		int reviewCount = displayActMapper.getReviewCountByAct(a_num);
-		double starAverage = displayActMapper.getReviewActStarAverage(a_num);
-		starAverage = Math.round(starAverage*10)/10.0;//소수 1번째 자리까지 표기
+		List<Integer> allRPList = displayActMapper.allReviewPointList(a_num);
+		int totalPoint = 0;
+		for(int i : allRPList) {
+			totalPoint += i;
+		}
+		double avgReviewPoint = (double)totalPoint/reviewCount;
+		avgReviewPoint = Math.round(avgReviewPoint*10)/10.0;
 		
 		req.setAttribute("reviewCount", reviewCount);
 		req.setAttribute("reviewList", reviewList);
-		req.setAttribute("starAverage", starAverage);
+		req.setAttribute("avgReviewPoint", avgReviewPoint);
 		return "board/reviewAct";
 	}
 	
@@ -203,7 +202,10 @@ public class DisplayActController {
 	public String wishActReleaseOK(HttpServletRequest req, @RequestParam Map<String, String> params) {
 		displayActMapper.wishActReleaseOK(params);
 		List<ActivityDTO> actList = displayActMapper.getActivity(params);
-		List<WishListActDTO> wishList = displayActMapper.getWishListAct(params);
+		HttpSession session = req.getSession();
+		LoginOkBeanUser loginOkBean = (LoginOkBeanUser)session.getAttribute("loginOkBean");
+		int u_num = loginOkBean.getU_num();
+		List<WishListActDTO> wishList = displayActMapper.getWishListAct(u_num);
 		for(ActivityDTO adto : actList) {
 			for(WishListActDTO wdto : wishList) {
 				if(adto.getA_num() == wdto.getA_num()) {
@@ -219,7 +221,10 @@ public class DisplayActController {
 	public String wishActCheckOK(HttpServletRequest req, @RequestParam Map<String, String> params) {
 		displayActMapper.wishActCheckOK(params);
 		List<ActivityDTO> actList = displayActMapper.getActivity(params);
-		List<WishListActDTO> wishList = displayActMapper.getWishListAct(params);
+		HttpSession session = req.getSession();
+		LoginOkBeanUser loginOkBean = (LoginOkBeanUser)session.getAttribute("loginOkBean");
+		int u_num = loginOkBean.getU_num();
+		List<WishListActDTO> wishList = displayActMapper.getWishListAct(u_num);
 		for(ActivityDTO adto : actList) {
 			for(WishListActDTO wdto : wishList) {
 				if(adto.getA_num() == wdto.getA_num()) {

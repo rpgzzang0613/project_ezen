@@ -1,5 +1,6 @@
 package com.ezen.project;
 
+import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 
@@ -159,7 +160,6 @@ public class BookingController {
 			if(Integer.parseInt(params.get("inputPoint")) != 0) {
 				displayHotelMapper.usedPoint(params);
 			}
-			
 //			적립받을 포인트 업데이트해줌
 			displayHotelMapper.savePoint(params);
 			req.setAttribute("msg", "예약 성공");
@@ -212,6 +212,24 @@ public class BookingController {
 		HttpSession session = req.getSession();
 		LoginOkBeanUser loginInfo = (LoginOkBeanUser)session.getAttribute("loginOkBean");
 		int u_num = loginInfo.getU_num();
+		BookingDTO bdto = displayHotelMapper.getBook(book_num);
+		HotelDTO hdto = hotelMapper.getHotel(bdto.getH_num());
+		UserDTO udto = userMapper.getUserByUnum(u_num);
+		int updatePoint = bdto.getBook_usepoint() - bdto.getBook_savepoint();
+		displayHotelMapper.updatePoint(updatePoint, u_num);
+		
+		Map<String, String> params = new Hashtable<String, String>();
+		String p_status = "취소";
+		String p_contents = hdto.getH_name() + "예약 취소";
+		int p_remaining = udto.getU_point() + updatePoint;
+		
+		params.put("book_num", String.valueOf(book_num));
+		params.put("u_num", String.valueOf(u_num));
+		params.put("p_status", p_status);
+		params.put("p_contents", p_contents);
+		params.put("p_point", String.valueOf(updatePoint));
+		params.put("p_remaining", String.valueOf(p_remaining));
+		displayHotelMapper.cancelPoint(params);   
 		
 		int res = displayHotelMapper.deleteBook(book_num, u_num);
 		if(res > 0) {

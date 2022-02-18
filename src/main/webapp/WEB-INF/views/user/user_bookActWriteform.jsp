@@ -107,6 +107,7 @@
 
 <meta charset="UTF-8">
 <form name="f_bookactWriteform" id="bwform" method="post" action="user_bookActConfirm">
+<input type="hidden" name="ba_payment" value="카카오페이">
 <input type="hidden" name="a_num" value="${pdto.a_num}">
 <input type="hidden" name="u_num" value="${loginOkBean.u_num}">
 <input type="hidden" name="p_num" value="${pdto.p_num}">

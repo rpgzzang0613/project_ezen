@@ -118,4 +118,12 @@
 	<select id="listReviewByAct" resultType="ReviewActDTO" parameterType="int">
 		select * from project_reviewAct where a_num=#{a_num}
 	</select>
+	
+	<select id="countReview" resultType="int">
+		 select count(*) from project_reviewAct where a_num=#{a_num}
+	</select>
+	
+	<select id="allReviewPointList" parameterType="int" resultType="int">
+		select review_star from project_reviewAct where a_num=#{a_num} 
+	</select>
 </mapper>
