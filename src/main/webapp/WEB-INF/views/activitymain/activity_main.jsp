@@ -38,10 +38,10 @@ function goNext(code) {
 			<span class="image-text">
 				스포츠<br/>
 				<c:if test="${sport != null}">
-				<c:out value="${sport}"/> 개의 스포츠
+				<c:out value="${sport}"/> 개의 활동
 				</c:if>
 				<c:if test="${sport == null}">
-				0 개의 스포츠
+				0 개의 활동
 				</c:if> 
 			</span> 
 			<img src="resources/images/main/sports.jpg">
@@ -51,10 +51,10 @@ function goNext(code) {
 			<span class="image-text">
 				학업<br/>
 				<c:if test="${study != null}">
-				<c:out value="${study}"/> 개의 학업
+				<c:out value="${study}"/> 개의 활동
 				</c:if>
 				<c:if test="${study == null}">
-				0 개의 학업
+				0 개의 활동
 				</c:if> 
 			</span>
 			<img src="resources/images/main/study.jpg">
@@ -66,10 +66,10 @@ function goNext(code) {
 			<span class="image-text">
 				문화<br/>
 				<c:if test="${culture != null}">
-				<c:out value="${culture}"/> 개의 문화 활동
+				<c:out value="${culture}"/> 개의 활동
 				</c:if>
 				<c:if test="${culture == null}">
-				0 개의 문화 활동
+				0 개의 활동
 				</c:if> 
 			</span>
 			<img src="resources/images/main/culture.jpg">
@@ -79,10 +79,10 @@ function goNext(code) {
 			<span class="image-text">
 				엔터테인먼트<br/>
 				<c:if test="${ent != null}">
-				<c:out value="${ent}"/> 개의 엔터테인먼트
+				<c:out value="${ent}"/> 개의 활동
 				</c:if>
 				<c:if test="${ent == null}">
-				0 개의 엔터테인먼트
+				0 개의 활동
 				</c:if> 
 			</span> 
 			<img src="resources/images/main/entertainment.jpg">
@@ -94,10 +94,10 @@ function goNext(code) {
 			<span class="image-text">
 				음악<br/>
 				<c:if test="${music != null}">
-				<c:out value="${music}"/> 개의 음악 활동
+				<c:out value="${music}"/> 개의 활동
 				</c:if>
 				<c:if test="${music == null}">
-				0 개의 음악 활동
+				0 개의 활동
 				</c:if> 
 			</span>
 			<img src="resources/images/main/music.jpg">
@@ -107,10 +107,10 @@ function goNext(code) {
 			<span class="image-text">
 				요리<br/>
 				<c:if test="${cooking != null}">
-				<c:out value="${cooking}"/> 개의 요리 활동
+				<c:out value="${cooking}"/> 개의 활동
 				</c:if>
 				<c:if test="${cooking == null}">
-				0 개의 요리 활동
+				0 개의 활동
 				</c:if> 
 			</span>
 			<img src="resources/images/main/cook.jpg">
