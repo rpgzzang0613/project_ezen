@@ -110,17 +110,23 @@ public class BookingController {
 	
 	// 객실상세 페이지 -> 예약 페이지로
 	@RequestMapping("/user_bookWriteform")
-	public String userBookWriteform(HttpServletRequest req, @RequestParam int h_num, int room_num) {
-		HotelDTO hdto = hotelMapper.getHotel(h_num);
-		RoomDTO rdto = hotelMapper.getRoomByRoomNum(room_num);
+	public String userBookWriteform(HttpServletRequest req, 
+			@RequestParam Map<String,String> params) {
+		HotelDTO hdto = hotelMapper.getHotel(Integer.parseInt(params.get("h_num")));
+		RoomDTO rdto = hotelMapper.getRoomByRoomNum(Integer.parseInt(params.get("room_num")));
 		
 		HttpSession session = req.getSession();
 		LoginOkBeanUser loginOkBean = (LoginOkBeanUser)session.getAttribute("loginOkBean");
 		
 		if(loginOkBean == null) {
-			req.setAttribute("msg", "로그인이 필요한 서비스 입니다");
-			req.setAttribute("url", "user_login");
-			return "message";
+			if(params.get("mode").equals("member")) {
+				req.setAttribute("msg", "로그인이 필요한 서비스 입니다");
+				req.setAttribute("url", "user_login");
+				return "message";
+			} else {
+				req.setAttribute("tempUser_name", (String)session.getAttribute("tempUser_name"));
+				req.setAttribute("tempUser_tel", (String)session.getAttribute("tempUser_tel"));
+			}
 		}else {
 			int u_num = loginOkBean.getU_num();
 			UserDTO udto = userMapper.getUserByUnum(u_num);
@@ -153,20 +159,28 @@ public class BookingController {
 			return "message";
 		}
 		
-		int res = displayHotelMapper.insertBook(params);
-		
-		if(res>0) {
-//			회원이 입력한 포인트가 0보다 크면, 포인트 수정
-			if(Integer.parseInt(params.get("inputPoint")) != 0) {
-				displayHotelMapper.usedPoint(params);
+//		회원 예약
+		if(params.get("u_num") != null) {
+			int res = displayHotelMapper.insertBook(params);
+			
+			if(res>0) {
+	//			회원이 입력한 포인트가 0보다 크면, 포인트 수정
+				if(Integer.parseInt(params.get("inputPoint")) != 0) {
+					displayHotelMapper.usedPoint(params);
+				}
+	//			적립받을 포인트 업데이트해줌
+				displayHotelMapper.savePoint(params);
+				req.setAttribute("msg", "예약 성공");
+				req.setAttribute("url", "user_bookList");
 			}
-//			적립받을 포인트 업데이트해줌
-			displayHotelMapper.savePoint(params);
-			req.setAttribute("msg", "예약 성공");
-			req.setAttribute("url", "user_bookList");
 		} else {
-			req.setAttribute("msg", "예약가능한 객실이 없습니다");
-			req.setAttribute("url", "main");
+//		비회원 예약
+			if(displayHotelMapper.inserBookNonUser(params) > 0) {
+				req.setAttribute("msg", "예약 성공");
+//				비회원용 예약 확인페이지로 보내기(수정필요)
+				req.setAttribute("url", "main");
+			};
+			
 		}
 		
 		return "message";

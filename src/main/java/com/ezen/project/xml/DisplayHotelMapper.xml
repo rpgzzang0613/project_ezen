@@ -175,4 +175,13 @@
 	<select id="isBookedRoom" parameterType="java.util.Map" resultType="int">
 		${sql}
 	</select>
+	
+	<select id="nonUserBook" parameterType="java.util.Map">
+		insert into project_nonUserBooking values
+		(project_nonUserBooking_SEQ.nextval, #{room_num}, #{h_num}, #{indate}, #{outdate}
+		 ,to_char(sysdate, 'YYYY.MM.DD HH24:MI:SS'), #{book_totalprice}
+		 ,'wait', #{book_name}, #{book_tel}, #{book_roomtype}, 
+		 #{book_extra}, #{room_code})
+	</select>
+	
 </mapper>

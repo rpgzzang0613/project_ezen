@@ -20,15 +20,19 @@
            var room_extraprice2 = parseInt(room_extraprice);
            var total = room_price2 + room_extraprice2 * extra2;
            $("#room_price2").attr( 'value', total);
-           //$("#finalPrice").attr('value', result2);
            
-           var usePoint = $("#usePoint").val();
-           var result2 = total - usePoint;
-           var savepoint = result2 * 0.1;
-           $("#totalPrice").attr('value', result2);
-           $("#finalPrice").attr('value', result2);
-           $("#savePoint").attr('value', savepoint);
-           
+           var tempCheck = "${sessionScope.loginOkBean.u_num}";
+           if(tempCheck > 0){
+	           var usePoint = $("#usePoint").val();
+	           var result2 = total - usePoint;
+	           var savepoint = result2 * 0.1;
+	           $("#totalPrice").attr('value', result2);
+	           $("#finalPrice").attr('value', result2);
+	           $("#savePoint").attr('value', savepoint);
+           } else {
+               $("#totalPrice").attr('value', total);
+               $("#finalPrice").attr('value', total);
+           }
            
         });
         $("#usePoint").change(function(){
@@ -120,17 +124,25 @@
         	event.preventDefault();
         	var isSubmit = false;
         	var check;
-        	var usePoint = $("#usePoint").val();
-        	var userPoint = $("#userPoint").val();
-        	if( parseInt(userPoint) >= parseInt(usePoint) ){
-        		check = confirm("결제 하시겠습니까?");
+        	var tempCheck = "${sessionScope.loginOkBean.u_num}";
+            if(tempCheck > 0){
+	        	var usePoint = $("#usePoint").val();
+	        	var userPoint = $("#userPoint").val();
+	        	if( parseInt(userPoint) >= parseInt(usePoint) ){
+	        		check = confirm("결제 하시겠습니까?");
+	            	if(check) {
+	            		this.submit();
+	            	}
+	        	}else{
+	        		isSubmit = false;
+	        		alert("포인트가 부족합니다");
+	        	}
+            } else {
+            	var check = confirm("결제 하시겠습니까?");
             	if(check) {
             		this.submit();
             	}
-        	}else{
-        		isSubmit = false;
-        		alert("포인트가 부족합니다");
-        	}
+            }
         });
      });
 	
@@ -140,28 +152,41 @@
 <form name="f_bookWriteform" id="bwform" method="post" action="user_bookConfirm">
 <input type="hidden" name="book_payment" value="카카오페이">
 <input type="hidden" name="h_num" value="${hdto.h_num}">
-<input type="hidden" name="u_num" value="${loginOkBean.u_num}">
 <input type="hidden" name="room_num" value="${rdto.room_num}">
 <input type="hidden" name="room_code" value="${rdto.room_code}">
 <input type="hidden" id="room_price" name="room_price" value="${rdto.room_price}">
 <input type="hidden" id="room_extraprice" value="${rdto.room_extraprice}">
-<input type="hidden" id="userPoint" value="${udto.u_point}">
-<input type="hidden" id="u_email" value="${loginOkBean.u_email}">
-<input type="hidden" id="u_name" value="${loginOkBean.u_name}">
-<input type="hidden" id="u_tel" value="${loginOkBean.u_tel}">
-<input type="hidden" name="room_price" value="${rdto.room_price}">
+
+<%-- <input type="hidden" name="room_price" value="${rdto.room_price}"> --%>
+	<c:if test="${not empty loginOkBean}">
+		<input type="hidden" name="u_num" value="${loginOkBean.u_num}">
+		<input type="hidden" id="u_email" value="${loginOkBean.u_email}">
+		<input type="hidden" id="u_name" value="${loginOkBean.u_name}">
+		<input type="hidden" id="u_tel" value="${loginOkBean.u_tel}">
+		<input type="hidden" id="userPoint" value="${udto.u_point}">
+	</c:if>
 	<div style="width: 650px; margin: 0 auto;">
 		<div class="row book-detail">
 			<div class="first">
 				<div class="section">
 					<div class="row" style="font-weight: bold; font-size:20px; padding-left: 35px;">예약자 정보</div>
 					<div class="row">
-						<label>예약자이름</label>
-						<label><input type="text" id="book_name" name="book_name" value="${udto.u_name}"/></label>
+							<label>예약자이름</label>
+						<c:if test="${not empty loginOkBean}">
+							<label><input type="text" id="book_name" name="book_name" value="${udto.u_name}"/></label>
+						</c:if>
+						<c:if test="${empty loginOkBean}">
+							<label><input type="text" id="book_name" name="book_name" value="${tempUser_name}"/></label>
+						</c:if>
 					</div>
 					<div class="row">
 						<label>휴대폰번호</label>
-						<label><input type="text" name="book_tel" value="${udto.u_tel}"/></label>
+						<c:if test="${not empty loginOkBean}">
+							<label><input type="text" name="book_tel" value="${udto.u_tel}"/></label>
+						</c:if>
+						<c:if test="${empty loginOkBean}">
+							<label><input type="text" id="book_tel" name="book_tel" value="${tempUser_tel}"/></label>
+						</c:if>
 					</div>
 					<div class="row">
 						<label>객실 인원</label>
@@ -191,6 +216,7 @@
 							 value="${rdto.room_price}" readonly>원
 						</label>
 					</div>
+					<c:if test="${not empty loginOkBean}">
 					<div class="row">
 						<label>가용 포인트</label>
 						<label>${udto.u_point}포인트</label>
@@ -202,6 +228,7 @@
 						<input name="inputPoint" value="0" id="usePoint">
 						</label>
 					</div>
+					</c:if>
 					<div class="row">
 						<label>총 결제금액</label>
 						<label>
@@ -255,12 +282,14 @@
 						<label>총 결제금액</label>
 						<label><input type="text" id="finalPrice" value="${rdto.room_price}" readonly></label>
 					</div>
+					<c:if test="${not empty loginOkBean}">
 					<div class="column">
 						<label>포인트적립</label>
 						<label>
 							<input type="text" id="savePoint" name="book_savepoint" value="${rdto.room_price * 0.1}" size="5" readonly>적립
 						</label>
 					</div>
+					</c:if>
 					<div class="row justify-center" style="padding: 15px;">
 						<button id="check_module" type="button" style="background:#F58B7B; width: 100%;">결제하기</button>
 						<button style="background:#F58B7B; width: 100%;">가짜결제</button>

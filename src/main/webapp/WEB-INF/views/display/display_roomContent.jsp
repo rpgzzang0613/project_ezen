@@ -4,10 +4,32 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ include file="../user_top.jsp" %>
 <%@ include file="../user_searchbar.jsp"%>
+<script>
+	function loginCheck(u_num, h_num, room_code){
+		if(u_num > 0){
+			document.f9.submit();
+		}
+		else{
+			var mode = document.getElementById("tempCheck").value;
+			var rn = document.getElementById("room_num").value;
+			if(mode == "member"){
+				window.open("loginAskPage", "search", "width=450, height=350");
+			} else {
+				location.href="user_bookWriteform?mode="+mode+"&room_num="+rn+"&room_code="+room_code+"&h_num="+h_num;
+			}
+		}
+	}
+</script>
 <link rel="stylesheet" href="resources/LJWstyle.css"/>
 <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
 <form style="background-color:#fbfbfb;margin-top:-16px; margin-bottom:-22px;"name="f9" id="checkForm" action="user_bookWriteform" method="post">
 	<input type="hidden" id="h_num" name="h_num" value="${hdto.h_num}">
+	<c:if test="${sessionScope.tempUser ne 'tempUser'}">
+		<input type="hidden" id="tempCheck" value="member">
+	</c:if>
+	<c:if test="${sessionScope.tempUser eq 'tempUser'}">
+		<input type="hidden" id="tempCheck" value="tempUser">
+	</c:if>
 	<div style="width: 1000; margin: 0 auto; ">
 		<div class="Roomcontent"> 
 		<span class="row align-center" style="font-weight:bold; margin-top: 10px;">
@@ -58,7 +80,7 @@
 					</div>   
 					<div class="column" style="width: 100px; margin-left:auto; margin-right:24px; margin-top:10px; ">	
 						<c:if test="${bookable_roomCount ne 0}"> 
-							<input type='submit' value='예약하기' style="font-weight:bold;font-size:large;width:120px; height:40px; background-color:#609AE9;">
+							<input type='button' value='예약하기' onclick="javascript:loginCheck('${loginOkBean.u_num}','${hdto.h_num}','${rdto.room_code}')"style="font-weight:bold;font-size:large;width:120px; height:40px; background-color:#609AE9;">
 						</c:if> 
 						<c:if test="${bookable_roomCount eq 0}"> 
 							<input type='button' value='매진' onclick="#" style="width: 120px; background-color:#f5635c;">  

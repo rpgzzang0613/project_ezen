@@ -214,6 +214,7 @@ public class DisplayHotelController {
 			}
 		}
 		
+		
 		session.setAttribute("hdto", hdto);
 		session.setAttribute("map_addr", addrForMap);
 		session.setAttribute("reviewCount", reviewCount);
@@ -229,11 +230,11 @@ public class DisplayHotelController {
 	
 	// h_num과 room_num에 일치하는 결과 찾기
 	@RequestMapping("/display_roomContent")
-	public String roomContent(HttpServletRequest req, HttpServletResponse resp, @RequestParam(required=false) String room_code, 
-			int h_num) {
+	public String roomContent(HttpServletRequest req, HttpServletResponse resp, 
+			@RequestParam Map<String,String> values) {
 		// 호텔 정보 (h_num, h_address)
-		HotelDTO hdto = hotelMapper.getHotel(h_num);
-		List<RoomDTO> roomList = hotelMapper.listRoom(room_code);
+		HotelDTO hdto = hotelMapper.getHotel(Integer.parseInt(values.get("h_num")));
+		List<RoomDTO> roomList = hotelMapper.listRoom(values.get("room_code"));
 		RoomDTO room = roomList.get(0);
 		
 		HttpSession session = req.getSession();
@@ -242,7 +243,7 @@ public class DisplayHotelController {
 		Map<String, String> params = new Hashtable<>();
 		params.put("book_indate", (String)session.getAttribute("indate"));
 		params.put("book_outdate", (String)session.getAttribute("outdate"));
-		params.put("room_code", room_code);
+		params.put("room_code", values.get("room_code"));
 		
 		for(RoomDTO rdto : roomList) {
 			params.put("room_num", String.valueOf(rdto.getRoom_num()));
@@ -256,6 +257,9 @@ public class DisplayHotelController {
 		String[] hotelInfo = hdto.getH_info().split("@");
 		String[] hotelNotice = hdto.getH_notice().split("@");
 		
+		if(values.get("mode") != null) {
+			req.setAttribute("mode", values.get("mode"));
+		}
 		req.setAttribute("hdto", hdto);
 		req.setAttribute("rdto", room);
 		req.setAttribute("roomList", roomList);
@@ -401,5 +405,25 @@ public class DisplayHotelController {
 		displayHotelMapper.wishCheck(params);
 		return "display/display_hotelContent";
 	}
+	
+	@RequestMapping(value="/loginAskPage")
+	public String loginAskPage(HttpServletRequest req) {
+		return "user_loginAsk";
+	}
+	
+	@RequestMapping(value="/nonUserInfo")
+	public String nonUserInfo(HttpServletRequest req) {
+		return "nonUserInfoWrite";
+	}
+	
+	@RequestMapping(value="/returnToRoomContent")
+	public String returnToRoomContent(HttpServletRequest req, @RequestParam Map<String,String> params) {
+		HttpSession session = req.getSession();
+		session.setAttribute("tempUser_name", params.get("tempUser_name"));
+		session.setAttribute("tempUser_tel", params.get("tempUser_tel"));
+		session.setAttribute("tempUser", "tempUser");
+		return "closeWindow";
+	}
+	
 	
 }

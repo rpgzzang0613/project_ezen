@@ -271,5 +271,9 @@ public class DisplayHotelMapper {
 		
 		return isBooked;
 	}
+
+	public int inserBookNonUser(Map<String, String> params) {
+		return sqlSession.insert("nonUserBook", params);
+	}
 	
 }
