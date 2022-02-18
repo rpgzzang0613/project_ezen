@@ -48,7 +48,8 @@
 			</c:if>
 			</c:forTokens>
 			</select>
-			<input type="text" name="c_bankaccount1" value="${cdto.c_bankaccount1}" style="width:300px; margin:0 auto;">
+			<input type="text" name="c_bankaccount1" value="${cdto.c_bankaccount1}" 
+			style="width:300px; margin:0 auto;" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');">
 		</td>
 	</tr>
 	<tr>
@@ -69,7 +70,8 @@
 			</c:if>
 			</c:forTokens>
 			</select>
-			<input type="text" name="c_bankaccount2" value="${cdto.c_bankaccount2}" style="width:300px; margin:0 auto;">
+			<input type="text" name="c_bankaccount2" value="${cdto.c_bankaccount2}" 
+			style="width:300px; margin:0 auto;" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');">
 		</td>
 	</tr>
 	<tr>

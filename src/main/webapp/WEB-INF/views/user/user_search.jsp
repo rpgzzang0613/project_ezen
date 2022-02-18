@@ -19,7 +19,7 @@
 				<input type="text" name="u_email" placeholder="이메일을 입력해 주세요." 
 				tabindex="1" style="width:350px;height:50px" 
 				required oninvalid="this.setCustomValidity('이메일을 입력해주세요.')" 
-				oninput="setCustomValidity('')">
+				oninput="setCustomValidity('')" onKeyup="this.value=this.value.replace(/[^a-zA-Z0-9@.]/g,'');">
 			</td>
 		</tr>
 		</c:if>  

@@ -42,7 +42,7 @@
 					<input type="email" name="c_email" placeholder="회사 메일을 입력해 주세요." 
 					tabindex="2" style="width:300px;height:50px" 
 					required oninvalid="this.setCustomValidity('회사 메일을 입력해주세요.')" 
-					oninput="setCustomValidity('')" onKeyup="this.value=this.value.replace(/[^a-zA-Z0-9]/g,'');">
+					oninput="setCustomValidity('')" onKeyup="this.value=this.value.replace(/[^a-zA-Z0-9@.]/g,'');">
 				</td>
 			<tr>
 				<th>사업자 번호</th>

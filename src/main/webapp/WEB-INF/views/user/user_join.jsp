@@ -104,7 +104,7 @@ ajax로 페이지와 DB직접적으로 연결해서 한페이지로 통합할 �
 			<input type="text" id="email_input" name="u_email"  tabindex="1" 
 			placeholder="이메일을 입력해 주세요" 
 			style="width:200px;height:40px" 
-			onKeyup="this.value=this.value.replace(/[^a-zA-Z0-9]/g,'');">
+			onKeyup="this.value=this.value.replace(/[^a-zA-Z0-9@.]/g,'');">
 		</c:if>
 		</td>
 		<td width="100">
