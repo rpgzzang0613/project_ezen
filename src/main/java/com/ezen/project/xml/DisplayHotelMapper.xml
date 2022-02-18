@@ -90,7 +90,7 @@
 	<insert id="insertBook" parameterType="java.util.Map">
 		insert into project_booking values(project_booking_seq.nextval,
 		 #{room_num}, #{h_num}, #{u_num}, #{indate}, #{outdate}
-		 ,to_char(sysdate, 'YYYY.MM.DD HH24:MI:SS'), #{book_payment}, #{inputPoint}, #{book_totalprice},
+		 ,to_char(sysdate, 'YYYY.MM.DD HH24:MI:SS'), #{inputPoint}, #{book_totalprice},
 		  #{book_savepoint}, 'wait', #{book_name}, #{book_tel},
 		   #{book_roomtype}, #{book_extra}, #{room_code}, 0)
 	</insert>

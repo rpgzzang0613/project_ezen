@@ -72,7 +72,7 @@
 	
 	<insert id="insertBookAct" parameterType="BookingActDTO">
 		insert into project_bookingact values(project_bookingact_seq.nextval, 
-		#{p_num}, #{a_num}, #{u_num}, #{ba_bookdate}, #{ba_payment}, #{ba_totalprice}, 
+		#{p_num}, #{a_num}, #{u_num}, #{ba_bookdate}, #{ba_totalprice}, 
 		'wait', #{ba_name}, #{ba_tel}, #{ba_totalbooker}, to_char(sysdate, 'YYYY.MM.DD HH24:MI:SS'), 0)
 	</insert>
 	
