@@ -58,16 +58,8 @@
 					<span>
 						<label>
 							<i class="fas fa-star"></i>
-							<c:forEach var="average" items="${averageReview}">
-								<c:if test="${adto.a_num eq average.key}">
-									${average.value}/5점
-								</c:if>
-							</c:forEach>
-							<c:forEach var="review" items="${countReview}">
-								<c:if test="${adto.a_num eq review.key}">
-									후기 수(${review.value})
-								</c:if>
-							</c:forEach>
+									${adto.avgReviewPoint}/5점
+									후기 수(${adto.reviewCount})
 						</label>
 					</span>
 					<span>

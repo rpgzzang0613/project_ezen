@@ -71,8 +71,8 @@ public class DisplayActMapper {
 		return sqlSession.selectList("getActivityList", map);
 	}
 	
-	public List<WishListActDTO> getWishListAct(Map<String,String> params){
-		return sqlSession.selectList("getWishListAct", params);
+	public List<WishListActDTO> getWishListAct(int u_num){
+		return sqlSession.selectList("getWishListAct", u_num);
 	}
 	
 	// 위시리스트 페이지에서 해제
@@ -134,64 +134,12 @@ public class DisplayActMapper {
 		return sqlSession.selectList("activityDoubleSearchOk", map);
 	}
 	
-	public Map<Integer, Integer> countReview(List<ActivityDTO> activityList) {
-		List<Integer> a_num = new ArrayList<Integer>();
-		for(int i=0; i < activityList.size(); i++) {
-			ActivityDTO adto = activityList.get(i);
-			a_num.add(adto.getA_num());
-		}
-		
-		List<ReviewActDTO> allReview = sqlSession.selectList("allActReview");
-		Map<Integer, Integer> map = new Hashtable<Integer, Integer>();
-		
-		int count = 0;
-		for(int j=0; j<a_num.size(); j++) {
-			//등록된 모든 호텔
-			int activityNum = a_num.get(j);
-			//등록된 모든 후기
-			for(int i=0; i<allReview.size(); i++) {
-				ReviewActDTO radto = allReview.get(i);
-				if(activityNum == radto.getA_num()) {
-					count++;
-				}
-			}
-			map.put(activityNum, count);
-			count = 0;
-		}
-		return map;
+	public int countReview(int a_num) {
+		return sqlSession.selectOne("countReview", a_num);
 	}
-	
-	public Map<Integer, Double> averageReview(List<ActivityDTO> activityList){
-		List<Integer> a_num = new ArrayList<Integer>();
-		for(int i=0; i < activityList.size(); i++) {
-			ActivityDTO adto = activityList.get(i);
-			a_num.add(adto.getA_num());
-		}
 		
-		List<ReviewActDTO> allReview = sqlSession.selectList("allActReview");
-		Map<Integer, Double> map = new Hashtable<Integer, Double>();
-		
-		int count = 0;
-		int totalStar = 0;
-		for(int j=0; j<a_num.size(); j++) {
-			//등록된 모든 호텔
-			int activityNum = a_num.get(j);
-			//등록된 모든 후기
-			for(int i=0; i<allReview.size(); i++) {
-				ReviewActDTO radto = allReview.get(i);
-				if(activityNum == radto.getA_num()) {
-					count++;
-					totalStar += radto.getReview_star();
-				}
-			}
-			double average = (double)totalStar / count;
-			average = Math.round(average*10)/10.0;//소수 1번째 자리까지 표기
-			map.put(activityNum, average);
-			count = 0;
-			totalStar = 0;
-		}
-		return map;
-		
+	public List<Integer> allReviewPointList(int a_num){
+		return sqlSession.selectList("allReviewPointList", a_num);
 	}
 	
 //	액티비티별 후기 갯수 반환
@@ -199,21 +147,9 @@ public class DisplayActMapper {
 		return sqlSession.selectOne("getReviewCountByAct", a_num);
 	}
 	
-//	액티비티별 별점 반환
-	public double getReviewActStarAverage(int a_num) {
-		List<Integer> star = new ArrayList<Integer>();
-		star = sqlSession.selectList("getReviewActStarAverage", a_num);
-		int totalStar = 0;
-		for(int i = 0; i < star.size(); i++) {
-			totalStar += star.get(i);
-		}
-		double averageStar = (double)totalStar/star.size();
-		return averageStar;
-	}
-	
 	public List<ReviewActDTO> listReviewByAct(int a_num) {
-		List<ReviewActDTO> reviewList = sqlSession.selectList("listReviewByAct", a_num);
-		return reviewList;
+		return  sqlSession.selectList("listReviewByAct", a_num);
+		
 	}
 	public ActivityDTO getActivityContent(int a_num) {
 		return sqlSession.selectOne("getActivityContent", a_num);

@@ -156,33 +156,19 @@ public class DisplayHotelMapper {
 		BookingDTO bdto = sqlSession.selectOne("getBook", book_num);
 		return bdto;
 	}
+	public int updatePoint(int updatePoint, int u_num) {
+		Map<String, Integer>map = new Hashtable<String, Integer>();
+		map.put("updatePoint", updatePoint);
+		map.put("u_num", u_num);
+		return sqlSession.update("updatePoint", map);
+	}
 	
 //	예약취소
 	public int deleteBook(int book_num, int u_num) {
-		int usePoint = sqlSession.selectOne("usePoint", book_num);
-		int savePoint = sqlSession.selectOne("savePoint", book_num);
-		int update = usePoint - savePoint;
-		Map<String, Integer> map = new Hashtable<String, Integer>();
-		map.put("update", update);
-		map.put("u_num", u_num);
-		sqlSession.update("updatePoint", map);
-		
-		// 취소 포인트 파라미터값 만들어주기
-		Map<String, String> params = new Hashtable<String, String>();
-		BookingDTO bdto = sqlSession.selectOne("getBook", book_num);
-		String p_status = "취소";
-		String h_name = sqlSession.selectOne("getHotelName",bdto.getH_num());
-		String p_contents = h_name + " 예약 취소";
-		int p_remaining = sqlSession.selectOne("getUserPoint", u_num);
-		params.put("book_num", String.valueOf(book_num));
-		params.put("u_num", String.valueOf(u_num));
-		params.put("p_status", p_status);
-		params.put("p_contents", p_contents);
-		params.put("p_point", String.valueOf(update));
-		params.put("p_remaining", String.valueOf(p_remaining));
-		sqlSession.insert("cancelPoint", params);
-		
 		return sqlSession.update("deleteBook", book_num);
+	}
+	public void cancelPoint(Map<String,String> params) {
+		 sqlSession.insert("cancelPoint", params);
 	}
 	
 //	객실가격반환

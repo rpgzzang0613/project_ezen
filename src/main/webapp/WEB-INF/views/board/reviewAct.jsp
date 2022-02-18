@@ -19,7 +19,7 @@
 <div align="center"><font size="3">리뷰 게시판</font></div><br>
 <div class="row align-center justify-between border-bottom" style="height: 80px;">
 	<div class="row align-center">
-		<i class="fas fa-star fa-2x" style="margin-right: 5px;"></i>${starAverage}/5
+		<i class="fas fa-star fa-2x" style="margin-right: 5px;"></i>${avgReviewPoint}/5
 	</div>
 	<span>총리뷰건수(${reviewCount}개)</span>
 </div>

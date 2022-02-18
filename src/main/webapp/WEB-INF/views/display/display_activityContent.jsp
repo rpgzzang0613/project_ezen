@@ -75,7 +75,7 @@
 		</div>
 		<div class="border-bottom">
 			<span>
-				<i class="far fa-star"></i>${starAverage} / 5
+				<i class="far fa-star"></i>${avgReviewPoint} / 5
 			</span>
 			&nbsp;&nbsp;&nbsp;&nbsp;
 			<span>
@@ -193,7 +193,7 @@
 			</tr>
 			<tr>
 				<td align="left" colspan="2">
-					<i class="far fa-star"></i>${starAverage} / 5 &nbsp;&nbsp;&nbsp;&nbsp;(최근 12개월 누적 평점)
+					<i class="far fa-star"></i>${avgReviewPoint} / 5 &nbsp;&nbsp;&nbsp;&nbsp;(최근 12개월 누적 평점)
 				</td>
 			</tr>
 			

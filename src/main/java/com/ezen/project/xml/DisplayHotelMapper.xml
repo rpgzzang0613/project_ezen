@@ -111,7 +111,7 @@
 		select book_savepoint from project_booking where book_num=#{book_num}
 	</select>
 	<update id="updatePoint" parameterType="java.util.Map">
-		update project_useraccount set u_point = u_point + #{update} where u_num=#{u_num}
+		update project_useraccount set u_point = u_point + #{updatePoint} where u_num=#{u_num}
 	</update>
 	
 	<!-- 예약번호로 객실찾기 -->
