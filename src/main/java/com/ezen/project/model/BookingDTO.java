@@ -8,7 +8,6 @@ public class BookingDTO {
 	private String book_indate;
 	private String book_outdate;
 	private String book_joindate;
-	private String book_payment;
 	private int book_usepoint;
 	private int book_totalprice;
 	private int book_savepoint;
@@ -69,12 +68,6 @@ public class BookingDTO {
 	}
 	public void setBook_joindate(String book_joindate) {
 		this.book_joindate = book_joindate;
-	}
-	public String getBook_payment() {
-		return book_payment;
-	}
-	public void setBook_payment(String book_payment) {
-		this.book_payment = book_payment;
 	}
 	public int getBook_usepoint() {
 		return book_usepoint;

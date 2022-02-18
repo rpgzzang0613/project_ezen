@@ -6,7 +6,6 @@ public class BookingActDTO {
 	private int a_num;
 	private int u_num;
 	private String ba_bookdate;
-	private String ba_payment;
 	private int ba_totalprice;
 	private String ba_status;
 	private String ba_name;
@@ -48,12 +47,6 @@ public class BookingActDTO {
 	}
 	public void setBa_bookdate(String ba_bookdate) {
 		this.ba_bookdate = ba_bookdate;
-	}
-	public String getBa_payment() {
-		return ba_payment;
-	}
-	public void setBa_payment(String ba_payment) {
-		this.ba_payment = ba_payment;
 	}
 	public int getBa_totalprice() {
 		return ba_totalprice;
