@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.ezen.project.model.BookingDTO;
 import com.ezen.project.model.HotelDTO;
+import com.ezen.project.model.NUserBookingDTO;
 import com.ezen.project.model.ReviewDTO;
 import com.ezen.project.model.RoomDTO;
 
@@ -256,7 +257,7 @@ public class DisplayHotelMapper {
 		return sqlSession.selectOne("countBookedRoom", map2);
 	}
 	
-	public int countnBookedRoom(Map<String, String> map) {
+	public int countBookedRoomNonUser(Map<String, String> map) {
 		String sql = "SELECT count(*) FROM project_nonUserBooking WHERE room_code='"+map.get("room_code")+"' AND "
 				+ "(book_indate <= '"+map.get("book_outdate")+
 				"' AND book_outdate >= '"+map.get("book_indate")+"') AND book_status <> 'deny'";
@@ -268,7 +269,7 @@ public class DisplayHotelMapper {
 	}
 	
 	// 특정 객실이 예약중인지 아닌지 리턴하는 메소드
-	public String isBookedRoom(Map<String,String> map) {
+	public boolean isBookedRoom(Map<String,String> map) {
 		String sql = "SELECT count(*) FROM project_booking WHERE room_num="+map.get("room_num")+" AND "
 				+ "(book_indate <= '"+map.get("book_outdate")+
 				"' AND book_outdate >= '"+map.get("book_indate")+"') AND book_status <> 'deny'";
@@ -278,12 +279,10 @@ public class DisplayHotelMapper {
 		
 		int res = sqlSession.selectOne("isBookedRoom", map2);
 		
-		String isBooked = res > 0 ? "y" : "n";
-		
-		return isBooked;
+		return res > 0 ? true : false;
 	}
 	
-	public String isnBookedRoom(Map<String,String> map) {
+	public boolean isBookedRoomNonUser(Map<String,String> map) {
 		String sql = "SELECT count(*) FROM project_nonUserBooking WHERE room_num="+map.get("room_num")+" AND "
 				+ "(book_indate <= '"+map.get("book_outdate")+
 				"' AND book_outdate >= '"+map.get("book_indate")+"') AND book_status <> 'deny'";
@@ -293,21 +292,31 @@ public class DisplayHotelMapper {
 		
 		int res = sqlSession.selectOne("isBookedRoom", map2);
 		
-		String isBooked = res > 0 ? "y" : "n";
-		
-		return isBooked;
+		return res > 0 ? true : false;
 	}
 
-	public int inserBookNonUser(Map<String, String> params) {
-		return sqlSession.insert("nonUserBook", params);
+	public int insertBookNonUser(Map<String, String> params) {
+		return sqlSession.insert("insertBookNonUser", params);
 	}
 
-	public int getNonUserBookingNum() {
-		return sqlSession.selectOne("getNonUserBookingNum");
+	public int getNonUserBookNum() {
+		return sqlSession.selectOne("getNonUserBookNum");
+	}
+	
+	public NUserBookingDTO getNonUserBooking(Map<String, String> params) {
+		return sqlSession.selectOne("getNonUserBooking", params);
 	}
 
 	public int deleteNonUserBook(String book_num) {
-		return sqlSession.delete("nonUserBookCancel", Integer.parseInt(book_num));
+		return sqlSession.delete("deleteNonUserBook", Integer.parseInt(book_num));
+	}
+	
+	// 예약 중복 있는지 확인
+	public boolean isDuplBookNonUser(Map<String, String> params) {
+		int duplCount = sqlSession.selectOne("isDuplBookNonUser", params);
+		boolean isDuplNUser = duplCount > 0 ? true : false;
+		
+		return isDuplNUser;
 	}
 	
 }

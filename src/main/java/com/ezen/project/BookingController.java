@@ -151,8 +151,9 @@ public class BookingController {
 		
 		// DB에 저장 전 해당 예약정보가 중복되지 않는지 다시 확인
 		boolean isDupl = displayHotelMapper.isDuplBook(params);
+		boolean isDuplNUser = displayHotelMapper.isDuplBookNonUser(params);
 		
-		if(isDupl) {
+		if(isDupl || isDuplNUser) {
 			req.setAttribute("msg", "이미 예약된 객실입니다. 다시 확인해 주세요.");
 			req.setAttribute("url", "display_roomContent?h_num="+params.get("h_num")+"&room_code="+params.get("room_code"));
 			
@@ -178,8 +179,8 @@ public class BookingController {
 			}
 		}else {
 //		비회원 예약
-			if(displayHotelMapper.inserBookNonUser(params) > 0) {
-				int bookNum = displayHotelMapper.getNonUserBookingNum();
+			if(displayHotelMapper.insertBookNonUser(params) > 0) {
+				int bookNum = displayHotelMapper.getNonUserBookNum();
 				req.setAttribute("msg", "예약되었습니다. 예약번호는 "+bookNum+" 입니다.");
 //				비회원용 예약 확인페이지로 보내기(수정필요)
 				req.setAttribute("url", "main");
@@ -196,9 +197,6 @@ public class BookingController {
 //	예약상세보기
 	@RequestMapping("/user_bookDetail")
 	public String userBookDetail(HttpServletRequest req, @RequestParam int h_num, int room_num, int book_num) {
-		HttpSession session = req.getSession();
-		LoginOkBeanUser loginInfo = (LoginOkBeanUser)session.getAttribute("loginOkBean");
-		
 		BookingDTO bdto = displayHotelMapper.getBook(book_num);
 		HotelDTO hdto = hotelMapper.getHotel(h_num);
 		req.setAttribute("hdto", hdto);
@@ -354,9 +352,6 @@ public class BookingController {
 //	예약상세보기
 	@RequestMapping("/user_bookActDetail")
 	public String userBookActDetail(HttpServletRequest req, @RequestParam int a_num, int ba_num) {
-		HttpSession session = req.getSession();
-		LoginOkBeanUser loginInfo = (LoginOkBeanUser)session.getAttribute("loginOkBean");
-		
 		BookingActDTO badto = displayActMapper.getBookAct(ba_num);
 		ActivityDTO adto = activityMapper.getActivity(a_num);
 		req.setAttribute("adto", adto);
@@ -365,7 +360,7 @@ public class BookingController {
 	}
 	
 	@RequestMapping("/user_bookActCancel")
-	public String userBookActCancle(HttpServletRequest req, int ba_num) {
+	public String userBookActCancel(HttpServletRequest req, int ba_num) {
 		int res = displayActMapper.deleteActBook(ba_num);
 		if(res > 0) {
 			req.setAttribute("msg", "예약이 취소되었습니다. 환불처리에 2~3일 정도 소요 될 수 있습니다");
@@ -380,12 +375,12 @@ public class BookingController {
 	
 	@RequestMapping("/nonUserBookDetail")
 	public String nonUserBookDetail(HttpServletRequest req, @RequestParam Map<String, String> params) {
-		NUserBookingDTO nbdto = userMapper.getNonUserBookDetail(params);
+		NUserBookingDTO nbdto = displayHotelMapper.getNonUserBooking(params);
 		if(nbdto != null) {
 			HotelDTO hdto = hotelMapper.getHotel(nbdto.getH_num());
 			req.setAttribute("hdto", hdto);
 			req.setAttribute("bdto", nbdto);
-			return "nonUser/nonUserBookDetail";
+			return "nonUser/nonUser_bookDetail";
 		} else {
 			req.setAttribute("msg", "해당하는 예약이 존재하지 않습니다");
 			req.setAttribute("url", "nonUserInfoCheck");
@@ -398,7 +393,7 @@ public class BookingController {
 	public String nonUserBookCancel(HttpServletRequest req, @RequestParam Map<String,String> params) {
 		//RequestParam값에 h_num 나중에 추가
 		params.put("book_num", params.get("tempUser_bookNum"));
-		NUserBookingDTO nbdto = userMapper.getNonUserBookDetail(params);
+		NUserBookingDTO nbdto = displayHotelMapper.getNonUserBooking(params);
 		HotelDTO hdto = hotelMapper.getHotel(nbdto.getH_num());
 		
 		req.setAttribute("bdto", nbdto);

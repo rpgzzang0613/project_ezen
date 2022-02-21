@@ -176,7 +176,7 @@
 		${sql}
 	</select>
 	
-	<select id="nonUserBook" parameterType="java.util.Map">
+	<select id="insertBookNonUser" parameterType="java.util.Map">
 		insert into project_nonUserBooking values
 		(project_nonUserBooking_SEQ.nextval, #{room_num}, #{h_num}, #{indate}, #{outdate}
 		 ,to_char(sysdate, 'YYYY.MM.DD HH24:MI:SS'), #{book_totalprice}
@@ -184,9 +184,23 @@
 		 #{book_extra}, #{room_code})
 	</select>
 	
-	<select id="getNonUserBookingNum" resultType="int">
+	<select id="getNonUserBookNum" resultType="int">
 		select book_num from (select ROWNUM, book_num from project_nonUserBooking
 		order by book_joindate desc) where ROWNUM = 1
+	</select>
+	
+	<select id="getNonUserBooking" parameterType="java.util.Map" resultType="NUserBookingDTO">
+		select * from project_nonUserBooking where book_num=#{tempUser_bookNum} and 
+		book_name=#{tempUser_name} and book_tel=#{tempUser_tel}
+	</select>
+	
+	<delete id="deleteNonUserBook" parameterType="int">
+		delete from project_nonUserBooking where book_num=#{book_num}
+	</delete>
+	
+	<select id="isDuplBookNonUser" parameterType="java.util.Map" resultType="int">
+		select count(*) from project_nonUserBooking where book_indate=#{indate} 
+		and book_outdate=#{outdate} and room_num=#{room_num} and book_status != 'deny'
 	</select>
 	
 </mapper>

@@ -180,21 +180,21 @@ public class DisplayHotelController {
 			
 			rdto.setMax_count(hotelMapper.countRoomOnGroup(rdto.getRoom_code()));
 			rdto.setBooked_count(displayHotelMapper.countBookedRoom(params));
-			rdto.setNbooked_count(displayHotelMapper.countnBookedRoom(params));
+			rdto.setNbooked_count(displayHotelMapper.countBookedRoomNonUser(params));
 		}
 		for(RoomDTO rdto : doubleList) {
 			params.put("room_code", rdto.getRoom_code());
 			
 			rdto.setMax_count(hotelMapper.countRoomOnGroup(rdto.getRoom_code()));
 			rdto.setBooked_count(displayHotelMapper.countBookedRoom(params));
-			rdto.setNbooked_count(displayHotelMapper.countnBookedRoom(params));
+			rdto.setNbooked_count(displayHotelMapper.countBookedRoomNonUser(params));
 		}
 		for(RoomDTO rdto : deluxeList) {
 			params.put("room_code", rdto.getRoom_code());
 			
 			rdto.setMax_count(hotelMapper.countRoomOnGroup(rdto.getRoom_code()));
 			rdto.setBooked_count(displayHotelMapper.countBookedRoom(params));
-			rdto.setNbooked_count(displayHotelMapper.countnBookedRoom(params));
+			rdto.setNbooked_count(displayHotelMapper.countBookedRoomNonUser(params));
 		}
 		
 		// 로그인할 경우만 위시리스트 체크
@@ -250,8 +250,11 @@ public class DisplayHotelController {
 		
 		for(RoomDTO rdto : roomList) {
 			params.put("room_num", String.valueOf(rdto.getRoom_num()));
-			rdto.setRoom_booked(displayHotelMapper.isBookedRoom(params));
-			rdto.setRoom_booked(displayHotelMapper.isnBookedRoom(params));
+			
+			boolean userBooked = displayHotelMapper.isBookedRoom(params);
+			boolean nonUserBooked = displayHotelMapper.isBookedRoomNonUser(params);
+			
+			rdto.setRoom_booked(userBooked || nonUserBooked ? "y" : "n");
 		}
 		
 		// 예약된 객실은 List에서 삭제
