@@ -184,4 +184,9 @@
 		 #{book_extra}, #{room_code})
 	</select>
 	
+	<select id="getNonUserBookingNum" resultType="int">
+		select book_num from (select ROWNUM, book_num from project_nonUserBooking
+		order by book_joindate desc) where ROWNUM = 1
+	</select>
+	
 </mapper>

@@ -17,6 +17,7 @@ import com.ezen.project.model.ActivityDTO;
 import com.ezen.project.model.BookingActDTO;
 import com.ezen.project.model.BookingDTO;
 import com.ezen.project.model.HotelDTO;
+import com.ezen.project.model.NUserBookingDTO;
 import com.ezen.project.model.ProgramDTO;
 import com.ezen.project.model.RoomDTO;
 import com.ezen.project.model.UserDTO;
@@ -176,7 +177,8 @@ public class BookingController {
 		} else {
 //		비회원 예약
 			if(displayHotelMapper.inserBookNonUser(params) > 0) {
-				req.setAttribute("msg", "예약 성공");
+				int bookNum = displayHotelMapper.getNonUserBookingNum();
+				req.setAttribute("msg", "예약되었습니다. 예약번호는 "+bookNum+" 입니다.");
 //				비회원용 예약 확인페이지로 보내기(수정필요)
 				req.setAttribute("url", "main");
 			};
@@ -370,4 +372,49 @@ public class BookingController {
 		
 		return "message";
 	}
+	
+	@RequestMapping("/nonUserBookDetail")
+	public String nonUserBookDetail(HttpServletRequest req, @RequestParam Map<String, String> params) {
+		NUserBookingDTO nbdto = userMapper.getNonUserBookDetail(params);
+		if(nbdto != null) {
+			HotelDTO hdto = hotelMapper.getHotel(nbdto.getH_num());
+			req.setAttribute("hdto", hdto);
+			req.setAttribute("bdto", nbdto);
+			return "nonUser/nonUserBookDetail";
+		} else {
+			req.setAttribute("msg", "해당하는 예약이 존재하지 않습니다");
+			req.setAttribute("url", "nonUserInfoCheck");
+			return "message";
+		}
+	}
+	
+//	예약 취소전 
+	@RequestMapping("/nonUser_bookCancel")
+	public String nonUserBookCancel(HttpServletRequest req, @RequestParam Map<String,String> params) {
+		//RequestParam값에 h_num 나중에 추가
+		params.put("book_num", params.get("tempUser_bookNum"));
+		NUserBookingDTO nbdto = userMapper.getNonUserBookDetail(params);
+		HotelDTO hdto = hotelMapper.getHotel(nbdto.getH_num());
+		
+		req.setAttribute("bdto", nbdto);
+		req.setAttribute("hdto", hdto);
+		
+		return "nonUser/nonUser_bookCancel";
+	}
+	
+//	예약취소 확인
+	@RequestMapping("/nonUser_bookCancel_ok")
+	public String nonUserBookCancelOk(HttpServletRequest req, @RequestParam Map<String,String> params) {
+		int res = displayHotelMapper.deleteNonUserBook(params.get("book_num"));
+		if(res > 0) {
+			req.setAttribute("msg", "예약이 취소되었습니다. 환불처리에 2~3일 정도 소요 될 수 있습니다");
+			req.setAttribute("url", "main");
+			return "closeWindow";
+		} else {
+			req.setAttribute("msg", "취소에 실패했습니다. 다시 시도해주세요.");
+			req.setAttribute("url", "nonUser_bookCancel");
+			return "message";
+		}
+	}
+	
 }

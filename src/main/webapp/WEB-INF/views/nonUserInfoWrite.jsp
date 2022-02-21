@@ -22,7 +22,7 @@
 </script>
 <body>
 	<form name="f_nonLogin" method="POST" action="returnToRoomContent">
-	<h3>비회원 필수 정보 입력</h3>
+	<h3>비회원 예약 확인</h3>
 	<table>
 		<tr>
 			<td colspan="2">

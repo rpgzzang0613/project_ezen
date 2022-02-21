@@ -326,4 +326,9 @@ public class UserController {
 		return "user/user_info";
 	}
 	
+	@RequestMapping("/nonUserInfoCheck")
+	public String nonUserInfoCheck() {
+		return "nonUser/enter_info";
+	}
+	
 }

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.ezen.project.model.BookingDTO;
 import com.ezen.project.model.HotelDTO;
+import com.ezen.project.model.NUserBookingDTO;
 import com.ezen.project.model.RoomDTO;
 
 @Service
@@ -171,5 +172,26 @@ public class HotelMapper {
 	// 테스트
 	public List<HotelDTO> listHotel2() {
 		return sqlSession.selectList("listHotel2");
+	}
+
+	public List<NUserBookingDTO> listNUBookingByHotel(int h_num) {
+		return sqlSession.selectList("nUserBookList",h_num);
+	}
+
+	public int confirmnBooking(int book_num) {
+		return sqlSession.update("confirmnBooking", book_num);
+	}
+	
+	// 기업이 예약 리스트 페이지에서 예약 취소시 사용하는 메소드
+	public int denynBooking(int book_num) {
+		return sqlSession.update("denynBooking", book_num);
+	}
+	
+	public int checkinnBooking(int book_num) {
+		return sqlSession.update("checkinnBooking", book_num);
+	}
+	
+	public int checkoutnBooking(int book_num) {
+		return sqlSession.update("checkoutnBooking", book_num);
 	}
 }

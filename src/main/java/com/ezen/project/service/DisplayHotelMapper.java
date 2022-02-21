@@ -256,6 +256,17 @@ public class DisplayHotelMapper {
 		return sqlSession.selectOne("countBookedRoom", map2);
 	}
 	
+	public int countnBookedRoom(Map<String, String> map) {
+		String sql = "SELECT count(*) FROM project_nonUserBooking WHERE room_code='"+map.get("room_code")+"' AND "
+				+ "(book_indate <= '"+map.get("book_outdate")+
+				"' AND book_outdate >= '"+map.get("book_indate")+"') AND book_status <> 'deny'";
+		
+		Map<String, String> map2 = new Hashtable<>();
+		map2.put("sql", sql);
+		
+		return sqlSession.selectOne("countBookedRoom", map2);
+	}
+	
 	// 특정 객실이 예약중인지 아닌지 리턴하는 메소드
 	public String isBookedRoom(Map<String,String> map) {
 		String sql = "SELECT count(*) FROM project_booking WHERE room_num="+map.get("room_num")+" AND "
@@ -271,9 +282,32 @@ public class DisplayHotelMapper {
 		
 		return isBooked;
 	}
+	
+	public String isnBookedRoom(Map<String,String> map) {
+		String sql = "SELECT count(*) FROM project_nonUserBooking WHERE room_num="+map.get("room_num")+" AND "
+				+ "(book_indate <= '"+map.get("book_outdate")+
+				"' AND book_outdate >= '"+map.get("book_indate")+"') AND book_status <> 'deny'";
+		
+		Map<String, String> map2 = new Hashtable<>();
+		map2.put("sql", sql);
+		
+		int res = sqlSession.selectOne("isBookedRoom", map2);
+		
+		String isBooked = res > 0 ? "y" : "n";
+		
+		return isBooked;
+	}
 
 	public int inserBookNonUser(Map<String, String> params) {
 		return sqlSession.insert("nonUserBook", params);
+	}
+
+	public int getNonUserBookingNum() {
+		return sqlSession.selectOne("getNonUserBookingNum");
+	}
+
+	public int deleteNonUserBook(String book_num) {
+		return sqlSession.delete("nonUserBookCancel", Integer.parseInt(book_num));
 	}
 	
 }

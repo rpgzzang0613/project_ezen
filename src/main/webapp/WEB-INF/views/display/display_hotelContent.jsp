@@ -75,7 +75,7 @@
 		<c:if test="${not empty twinRoom}">
 		<div style="text-align: center; font-weight:bold;">TWIN ROOM</div>
 			<c:forEach var="tRoom" items="${twinRoom}">
-				<c:set var="bookable_count" value="${tRoom.max_count - tRoom.booked_count}"/>
+				<c:set var="bookable_count" value="${tRoom.max_count - (tRoom.booked_count + tRoom.nbooked_count)}"/>
 				<c:if test="${tRoom.room_capacity+2 >= sessionScope.inwon and bookable_count > 0}">
 				<table class="roomTable" align="center" style="cursor:pointer;" 
 				onmouseover="this.bgColor='#F9EDA5'" onmouseout="this.bgColor=''"
@@ -142,7 +142,7 @@
 		<c:if test="${not empty doubleRoom}">
 		<div style="text-align: center; font-weight:bold;">DOUBLE ROOM</div>
 			<c:forEach var="dbRoom" items="${doubleRoom}">
-				<c:set var="bookable_count" value="${dbRoom.max_count - dbRoom.booked_count}"/>
+				<c:set var="bookable_count" value="${dbRoom.max_count - (dbRoom.booked_count + dbRoom.nbooked_count)}"/>
 				<c:if test="${dbRoom.room_capacity+2 >= sessionScope.inwon and bookable_count > 0}">
 				<table class="roomTable" align="center" style="cursor:pointer;" 
 				onmouseover="this.bgColor='#F9EDA5'" onmouseout="this.bgColor=''"
@@ -209,7 +209,7 @@
 		<c:if test="${not empty deluxeRoom}">
 		<div style="text-align: center; font-weight:bold;">DELUXE ROOM</div>
 			<c:forEach var="dxRoom" items="${deluxeRoom}">
-				<c:set var="bookable_count" value="${dxRoom.max_count - dxRoom.booked_count}"/>
+				<c:set var="bookable_count" value="${dxRoom.max_count - (dxRoom.booked_count + dxRoom.nbooked_count)}"/>
 				<c:if test="${dxRoom.room_capacity+2 >= sessionScope.inwon and bookable_count > 0}">
 				<table class="roomTable" align="center" style="cursor:pointer;" 
 				onmouseover="this.bgColor='#F9EDA5'" onmouseout="this.bgColor=''"

@@ -8,6 +8,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ezen.project.model.NUserBookingDTO;
 import com.ezen.project.model.UserDTO;
 
 @Service
@@ -106,6 +107,10 @@ public class UserMapper {
 	//관리자가 유저 계정 삭제
 	public int deleteUserByAdmin(int u_num) {
 		return sqlSession.update("deleteUserByAdmin", u_num);
+	}
+
+	public NUserBookingDTO getNonUserBookDetail(Map<String, String> params) {
+		return sqlSession.selectOne("getNonUserBookDetail", params);
 	}
 	
 }
