@@ -73,13 +73,12 @@ public class DisplayActMapper {
 		return sqlSession.selectOne("activityContent", a_num);
 	}
 	
-	public List<ActivityDTO> getActivityList(Map<String,String> params){
-		String str = "select count(*) from project_activity where a_name like'%"+
-						params.get("location")+"%' or a_address like '%"+params.get("location")+
-						"%' or a_code like '%"+params.get("location")+"%'";
-		Map<String,String> map = new Hashtable<String, String>();
-		map.put("sql", str);
-		return sqlSession.selectList("getActivityList", map);
+	// 위시리스트 체크여부 확인
+	public int isWishActCheck(int a_num, int u_num) {
+		Map<String, Integer> map = new Hashtable<String, Integer>();
+		map.put("a_num", a_num);
+		map.put("u_num", u_num);
+		return sqlSession.selectOne("isWishActCheck", map);
 	}
 	
 	public List<WishListActDTO> getWishListAct(int u_num){

@@ -47,8 +47,9 @@
 		'%${search}%' or a_address like '%${search}%') and a_code=#{a_code}
 	</select>
 	
-	<select id="getActivityList" parameterType="java.util.Map" resultType="ActivityDTO">
-		${sql}
+	<!-- 위시리스트 체크 확인 -->
+	<select id="isWishActCheck" resultType="int" parameterType="java.util.Map">
+		select count(*) from project_wishListact where a_num=#{a_num} and u_num=#{u_num}
 	</select>
 	
 	<select id="getWishListAct" parameterType="java.util.Map" resultType="WishListActDTO">

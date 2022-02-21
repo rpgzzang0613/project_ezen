@@ -146,6 +146,9 @@ public class DisplayHotelController {
 	@RequestMapping("/display_hotelContent")
 	public String hotelContent(HttpServletRequest req, int h_num) {
 		
+		// 호텔DTO 가져오기
+		HotelDTO hdto = hotelMapper.getHotel(h_num);
+		
 		// 호텔에 리뷰 리스트 가져오기
 		List<ReviewDTO> reviewList = displayHotelMapper.listReviewByHotel(h_num);
 		
@@ -160,7 +163,6 @@ public class DisplayHotelController {
 		}
 		double starAverage = Math.round((double)totalStar/star.size()*10)/10.0;
 
-		
 		// 객실 타입별로 List 뽑아오기
 		List<RoomDTO> twinList = displayHotelMapper.listRoomByType(h_num, "TWIN");
 		List<RoomDTO> doubleList = displayHotelMapper.listRoomByType(h_num, "DOUBLE");
@@ -194,7 +196,6 @@ public class DisplayHotelController {
 		
 		// 로그인할 경우만 위시리스트 체크
 		LoginOkBeanUser loginOkBean = (LoginOkBeanUser)session.getAttribute("loginOkBean");
-		HotelDTO hdto = hotelMapper.getHotel(h_num);
 		
 		if(loginOkBean != null) {
 			hdto.setWishList(displayHotelMapper.isWishCheck(h_num, loginOkBean.getU_num()));
