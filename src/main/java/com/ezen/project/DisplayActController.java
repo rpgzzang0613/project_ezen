@@ -34,19 +34,20 @@ public class DisplayActController {
 			@RequestParam(required = false) String search, String bookdate) {
 		
 		HttpSession session = req.getSession();
-		session.setAttribute("bookdate", bookdate);
+		
 		LoginOkBeanUser loginOkBean = (LoginOkBeanUser)session.getAttribute("loginOkBean");
 		
 		List<ActivityDTO> activityList = null;
+		
 		if(search.contains(", ")) {
 			String[]array = search.split(", ");
 			String a_name = array[0];
 			String addr = array[1];
-			activityList = displayActMapper.activityDoubleSearchOk(a_name, addr);
+			activityList = displayActMapper.listActByNameAndAddr(a_name, addr);
 		}else if(!code.equals("")) {
-			activityList = displayActMapper.activitySearchOkfilterall(code);
+			activityList = displayActMapper.listActByCode(code);
 		}else {
-			activityList = displayActMapper.activitySearchOk(search);
+			activityList = displayActMapper.listActBySearch(search);
 		}
 		for(ActivityDTO adto : activityList) {
 			int reviewCount = displayActMapper.countReview(adto.getA_num());
@@ -71,6 +72,8 @@ public class DisplayActController {
 				}
 			}
 		}
+		
+		session.setAttribute("bookdate", bookdate);
 		req.setAttribute("activityList", activityList);
 		req.setAttribute("search", search);
 		return "display/display_activitySearchOk";
@@ -81,9 +84,9 @@ public class DisplayActController {
 		List<ActivityDTO> activityList = null;
 		
 		if(search.equals("")) {
-			activityList = displayActMapper.activitySearchOkfilterall(code);
+			activityList = displayActMapper.listActByCode(code);
 		}else {
-			activityList = displayActMapper.activitySearchOkfilter(search, code);
+			activityList = displayActMapper.listActBySearchAndCode(search, code);
 		}
 		
 		HttpSession session = req.getSession();
@@ -201,7 +204,7 @@ public class DisplayActController {
 	@RequestMapping(value="/wishActReleaseOK")
 	public String wishActReleaseOK(HttpServletRequest req, @RequestParam Map<String, String> params) {
 		displayActMapper.wishActReleaseOK(params);
-		List<ActivityDTO> actList = displayActMapper.getActivity(params);
+		List<ActivityDTO> actList = displayActMapper.getActivityList(params);
 		HttpSession session = req.getSession();
 		LoginOkBeanUser loginOkBean = (LoginOkBeanUser)session.getAttribute("loginOkBean");
 		int u_num = loginOkBean.getU_num();
@@ -220,7 +223,7 @@ public class DisplayActController {
 	@RequestMapping(value="/wishActCheckOK")
 	public String wishActCheckOK(HttpServletRequest req, @RequestParam Map<String, String> params) {
 		displayActMapper.wishActCheckOK(params);
-		List<ActivityDTO> actList = displayActMapper.getActivity(params);
+		List<ActivityDTO> actList = displayActMapper.getActivityList(params);
 		HttpSession session = req.getSession();
 		LoginOkBeanUser loginOkBean = (LoginOkBeanUser)session.getAttribute("loginOkBean");
 		int u_num = loginOkBean.getU_num();

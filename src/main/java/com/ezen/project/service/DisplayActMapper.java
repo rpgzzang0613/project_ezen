@@ -39,30 +39,41 @@ public class DisplayActMapper {
 		return sqlSession.selectOne("cooking");
 	}
 
-	public List<ActivityDTO> activitySearchOk(String search){
+	// 검색어 입력시 결과 가져오는 메소드 (입력안하면 전부 가져옴)
+	public List<ActivityDTO> listActBySearch(String search){
 		Map<String, String> map = new Hashtable<String, String>();
 		map.put("search",search);
-		return sqlSession.selectList("searchActivity", map);
+		return sqlSession.selectList("listActBySearch", map);
+	}
+	
+	// 검색어 자동완성을 통해 주소와 액티비티명이 같이 입력되는 경우에 결과를 가져오는 메소드
+	public List<ActivityDTO> listActByNameAndAddr(String aname, String addr) {
+		Map<String, String> map = new Hashtable<>();
+		map.put("addr", "%"+addr+"%");
+		map.put("aname", "%"+aname+"%");
+		return sqlSession.selectList("listActByNameAndAddr", map);
+	}
+	
+	// 검색어 입력 없이 카테고리를 눌렀을 때 결과를 가져오는 메소드
+	public List<ActivityDTO> listActByCode(String code) {
+		Map<String, String> map = new Hashtable<String, String>();
+		map.put("a_code", code);
+		return sqlSession.selectList("listActByCode", map);
 	}
 
-	public List<ActivityDTO> activitySearchOkfilter(String search, String code) {
+	// 검색어 입력해서 나온 결과에서 필터를 눌렀을 때 결과를 가져오는 메소드
+	public List<ActivityDTO> listActBySearchAndCode(String search, String code) {
 		Map<String, String> map = new Hashtable<String, String>();
 		map.put("search", search);
 		map.put("a_code", code);
-		return sqlSession.selectList("searchFilterActivity", map);
-	}
-
-	public List<ActivityDTO> activitySearchOkfilterall(String code) {
-		Map<String, String> map = new Hashtable<String, String>();
-		map.put("a_code", code);
-		return sqlSession.selectList("searchFilterAllActivity", map);
+		return sqlSession.selectList("listActBySearchAndCode", map);
 	}
 
 	public ActivityDTO activityContent(String a_num) {
 		return sqlSession.selectOne("activityContent", a_num);
 	}
 	
-	public List<ActivityDTO> getActivity(Map<String,String> params){
+	public List<ActivityDTO> getActivityList(Map<String,String> params){
 		String str = "select count(*) from project_activity where a_name like'%"+
 						params.get("location")+"%' or a_address like '%"+params.get("location")+
 						"%' or a_code like '%"+params.get("location")+"%'";
@@ -132,13 +143,6 @@ public class DisplayActMapper {
 	
 	public int deleteActBook(int ba_num) {
 		return sqlSession.update("deleteActBook", ba_num);
-	}
-
-	public List<ActivityDTO> activityDoubleSearchOk(String aname, String addr) {
-		Map<String, String> map = new Hashtable<>();
-		map.put("addr", "%"+addr+"%");
-		map.put("aname", "%"+aname+"%");
-		return sqlSession.selectList("activityDoubleSearchOk", map);
 	}
 	
 	public int countReview(int a_num) {

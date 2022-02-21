@@ -28,18 +28,23 @@
 		 select count(*) from project_activity where a_code='culture'
 	</select>
 
-	<select id="searchActivity" parameterType="String" resultType="ActivityDTO">
+	<select id="listActBySearch" parameterType="String" resultType="ActivityDTO">
 		select * from project_activity where a_name like 
 		'%${search}%' or a_address like '%${search}%'
 	</select>
 	
-	<select id="searchFilterActivity" parameterType="String" resultType="ActivityDTO">
+	<select id="listActByNameAndAddr" parameterType="java.util.Map" resultType="ActivityDTO">
+		select * from project_activity where a_name like 
+		#{aname} and a_address like #{addr}
+	</select>
+	
+	<select id="listActByCode" parameterType="String" resultType="ActivityDTO">
+		select * from project_activity where a_code=#{a_code}
+	</select>
+	
+	<select id="listActBySearchAndCode" parameterType="String" resultType="ActivityDTO">
 		select * from project_activity where (a_name like 
 		'%${search}%' or a_address like '%${search}%') and a_code=#{a_code}
-	</select>
-
-	<select id="searchFilterAllActivity" parameterType="String" resultType="ActivityDTO">
-		select * from project_activity where a_code=#{a_code}
 	</select>
 	
 	<select id="getActivityList" parameterType="java.util.Map" resultType="ActivityDTO">
@@ -97,11 +102,6 @@
 	<update id="deleteActBook" parameterType="int">
 		update project_bookingAct set ba_status='deny' where ba_num=#{ba_num}
 	</update>
-
-	<select id="activityDoubleSearchOk" parameterType="java.util.Map" resultType="ActivityDTO">
-		select * from project_activity where a_name like 
-		#{aname} and a_address like #{addr}
-	</select>
 	
 	<select id="allActReview" resultType="ReviewActDTO">
 		select * from project_reviewact
