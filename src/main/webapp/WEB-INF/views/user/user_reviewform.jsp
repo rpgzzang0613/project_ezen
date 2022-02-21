@@ -43,7 +43,7 @@
 		<tr>
 			<th>리뷰작성</th>
 			<td>
-				<textarea style="resize:none; height:190px; width:400px;" name="review_contents" rows="13" cols="55"></textarea>
+				<textarea maxlength="200" style="resize:none; height:100%; width:100%;" name="review_contents" rows="13" cols="55"></textarea>
 			</td> 
 		</tr>
 		<tr align="right">    

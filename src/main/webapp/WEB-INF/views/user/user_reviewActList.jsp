@@ -4,48 +4,64 @@
 <%@ include file="user_myPage.jsp" %>    
 
 <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
-<link rel="stylesheet" href="resources/LJWstyle.css"/>
-
-	<table border="1" align="center" width="90%">
-		<caption><b>엑티비티 리뷰 목록</b></caption>
-	<c:if test="${empty listReview}">
-		<tr>
-			<td align="center">작성하신 리뷰가 없습니다.</td>
-		</tr>
-	</c:if>
+<link rel="stylesheet" href="resources/ReviewList.css"/>
 	
+	<div style="font-weight:bold; font-size: 25px; margin-top: 10px;"> 
+		작성한 액티비티 리뷰 목록
+	</div> 
+	
+	<c:if test="${empty listReview}">
+		<div style=" font-weight:bold; font-size: 20px; padding:7rem;">
+			작성하신 리뷰가 없습니다.
+		</div>
+	</c:if> 
 	<c:set var = "num" value = "${number}"/>
 	<c:if test="${not empty listReview}">
-		<c:forEach var="rdto" items="${listReview}">
-			<tr>
-				<td colspan="5">No.${num}</td>
-			</tr>
-			<tr align="center">
-				<td><font color="gray">닉네임: </font>${rdto.review_nickname}</td>
-				<td><i class="fas fa-star"></i>${rdto.review_star} / 5점</td>
-				<td><font color="gray">프로그램명: </font>${rdto.review_programtype}</td>
-				<td><font color="gray">작성일: </font>${rdto.review_joindate}</td>
-				<td><a href="editActReview?review_num=${rdto.review_num}">수정</a></td>
-			</tr>
-			<tr>
-				<td colspan="5" valign="top"><font color="gray">리뷰 내용: </font><br>${rdto.review_contents}</td>
-			</tr>
-			<c:if test="${not empty rdto.review_image}">
-				<tr>
-					<td colspan="5">
-						<img class="picture" src="resources/images/review/${rdto.review_image}" width="300" height="200"/>
-					</td>
-				</tr>
-			</c:if>
-			<tr>
-				<td colspan="5" align = "right"><a href="deleteActReview?review_num=${rdto.review_num}">삭제</a></td>
-			</tr>
-			<c:set var="num" value="${num-1}"/>
-			
-		</c:forEach>
+	<c:forEach var="rdto" items="${listReview}">
+	<div class="parent border" style="margin-top: 5px; ">
+		<div class="title"  style="display: flex; justify-content: space-between;width: 100%; height: 15%"> 
+			<div style="float:left;">
+			No.${num}  ${rdto.review_programtype}	
+			</div>
+			<div style="float:right; ">
+			${rdto.review_joindate} 
+			</div>  
+		</div>  
+		<div class="justify-left " style="width:100%; height: 85%; position: relative;">
+			<div style="width: 30%;">  
+			  <c:if test="${not empty rdto.review_image}">
+			  	<div class="product-img-div">
+				  	<img class="picture" src="resources/images/review/${rdto.review_image}"/>
+				</div>
+			  </c:if>
+			  <c:if test="${empty rdto.review_image}">
+				  	<div class="product-img-div">
+				  		<img class="picture" src="resources/images/hotel/default.jpg">
+				  	</div>
+			  </c:if>
+			  <div style="display:flex; flex-wrap:wrap; height:40%;margin-top:5px;"> 
+				<span>닉네임: ${rdto.review_nickname}</span>
+				<span>별점 : <i class="fas fa-star"></i>${rdto.review_star} / 5점</span>
+			  </div>  
+			</div>
+			<div style="width:70%;">
+			<div style="text-align:left; height:15%">
+			리뷰 내용 
+			</div>
+			<div style="text-align:left; overflow:auto; text-overflow : ellipsis; height:70%">
+			${rdto.review_contents}
+			</div>
+			<div style="text-align:right; height:15%">
+			<a href="deleteActReview?review_num=${rdto.review_num}"><span style="color:red;">삭제</span></a> |
+			<a href="editActReview?review_num=${rdto.review_num}"><span style="color:blue;">수정</span></a>
+			</div> 
+			</div>
+		</div>
+	</div>
+	<c:set var="num" value="${num-1}"/>
+	</c:forEach>
 	</c:if>
-	</table>
-	
+
 	<c:if test="${rowCount > 0 }">
 	<div align="center">
 		<c:if test="${startPage > pageBlock}">

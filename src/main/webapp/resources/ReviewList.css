@@ -1,0 +1,51 @@
+.parent {
+	width:80%; 
+	height: 210px;
+    position: relative;
+    
+} 
+
+.title {
+    /* 박스 스타일링 */
+    border: 1px;
+    background-color: lightyellow;
+ 
+    /* 텍스트 정렬 */
+    display: flex; 
+    font-size: 18px;
+}
+.justify-left{
+	display:flex;
+	justify-content: left;
+	 
+}
+.absolute {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+}
+.border{
+	border-style:solid; 
+	border-color:black;
+} 
+.relative{
+	position:relative;
+	left: 1px;
+	top : 1px;
+	margin-left: 1px;
+}
+.product-title {
+    text-align:center;
+    display:table;
+    border:1px solid #cecece;
+	width:280px; 
+	height:250px;
+}
+.product-img-div {
+    display:table-cell;
+    vertical-align:middle;
+}
+img{
+	width:180;
+	height: 100;
+}

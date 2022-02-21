@@ -88,7 +88,7 @@
 				</li>
 				<li class="contentListLi" style="display:none;">
 					<ol class="contentList">
-						<li onclick="window.open('hotel_main')">호텔 관리</li>
+						<li onclick="hotelmain()">호텔 관리</li>
 						<li onclick="window.open('activity_main')">액티비티 관리</li>
 					</ol>
 				</li>
@@ -103,6 +103,11 @@
 			</ul>
 		</td>
 		<td>			
+<script> 
+function hotelmain(){
+	window.open("hotel_main", "", "_blank");
+}
+</script>
 <script>
 function onInfoListClicked() {
 	const infoList = document.querySelectorAll(".infoList")
