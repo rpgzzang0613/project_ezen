@@ -6,15 +6,20 @@
 <%@ include file="../user_searchbar.jsp"%>
 <script>
 	function loginCheck(u_num, h_num, room_code){
-		if(u_num > 0){
+		if(u_num != "") {
+			// 로그인 된 상태
 			document.f9.submit();
 		}
-		else{
+		else {
+			// 로그인 안된 상태
 			var mode = document.getElementById("tempCheck").value;
 			var rn = document.getElementById("room_num").value;
-			if(mode == "member"){
+			if(mode == "member") {
+				// 비회원 예약정보 입력하기 전
 				window.open("loginAskPage", "search", "width=450, height=350");
-			} else {
+				// loginAskPage가 열리고 정보를 입력하고 나면 닫히면서 roomContent 페이지를 새로고침하면서 mode값이 변경됨
+			}else {
+				// 비회원 예약정보 입력한 후
 				location.href="user_bookWriteform?mode="+mode+"&room_num="+rn+"&room_code="+room_code+"&h_num="+h_num;
 			}
 		}
@@ -22,7 +27,7 @@
 </script>
 <link rel="stylesheet" href="resources/LJWstyle.css"/>
 <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
-<form style="background-color:#fbfbfb;margin-top:-16px; margin-bottom:-22px;"name="f9" id="checkForm" action="user_bookWriteform" method="post">
+<form style="background-color:#fbfbfb;margin-top:-16px; margin-bottom:-22px;" name="f9" id="checkForm" action="user_bookWriteform" method="post">
 	<input type="hidden" id="h_num" name="h_num" value="${hdto.h_num}">
 	<c:if test="${sessionScope.tempUser ne 'tempUser'}">
 		<input type="hidden" id="tempCheck" value="member">

@@ -21,7 +21,7 @@
 	}
 </script>
 <body>
-	<form action="nonUser_login_ok" name="loginAsk" method="post">
+	<form name="loginAsk" method="post" action="user_login_ok_popup">
 		<table>
 			<tr>
 				<!-- cookie로 아이디 기억하기 -->

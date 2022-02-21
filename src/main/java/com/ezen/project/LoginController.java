@@ -1,5 +1,7 @@
 package com.ezen.project;
 
+import java.util.Map;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -8,6 +10,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -115,7 +118,7 @@ public class LoginController {
 		return new ModelAndView("message");
 	}
 	
-	@RequestMapping("/nonUser_login_ok")
+	@RequestMapping("/user_login_ok_popup")
 	public ModelAndView nonUserLoginOk(HttpServletRequest req,HttpServletResponse resp) {
 		loginCheck.setU_email(req.getParameter("u_email"));
 		loginCheck.setU_password(req.getParameter("u_password"));
@@ -143,7 +146,7 @@ public class LoginController {
 			session.setAttribute("loginOkBean", loginOkBean);
 			msg = "로그인 되었습니다.";
 			req.setAttribute("msg", msg);
-			return new ModelAndView("closeWindow"); 
+			return new ModelAndView("closeWindow");
 
 		case LoginCheck.NOT_email : 
 			msg = "없는 계정 입니다. 다시 확인하시고 입력해 주시길 바랍니다.";
@@ -319,5 +322,24 @@ public class LoginController {
 		req.setAttribute("msg", "로그아웃 되었습니다.");
 		req.setAttribute("url", "activity_usermain");
 		return "message";
+	}
+	
+	@RequestMapping(value="/loginAskPage")
+	public String loginAskPage(HttpServletRequest req) {
+		return "user_loginAsk";
+	}
+	
+	@RequestMapping(value="/nonUserInfo")
+	public String nonUserInfo(HttpServletRequest req) {
+		return "nonUserInfoWrite";
+	}
+	
+	@RequestMapping(value="/returnToRoomContent")
+	public String returnToRoomContent(HttpServletRequest req, @RequestParam Map<String,String> params) {
+		HttpSession session = req.getSession();
+		session.setAttribute("tempUser_name", params.get("tempUser_name"));
+		session.setAttribute("tempUser_tel", params.get("tempUser_tel"));
+		session.setAttribute("tempUser", "tempUser");
+		return "closeWindow";
 	}
 } 

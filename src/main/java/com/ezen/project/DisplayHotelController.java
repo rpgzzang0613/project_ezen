@@ -414,24 +414,4 @@ public class DisplayHotelController {
 		return "display/display_hotelContent";
 	}
 	
-	@RequestMapping(value="/loginAskPage")
-	public String loginAskPage(HttpServletRequest req) {
-		return "user_loginAsk";
-	}
-	
-	@RequestMapping(value="/nonUserInfo")
-	public String nonUserInfo(HttpServletRequest req) {
-		return "nonUserInfoWrite";
-	}
-	
-	@RequestMapping(value="/returnToRoomContent")
-	public String returnToRoomContent(HttpServletRequest req, @RequestParam Map<String,String> params) {
-		HttpSession session = req.getSession();
-		session.setAttribute("tempUser_name", params.get("tempUser_name"));
-		session.setAttribute("tempUser_tel", params.get("tempUser_tel"));
-		session.setAttribute("tempUser", "tempUser");
-		return "closeWindow";
-	}
-	
-	
 }
