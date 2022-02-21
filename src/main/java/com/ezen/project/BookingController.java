@@ -17,6 +17,7 @@ import com.ezen.project.model.ActivityDTO;
 import com.ezen.project.model.BookingActDTO;
 import com.ezen.project.model.BookingDTO;
 import com.ezen.project.model.HotelDTO;
+import com.ezen.project.model.NUserBookingDTO;
 import com.ezen.project.model.ProgramDTO;
 import com.ezen.project.model.RoomDTO;
 import com.ezen.project.model.UserDTO;
@@ -110,7 +111,7 @@ public class BookingController {
 	
 	// 객실상세 페이지 -> 예약 페이지로
 	@RequestMapping("/user_bookWriteform")
-	public String userBookWriteform(HttpServletRequest req, @RequestParam int h_num, int room_num) {
+	public String userBookWriteform(HttpServletRequest req, @RequestParam int h_num, int room_num, String mode) {
 		HotelDTO hdto = hotelMapper.getHotel(h_num);
 		RoomDTO rdto = hotelMapper.getRoomByRoomNum(room_num);
 		
@@ -118,9 +119,14 @@ public class BookingController {
 		LoginOkBeanUser loginOkBean = (LoginOkBeanUser)session.getAttribute("loginOkBean");
 		
 		if(loginOkBean == null) {
-			req.setAttribute("msg", "로그인이 필요한 서비스 입니다");
-			req.setAttribute("url", "user_login");
-			return "message";
+			if(mode.equals("member")) {
+				req.setAttribute("msg", "로그인이 필요한 서비스 입니다");
+				req.setAttribute("url", "user_login");
+				return "message";
+			}else {
+				req.setAttribute("tempUser_name", (String)session.getAttribute("tempUser_name"));
+				req.setAttribute("tempUser_tel", (String)session.getAttribute("tempUser_tel"));
+			}
 		}else {
 			int u_num = loginOkBean.getU_num();
 			UserDTO udto = userMapper.getUserByUnum(u_num);
@@ -153,20 +159,35 @@ public class BookingController {
 			return "message";
 		}
 		
-		int res = displayHotelMapper.insertBook(params);
-		
-		if(res>0) {
-//			회원이 입력한 포인트가 0보다 크면, 포인트 수정
-			if(Integer.parseInt(params.get("inputPoint")) != 0) {
-				displayHotelMapper.usedPoint(params);
+//		회원 예약
+		if(params.get("u_num") != null) {
+			int res = displayHotelMapper.insertBook(params);
+			
+			if(res>0) {
+	//			회원이 입력한 포인트가 0보다 크면, 포인트 수정
+				if(Integer.parseInt(params.get("inputPoint")) != 0) {
+					displayHotelMapper.usedPoint(params);
+				}
+	//			적립받을 포인트 업데이트해줌
+				displayHotelMapper.savePoint(params);
+				req.setAttribute("msg", "예약 성공");
+				req.setAttribute("url", "user_bookList");
+			}else {
+				req.setAttribute("msg", "예약에 실패하였습니다. 다시 시도해주세요.");
+				req.setAttribute("url", "main");
 			}
-//			적립받을 포인트 업데이트해줌
-			displayHotelMapper.savePoint(params);
-			req.setAttribute("msg", "예약 성공");
-			req.setAttribute("url", "user_bookList");
-		} else {
-			req.setAttribute("msg", "예약가능한 객실이 없습니다");
-			req.setAttribute("url", "main");
+		}else {
+//		비회원 예약
+			if(displayHotelMapper.inserBookNonUser(params) > 0) {
+				int bookNum = displayHotelMapper.getNonUserBookingNum();
+				req.setAttribute("msg", "예약되었습니다. 예약번호는 "+bookNum+" 입니다.");
+//				비회원용 예약 확인페이지로 보내기(수정필요)
+				req.setAttribute("url", "main");
+			}else {
+				req.setAttribute("msg", "예약에 실패하였습니다. 다시 시도해주세요.");
+				req.setAttribute("url", "main");
+			}
+			
 		}
 		
 		return "message";
@@ -356,4 +377,49 @@ public class BookingController {
 		
 		return "message";
 	}
+	
+	@RequestMapping("/nonUserBookDetail")
+	public String nonUserBookDetail(HttpServletRequest req, @RequestParam Map<String, String> params) {
+		NUserBookingDTO nbdto = userMapper.getNonUserBookDetail(params);
+		if(nbdto != null) {
+			HotelDTO hdto = hotelMapper.getHotel(nbdto.getH_num());
+			req.setAttribute("hdto", hdto);
+			req.setAttribute("bdto", nbdto);
+			return "nonUser/nonUserBookDetail";
+		} else {
+			req.setAttribute("msg", "해당하는 예약이 존재하지 않습니다");
+			req.setAttribute("url", "nonUserInfoCheck");
+			return "message";
+		}
+	}
+	
+//	예약 취소전 
+	@RequestMapping("/nonUser_bookCancel")
+	public String nonUserBookCancel(HttpServletRequest req, @RequestParam Map<String,String> params) {
+		//RequestParam값에 h_num 나중에 추가
+		params.put("book_num", params.get("tempUser_bookNum"));
+		NUserBookingDTO nbdto = userMapper.getNonUserBookDetail(params);
+		HotelDTO hdto = hotelMapper.getHotel(nbdto.getH_num());
+		
+		req.setAttribute("bdto", nbdto);
+		req.setAttribute("hdto", hdto);
+		
+		return "nonUser/nonUser_bookCancel";
+	}
+	
+//	예약취소 확인
+	@RequestMapping("/nonUser_bookCancel_ok")
+	public String nonUserBookCancelOk(HttpServletRequest req, @RequestParam Map<String,String> params) {
+		int res = displayHotelMapper.deleteNonUserBook(params.get("book_num"));
+		if(res > 0) {
+			req.setAttribute("msg", "예약이 취소되었습니다. 환불처리에 2~3일 정도 소요 될 수 있습니다");
+			req.setAttribute("url", "main");
+			return "closeWindow";
+		} else {
+			req.setAttribute("msg", "취소에 실패했습니다. 다시 시도해주세요.");
+			req.setAttribute("url", "nonUser_bookCancel");
+			return "message";
+		}
+	}
+	
 }

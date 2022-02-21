@@ -61,6 +61,10 @@ function checkLogin() {
 	}
 	document.f_login.submit()
 }
+//비회원 예약 확인창
+function nonUserBookCheck(){
+	window.open("nonUserInfoCheck", "search", "width=450, height=800");
+}
 </script>
 <form name="f_login" method="POST" action="user_login_ok">
 <input type="hidden" name="kakaoEmail">
@@ -122,9 +126,15 @@ function checkLogin() {
 	<a id="custom-login-btn" href="javascript:loginWithKakao()">
   		<img
     	src="//k.kakaocdn.net/14/dn/btroDszwNrM/I6efHub1SN5KCJqLm1Ovx1/o.jpg"
-    	width = 280px height = 70px
+    	width = 280px height = 50px
     	alt="카카오 로그인 버튼"/>
 	</a>
+	</td>
+</tr>
+<tr>
+	<td colspan="2" align="center">
+		<button type="button" name="userJoin" onclick="javascript:nonUserBookCheck()" 
+		style="width:280px;height:50px;background-color:black;color:white;border-color:black">비회원 예약내역 확인</button>
 	</td>
 </tr>
 <tr>

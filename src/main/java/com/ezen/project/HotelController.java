@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.ezen.project.model.BookingDTO;
 import com.ezen.project.model.HotelDTO;
+import com.ezen.project.model.NUserBookingDTO;
 import com.ezen.project.model.RoomDTO;
 import com.ezen.project.service.HotelMapper;
 
@@ -543,6 +544,7 @@ public class HotelController {
 	@RequestMapping("/hotel_booklist")
 	public String hotelBooklist(HttpServletRequest req, int h_num) {
 		List<BookingDTO> bookList = hotelMapper.listBookingByHotel(h_num);
+		List<NUserBookingDTO> NUserbookList = hotelMapper.listNUBookingByHotel(h_num);
 		
 		for(BookingDTO bdto : bookList) {
 			RoomDTO rdto = hotelMapper.getRoomByRoomNum(bdto.getRoom_num());
@@ -553,7 +555,17 @@ public class HotelController {
 			bdto.setRoom_capacity(rdto.getRoom_capacity());
 		}
 		
+		for(NUserBookingDTO bdto : NUserbookList) {
+			RoomDTO rdto = hotelMapper.getRoomByRoomNum(bdto.getRoom_num());
+			
+			bdto.setH_name(hotelMapper.getHnameByHnum(h_num));
+			bdto.setRoom_image1(rdto.getRoom_image1());
+			bdto.setRoom_name(rdto.getRoom_name());
+			bdto.setRoom_capacity(rdto.getRoom_capacity());
+		}
+		
 		req.setAttribute("bookList", bookList);
+		req.setAttribute("nBookList", NUserbookList);
 		
 		return "hotel/hotel_booklist";
 	}
@@ -561,6 +573,21 @@ public class HotelController {
 	@RequestMapping("/confirm_booking")
 	public String confirmBooking(HttpServletRequest req, int book_num, int room_num, int h_num) {
 		int res = hotelMapper.confirmBooking(book_num);
+		
+		if(res>0) {
+            req.setAttribute("msg", "예약 승인 성공!! 예약 목록 페이지로 이동합니다.");
+            req.setAttribute("url", "hotel_booklist?h_num="+h_num);
+        }else {
+            req.setAttribute("msg", "예약 승인 실패!! 다시 시도해 주세요.");
+            req.setAttribute("url", "hotel_booklist?h_num="+h_num);
+        }
+		
+		return "message";
+	}
+	
+	@RequestMapping("/confirm_nbooking")
+	public String confirmnBooking(HttpServletRequest req, int book_num, int room_num, int h_num) {
+		int res = hotelMapper.confirmnBooking(book_num);
 		
 		if(res>0) {
             req.setAttribute("msg", "예약 승인 성공!! 예약 목록 페이지로 이동합니다.");
@@ -588,6 +615,21 @@ public class HotelController {
 		return "message";
 	}
 	
+	@RequestMapping("/deny_nbooking")
+	public String denynBooking(HttpServletRequest req, int book_num, int room_num, int h_num) {
+		int res = hotelMapper.denynBooking(book_num);
+		
+		if(res>0) {
+            req.setAttribute("msg", "예약 거부 성공!! 예약 목록 페이지로 이동합니다.");
+            req.setAttribute("url", "hotel_booklist?h_num="+h_num);
+        }else {
+            req.setAttribute("msg", "예약 거부 실패!! 다시 시도해 주세요.");
+            req.setAttribute("url", "hotel_booklist?h_num="+h_num);
+        }
+		
+		return "message";
+	}
+	
 	@RequestMapping("/checkin_booking")
 	public String checkinBooking(HttpServletRequest req, int book_num, int room_num, int h_num) {
 		int res = hotelMapper.checkinBooking(book_num);
@@ -603,9 +645,39 @@ public class HotelController {
 		return "message";
 	}
 	
+	@RequestMapping("/checkin_nbooking")
+	public String checkinnBooking(HttpServletRequest req, int book_num, int room_num, int h_num) {
+		int res = hotelMapper.checkinnBooking(book_num);
+		
+		if(res>0) {
+            req.setAttribute("msg", "체크인 상태로 변경 성공!! 예약 목록 페이지로 이동합니다.");
+            req.setAttribute("url", "hotel_booklist?h_num="+h_num);
+        }else {
+            req.setAttribute("msg", "체크인 상태로 변경 실패!! 다시 시도해 주세요.");
+            req.setAttribute("url", "hotel_booklist?h_num="+h_num);
+        }
+		
+		return "message";
+	}
+	
 	@RequestMapping("/checkout_booking")
 	public String checkoutBooking(HttpServletRequest req, int book_num, int room_num, int h_num) {
 		int res = hotelMapper.checkoutBooking(book_num);
+		
+		if(res>0) {
+            req.setAttribute("msg", "체크아웃 상태로 변경 성공!! 예약 목록 페이지로 이동합니다.");
+            req.setAttribute("url", "hotel_booklist?h_num="+h_num);
+        }else {
+            req.setAttribute("msg", "체크아웃 상태로 변경 실패!! 다시 시도해 주세요.");
+            req.setAttribute("url", "hotel_booklist?h_num="+h_num);
+        }
+		
+		return "message";
+	}
+	
+	@RequestMapping("/checkout_nbooking")
+	public String checkoutnBooking(HttpServletRequest req, int book_num, int room_num, int h_num) {
+		int res = hotelMapper.checkoutnBooking(book_num);
 		
 		if(res>0) {
             req.setAttribute("msg", "체크아웃 상태로 변경 성공!! 예약 목록 페이지로 이동합니다.");

@@ -31,36 +31,7 @@
 				$("#inwon").attr('value',inwon2);
 			}
 		});
-		$("#mForm").submit(function(){
-			var indate2 = $("#indate1").val();
-			var outdate2 = $("#outdate1").val();
-			var date1 = indate2.split('-');
-			var in_date = new Date(indate2);
-			var date2 = outdate2.split('-');
-			var out_date = new Date(outdate2);
-			
-   			var date = new Date();
-   			
-	   		if(indate2 != ''){
-	       		if(outdate2 != ''){
-		    		if(date.getDate() <= in_date.getDate()){
-		    			if(in_date.getDate() > out_date.getDate()){
-		     				alert('체크인아웃 날짜보다 체크인 날짜가 먼저여야 합니다');
-		     				return false;
-		     			}
-		    		}else {
-		    			alert('지난 날짜는 선택 할 수 없습니다.');
-		    			return false;
-		    		}
-	       		}else{
-	       			alert('체크아웃 날짜를 지정해주세요');
-	       			return false;
-	       		}
-	       	}else{
-	       		alert('체크인 날짜를 지정해주세요');
-	       		return false;
-	       	}
-		});
+
 	});
 	/* 캘린더 */ 
 	$( function() {

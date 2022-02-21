@@ -180,18 +180,21 @@ public class DisplayHotelController {
 			
 			rdto.setMax_count(hotelMapper.countRoomOnGroup(rdto.getRoom_code()));
 			rdto.setBooked_count(displayHotelMapper.countBookedRoom(params));
+			rdto.setNbooked_count(displayHotelMapper.countnBookedRoom(params));
 		}
 		for(RoomDTO rdto : doubleList) {
 			params.put("room_code", rdto.getRoom_code());
 			
 			rdto.setMax_count(hotelMapper.countRoomOnGroup(rdto.getRoom_code()));
 			rdto.setBooked_count(displayHotelMapper.countBookedRoom(params));
+			rdto.setNbooked_count(displayHotelMapper.countnBookedRoom(params));
 		}
 		for(RoomDTO rdto : deluxeList) {
 			params.put("room_code", rdto.getRoom_code());
 			
 			rdto.setMax_count(hotelMapper.countRoomOnGroup(rdto.getRoom_code()));
 			rdto.setBooked_count(displayHotelMapper.countBookedRoom(params));
+			rdto.setNbooked_count(displayHotelMapper.countnBookedRoom(params));
 		}
 		
 		// 로그인할 경우만 위시리스트 체크
@@ -231,7 +234,7 @@ public class DisplayHotelController {
 	// h_num과 room_num에 일치하는 결과 찾기
 	@RequestMapping("/display_roomContent")
 	public String roomContent(HttpServletRequest req, HttpServletResponse resp, @RequestParam(required=false) String room_code, 
-			int h_num) {
+			int h_num, String mode) {
 		// 호텔 정보 (h_num, h_address)
 		HotelDTO hdto = hotelMapper.getHotel(h_num);
 		List<RoomDTO> roomList = hotelMapper.listRoom(room_code);
@@ -248,6 +251,7 @@ public class DisplayHotelController {
 		for(RoomDTO rdto : roomList) {
 			params.put("room_num", String.valueOf(rdto.getRoom_num()));
 			rdto.setRoom_booked(displayHotelMapper.isBookedRoom(params));
+			rdto.setRoom_booked(displayHotelMapper.isnBookedRoom(params));
 		}
 		
 		// 예약된 객실은 List에서 삭제
@@ -256,6 +260,10 @@ public class DisplayHotelController {
 		// 호텔 정보와 공지를 @ 기준으로 나눠서 배열에 담음
 		String[] hotelInfo = hdto.getH_info().split("@");
 		String[] hotelNotice = hdto.getH_notice().split("@");
+		
+		if(mode != null) {
+			req.setAttribute("mode", mode);
+		}
 		
 		req.setAttribute("hdto", hdto);
 		req.setAttribute("rdto", room);
@@ -402,5 +410,25 @@ public class DisplayHotelController {
 		displayHotelMapper.wishCheck(params);
 		return "display/display_hotelContent";
 	}
+	
+	@RequestMapping(value="/loginAskPage")
+	public String loginAskPage(HttpServletRequest req) {
+		return "user_loginAsk";
+	}
+	
+	@RequestMapping(value="/nonUserInfo")
+	public String nonUserInfo(HttpServletRequest req) {
+		return "nonUserInfoWrite";
+	}
+	
+	@RequestMapping(value="/returnToRoomContent")
+	public String returnToRoomContent(HttpServletRequest req, @RequestParam Map<String,String> params) {
+		HttpSession session = req.getSession();
+		session.setAttribute("tempUser_name", params.get("tempUser_name"));
+		session.setAttribute("tempUser_tel", params.get("tempUser_tel"));
+		session.setAttribute("tempUser", "tempUser");
+		return "closeWindow";
+	}
+	
 	
 }

@@ -136,16 +136,32 @@
     	update project_booking set book_status='confirm' where book_num=#{book_num}
     </update>
     
+    <update id="confirmnBooking" parameterType="int">
+    	update project_nonUserBooking set book_status='confirm' where book_num=#{book_num}
+    </update>
+    
     <update id="denyBooking" parameterType="int">
     	update project_booking set book_status='deny' where book_num=#{book_num}
+    </update>
+    
+    <update id="denynBooking" parameterType="int">
+    	update project_nonUserBooking set book_status='deny' where book_num=#{book_num}
     </update>
     
     <update id="checkinBooking" parameterType="int">
     	update project_booking set book_status='checkin' where book_num=#{book_num}
     </update>
     
+    <update id="checkinnBooking" parameterType="int">
+    	update project_nonuserbooking set book_status='checkin' where book_num=#{book_num}
+    </update>
+    
     <update id="checkoutBooking" parameterType="int">
     	update project_booking set book_status='checkout' where book_num=#{book_num}
+    </update>
+    
+    <update id="checkoutnBooking" parameterType="int">
+    	update project_nonuserbooking set book_status='checkout' where book_num=#{book_num}
     </update>
     
     <select id="checkRoomCodeExists" parameterType="int" resultType="String">
@@ -154,5 +170,9 @@
     
     <select id="getMaxRoomCode" parameterType="int" resultType="String">
     	select max(room_code) from project_room where room_code like #{h_num} group by room_code
+    </select>
+    
+    <select id="nUserBookList" parameterType="int" resultType="NUserBookingDTO">
+    	select * from project_nonUserBooking where h_num=#{h_num}
     </select>
 </mapper>
