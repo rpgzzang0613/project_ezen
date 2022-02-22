@@ -20,12 +20,21 @@
 		</tr>
 		<tr>
 			<th>사진추가</th>
+			<c:if test="${empty rdto.review_image}">
 			<td>
+				<img src="resources/images/hotel/default.jpg" width="300" height="200">
+				<input type="file" name="newImage">
+				<input type="hidden" name="pastImage" value="${rdto.review_image}">
+			</td>
+			</c:if>
+			<c:if test="${not empty rdto.review_image}">
+			<td> 
 				<img src="resources/images/review/${rdto.review_image}" width="300" height="200">
 				<input type="file" name="newImage">
 				<input type="hidden" name="pastImage" value="${rdto.review_image}">
 			</td>
-		</tr>
+			</c:if>  
+		</tr> 
 		<tr>
 			<th>별점</th>
 			<td>
@@ -41,18 +50,18 @@
 			    </c:forEach>
 			    </fieldset>
 			</td>
-		</tr>
+		</tr> 
 		<tr>
 			<th>리뷰작성</th>
-			<td>
-				<textarea name="review_contents" rows="13" cols="55">${rdto.review_contents}</textarea>
+			<td> 
+				<textarea name="review_contents" maxlength="200" style="resize:none; height:100%; width:100%;" name="review_contents" rows="13" cols="55">${rdto.review_contents}</textarea>
 			</td>
 		</tr>
 		<tr>
 			<td colspan="2" align="center">
-				<button type="button" onclick="javascript:history.back()">돌아가기</button>
+				<input type="button" onclick="javascript:history.back()"value="돌아가기">
 				<input type="submit" value="수정하기">
-			</td>
+			</td> 
 		</tr>
 		</table>
 		</form>

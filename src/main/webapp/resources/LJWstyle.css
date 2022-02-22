@@ -87,8 +87,8 @@ button:hover{transform: scale( 1.1 );}
 	border: 1px solid grey;
 }
 .booking > .images img {
-	width: 160px;
-	height: 90px;
+	width: 200px;
+	height: 120px; 
 	object-fit: cover;
 	border: 1px solid grey;
 	cursor: pointer;

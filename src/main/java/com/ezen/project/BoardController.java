@@ -384,6 +384,7 @@ public class BoardController {
 		Date time = new Date();
 		String today = format.format(time);
 		
+		/*
 		List<ReviewDTO> reviewList = userMyPageMapper.listReview(Integer.parseInt(mr.getParameter("u_num")), Integer.parseInt(mr.getParameter("h_num")));
 		for(ReviewDTO rdto : reviewList) {
 			if(rdto.getReview_joindate().contains(today)) {
@@ -392,7 +393,7 @@ public class BoardController {
 				return "message";
 			}
 		}
-		
+		*/	
 		
 		String review_image = mf.getOriginalFilename();
 		
