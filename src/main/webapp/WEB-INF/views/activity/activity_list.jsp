@@ -7,7 +7,7 @@
 <div style="width: 750px; height:690px; overflow: auto;">
 <table border="1" align="center" width="750" height="690">
 	<tr>  
-		<td algin="center" valign="top">
+		<td align="center" valign="top">
 			<div align ="center">
 				<hr color="darkgrey" width="300">
 				액티비티 리스트

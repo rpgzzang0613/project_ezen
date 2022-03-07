@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<!-- activity_booklist.jsp -->
+<!-- activity_booklist.jsp --> 
 <%@ include file="activity_maintop.jsp"%>
 <div style="width: 750px; height:690px; overflow: auto;">
 <table border="1" align="center" width="750" height="690">

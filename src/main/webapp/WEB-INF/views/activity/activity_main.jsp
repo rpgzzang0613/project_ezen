@@ -7,11 +7,12 @@
 	<title>액티비티 관리</title>
 </head>
 <body>
-	<div align ="center">
+	<div align ="center" >
 		<%@ include file="activity_maintop.jsp"%>
 		<table border="1" width="750" height="690">	
 			<tr>
-				<td>메인화면입니다</td>
+				<td align="center" style="font-weight: bold; font-size: xx-large;">
+				엑티비티 관리 페이지</td>
 			</tr>
 		</table>
 	</div>

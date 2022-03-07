@@ -2,9 +2,9 @@
     pageEncoding="UTF-8"%>
 <!-- activity_maintop.jsp -->
 <%@ include file="/WEB-INF/views/company/company_myPage.jsp"%> 
-<div align="center">
+<div align="center" style="color:red; margin-bottom:10px;">
 	<a href="activity_input">액티비티 등록</a> | 
-	<a href="activity_list">액티비티 리스트</a>
+	<a href="activity_list">액티비티 리스트</a> 
 </div>
 <style>
 a{
