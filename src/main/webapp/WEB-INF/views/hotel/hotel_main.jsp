@@ -13,7 +13,7 @@
 		<table border="1" width="750" height="690">	
 			<tr> 
 				<td align="center" style="font-weight: bold; font-size: xx-large;">
-				메인화면입니다</td>
+				호텔 관리 페이지</td>
 			</tr> 
 		</table>
 	</div>
