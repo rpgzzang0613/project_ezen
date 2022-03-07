@@ -9,10 +9,11 @@
 			<value>oracle.jdbc.driver.OracleDriver</value>
 		</property>
 		<property name="url">
-			<value>jdbc:oracle:thin:@localhost:1521:xe</value>
+			<value>jdbc:oracle:thin:@hoteldb1_high?TNS_ADMIN=C:\Users\Yozy\Desktop\MobaXterm_Portable_v21.5\Wallet_hoteldb1</value>
+			<!-- 리눅스<value>jdbc:oracle:thin:@hoteldb1_high?TNS_ADMIN=/usr/local/tomcat9/Wallet_hoteldb1</value>-->
 		</property>
-		<property name="username" value="javaapi"/>
-		<property name="password" value="javaapi"/>
+		<property name="username" value="Admin"/>
+		<property name="password" value="Rladydwls123"/>
 	</bean>
 	
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">

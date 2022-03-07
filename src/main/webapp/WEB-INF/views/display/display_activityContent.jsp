@@ -2,7 +2,6 @@
     pageEncoding="UTF-8" %>
 <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ include file="../activitymain/activity_top.jsp" %>
 <%@ include file="../activitymain/activity_searchbar.jsp"%>
 <link rel="stylesheet" href="resources/LJWstyle.css"/>
@@ -139,7 +138,7 @@
 		</div>
 		<input type="hidden" id="addr" value="${showAddr}">
 		<input type="hidden" id="hotelN" value="${adto.a_name}">
-		<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=2f24176f9573eaaf0fc762f8cebc19f7&libraries=services"></script>
+		<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=d0d1f95e5db7e550f2d690b2859cacea&libraries=services"></script>
 		<div id="map" style="width:1000px;height:500px;"></div>
 		<div id="clickLatlng"></div>
 		<script>
@@ -218,7 +217,6 @@
 			</tr>
 		</table>
 	</div>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script>
 	$(document).ready(function(){
 		let bookingImages = $('#bookingImages').children('img')

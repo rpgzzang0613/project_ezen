@@ -79,7 +79,7 @@ public class CompanyController {
 	       
 		//이미지 없으면 default사진 사용
 		if(!c_image.equals("default.jpg")) {
-			File file = new File(upPath+"\\company", c_image);
+			File file = new File(upPath+"/company", c_image);
 			mf.transferTo(file);
 		}
 	      
@@ -129,7 +129,7 @@ public class CompanyController {
 				HttpSession session = req.getSession();
 				session.invalidate();
 				
-				File file = new File(upPath+"\\company", c_image);
+				File file = new File(upPath+"/company", c_image);
 				
 				if(file.exists() && !file.getName().equals("default.jpg")) {
 					file.delete();
@@ -177,11 +177,11 @@ public class CompanyController {
 		}else {
 			// 새 파일 업로드
 			c_image = UUID.randomUUID().toString()+"_"+c_image;
-			File newFile = new File(upPath+"\\company", c_image);
+			File newFile = new File(upPath+"/company", c_image);
 			mf.transferTo(newFile);
 			
 			// 기존 파일 삭제 (default.jpg 예외)
-			File preFile = new File(upPath+"\\company", pre_image);
+			File preFile = new File(upPath+"/company", pre_image);
 			if(preFile.exists() && !preFile.getName().equals("default.jpg")) {
 				preFile.delete();
 			}
@@ -378,7 +378,7 @@ public class CompanyController {
 		int res = companyMapper.requestPartnership(cdto);
 
 		if(res>0) {
-			File file = new File(upPath+"\\company\\license", c_licenseimage);
+			File file = new File(upPath+"/company/license", c_licenseimage);
 			mf.transferTo(file);
 			
 			HttpSession session = req.getSession();

@@ -48,74 +48,9 @@
 				<button style= "background:#79B8D6">낮은 가격 순</button>
 			</a>
 			<a href="javascript:goNextFilter('maxStar','${condition}')">
-				<button style= "background:#79B8D6">별점 높은 순</button>
-			</a>
-			<a href="javascript:goNextFilter('minStar','${condition}')">
-				<button style= "background:#79B8D6">별점 낮은 순</button>
+				<button style= "background:#79B8D6">평점 높은 순</button>
 			</a>
 		</div>
-		
-<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=fe10c33359dd79a3e93e06cb153c4c9a&libraries=services"></script>
-<div id="map" style="width:100%;height:350px;"></div>	
-<script>
-	const addrs = new Array();
-	const names = new Array();
-	const h_num = new Array();
-	
-	<c:forEach var="hdto" items="${hotelList}" varStatus="listdx">
-		names.push("${hdto.h_name}")
-		h_num.push("${hdto.h_num}");
-	</c:forEach>
-	<c:forEach var="addr" items="${addrsForMap}" varStatus="listdx">
-		addrs.push("${addr}");
-	</c:forEach>
-		
-	var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
-	   mapOption = {
-	       center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
-	       level: 10 // 지도의 확대 레벨
-	   };  
-	
-	// 지도를 생성합니다    
-	var map = new kakao.maps.Map(mapContainer, mapOption); 
-	
-	// 주소-좌표 변환 객체를 생성합니다
-	var geocoder = new kakao.maps.services.Geocoder();
-	
-	function test(addr, name, h_num){
-		// 주소로 좌표를 검색합니다
-		geocoder.addressSearch(addr, function(result, status) {
-		    // 정상적으로 검색이 완료됐으면 
-		     if (status === kakao.maps.services.Status.OK) {
-		        var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
-		
-		        // 결과값으로 받은 위치를 마커로 표시합니다
-		        var marker = new kakao.maps.Marker({
-		            map: map,
-		            position: coords
-		        });
-		        // 인포윈도우로 장소에 대한 설명을 표시합니다
-		        var infowindow = new kakao.maps.InfoWindow({
-		            content: '<div style="width:150px;text-align:center;padding:6px 0;">' + name + '</div>'
-		        });
-		        infowindow.open(map, marker);
-		        // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
-		        map.setCenter(coords);
-			}
-			
-		    kakao.maps.event.addListener(marker, 'click', function() {
-			// 마커 위에 인포윈도우를 표시합니다
-				document.f_searchOk.action = "display_hotelContent?h_num="+h_num;
-				document.f_searchOk.submit();
-			});
-		})
-	};    
-	
-	for(let i=0; i<names.length; i++){
-		test(addrs[i], names[i], h_num[i]);
-		
-	}
-</script>
 		<c:forEach var="hdto" items="${hotelList}">
 		<div class="column review border-bottom">	
 			<div class="row">

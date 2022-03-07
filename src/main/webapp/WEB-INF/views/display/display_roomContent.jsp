@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%> 
-<%@ taglib prefix="c" uri = "http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ include file="../user_top.jsp" %>
 <%@ include file="../user_searchbar.jsp"%>
@@ -25,7 +24,6 @@
 		}
 	}
 </script>
-<link rel="stylesheet" href="resources/LJWstyle.css"/>
 <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
 <form style="background-color:#fbfbfb;margin-top:-16px; margin-bottom:-22px;" name="f9" id="checkForm" action="user_bookWriteform" method="post">
 	<input type="hidden" id="h_num" name="h_num" value="${hdto.h_num}">
@@ -132,7 +130,6 @@
 		</div>
 	</div>  
 </form>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script>
 	function reservation(){
 

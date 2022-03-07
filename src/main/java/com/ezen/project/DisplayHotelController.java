@@ -110,33 +110,15 @@ public class DisplayHotelController {
 					.sorted(Comparator.comparing(HotelDTO::getReviewAvg).reversed())
 					.collect(Collectors.toList());
 					break;
-				case "minStar":
-					// 최초 검색때 뽑은 List를 DTO의 reviewAvg가 작은순으로 재정렬
-					hotelList = hotelList.stream()
-					.sorted(Comparator.comparing(HotelDTO::getReviewAvg))
-					.collect(Collectors.toList());
-					break;
 				default:
 					break;
 			}
-		}
-
-		// 지도API에서 쓰기 위한 주소 배열 만들기
-		String[] addrsForMap = new String[hotelList.size()];
-		
-		// DTO의 h_address에서 이름 부분만 뽑아서 넣음
-		for(int i=0; i<hotelList.size(); i++) {
-			HotelDTO hdto = hotelList.get(i);
-			String addr = hdto.getH_address();
-			String[] fullAddress = addr.split("\\(");
-			addrsForMap[i] = fullAddress[0];
 		}
 		
 		session.setAttribute("indate", params.get("indate"));
 		session.setAttribute("outdate", params.get("outdate"));
 		session.setAttribute("inwon", params.get("inwon"));
 		session.setAttribute("hotelList", hotelList);
-		session.setAttribute("addrsForMap", addrsForMap);	// 타입이 Map이 아니라 카카오맵에 사용될 String배열임
 		session.setAttribute("condition", params.get("condition"));
 		
 		return "display/display_hotelSearchOk";
