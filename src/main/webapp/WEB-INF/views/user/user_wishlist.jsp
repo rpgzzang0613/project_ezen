@@ -25,8 +25,11 @@
 <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
 <link rel="stylesheet" href="resources/LJWstyle.css"/>
 
-	<div class="align-center" style="width: 1000;">
-		호텔 위시리스트
+<div class="align-center" style="width: 1000; margin:0 auto;">
+		<div style="text-align: center; font-size: x-large; font-weight:bold; background-color: indianred;
+		 margin-top: 10;">
+		Hotel WishList
+		</div>
 		<c:if test="${empty wishList}">
 			<div align="center">위시리스트가 비어있습니다.</div>
 		</c:if>
@@ -63,10 +66,12 @@
 			</div>	
 		</c:forEach>
 	</c:if>
-</div>
-<div class="align-center" style="width: 1000;">
-	액티비티 위시리스트
-	<c:if test="${empty wishListAct}">
+
+		<div style="text-align: center; font-size: x-large; font-weight:bold;
+		margin-top:10px; background-color: cadetblue;">
+		Activity WishList
+		</div>
+		<c:if test="${empty wishListAct}">
 		<div align="center">위시리스트가 비어있습니다.</div>
 	</c:if>
 	<c:if test="${not empty wishListAct}">

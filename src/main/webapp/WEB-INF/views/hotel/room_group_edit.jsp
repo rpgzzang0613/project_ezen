@@ -36,32 +36,32 @@
 	<form name="f_roomGroupEdit" method="post" action="room_group_edit_ok"  enctype="multipart/form-data" >
 	<input type="hidden" name="room_code" value="${rdto.room_code}">
 	<input type="hidden" name="h_num" value="${rdto.h_num}">
-	<table align="center" width="800">
-	<caption align="center">객실 정보 수정</caption>
+	<table style="border-collapse: collapse" align="center" width="750">
+	<caption align="center">객실 정보 수정</caption> 
 		<tr>
-			<td>객실 타입</td>
+			<td class="title-box">객실 타입</td>
 			<td>${rdto.room_type}</td>
-			<td>객실 이름</td>
+			<td class="title-box">객실 이름</td>
 			<td><input type="text" name="room_name" value="${rdto.room_name}"></td>
 		</tr>
-		<tr>
-			<td>객실 요금</td>
+		<tr> 
+			<td class="title-box">객실 요금</td>
 			<td><input type="text" name="room_price" value="${rdto.room_price}">원</td>
 			<td></td>
 			<td></td>
 		</tr>
 		<tr>
-			<td>최대 사용 인원</td>
+			<td class="title-box">최대 사용 인원</td>
 			<td><input type="text" name="room_capacity"value="${rdto.room_capacity}">명</td>
-			<td>초과인원 요금<br>(기준 1인)</td>
+			<td class="title-box">초과인원 요금<br>(기준 1인)</td>
 			<td><input type="text" name="room_extraprice"value="${rdto.room_extraprice}"></td>
-		</tr>
-		<tr>
-			<td rowspan="3">객실 이미지</td>
-			<td>
+		</tr> 
+		<tr style="border-top: 1px double black"> 
+			<td rowspan="3" class="title-box">객실 이미지</td>
+			<td> 
 				<img src="resources/images/room/${rdto.room_image1}" width="200" height="120">
-			</td>
-			<td colspan="2">
+			</td> 
+			<td colspan="2"  >
 				<input type="file" name="room_images" multiple>
 				<input type="hidden" name="pre_images" value="${rdto.room_image1}">
 			</td>
@@ -70,7 +70,7 @@
 			<td>
 				<img src="resources/images/room/${rdto.room_image2}" width="200" height="120">
 			</td>
-			<td colspan="2">
+			<td colspan="2"  >
 				<input type="file" name="room_images" multiple>
 				<input type="hidden" name="pre_images" value="${rdto.room_image2}">
 			</td>
@@ -79,12 +79,12 @@
 			<td>
 				<img src="resources/images/room/${rdto.room_image3}" width="200" height="120">
 			</td>
-			<td colspan="2">
+			<td colspan="2"  >
 				<input type="file" name="room_images" multiple>
 				<input type="hidden" name="pre_images" value="${rdto.room_image3}">
 			</td>
 		</tr>
-		<tr>
+		<tr> 
 			<td colspan="3"></td>
 			<td align="center">
 				<input type="button" value="돌아가기" onclick="history.back()">
@@ -94,4 +94,10 @@
 	</table>
 	</form>
 </body>
+<style>
+.title-box{
+background-color: azure;
+text-align: center;
+}
+</style>
 </html>

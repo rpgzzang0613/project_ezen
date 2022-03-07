@@ -48,12 +48,23 @@
 	<input type="hidden" name="a_num" value="${pdto.a_num}">
 	<input type="hidden" name="p_num" value="${pdto.p_num}">
 	<input type="hidden" name="p_name" value="">
-	<table align="center" width="1000">
+	<table align="center" width="500"> 
 	<caption align="center">프로그램 정보 수정</caption>
 		<tr>
-			<td>프로그램 이름</td>
+			<td class="title-box">프로그램 이름</td>
 			<td><input type="text" name="p_name1" value="${p_name1}"></td>
-			<td>시작시간
+		</tr>
+		<tr>
+			<td class="title-box">프로그램 요금</td>
+			<td><input type="text" name="p_price" value="${pdto.p_price}">원</td>	
+		</tr>
+		<tr>
+			<td class="title-box">최대 예약 인원 </td>
+			<td><input type="text" name="p_maxbooker" value="${pdto.p_maxbooker}">명</td>
+		</tr>
+		<tr>
+		<td class="title-box">시작시간</td>
+		<td>
 			<select name="starttime" size="1">
 				<option value="">시간을 선택해주세요</option>
 				<c:forEach var="i" begin="1" end="12">
@@ -73,10 +84,10 @@
 				<option value="50">50분</option>
 			</select>
 			</td>
+		</tr>
 		<tr>
-			<td>프로그램 요금</td>
-			<td><input type="text" name="p_price" value="${pdto.p_price}">원</td>
-			<td>종료시간
+		<td class="title-box">종료시간</td>
+		<td>
 			<select name="endtime" size="1">
 				<option value="">시간을 선택해주세요</option>
 				<c:forEach var="i" begin="1" end="12">
@@ -95,20 +106,25 @@
 				<option value="40">40분</option>
 				<option value="50">50분</option>
 			</select>
-			</td>	
+			</td> 
+		</tr>
+		<tr height="30px;">
 		</tr>
 		<tr>
-			<td>프로그램 최대 예약 인원 </td>
-			<td><input type="text" name="p_maxbooker" value="${pdto.p_maxbooker}">명</td>
-		</tr>
-		<tr>
-			<td colspan="3"></td>
-			<td align="center">
+			<td width="120"></td>
+			<td width="200"> 
 				<input type="button" value="돌아가기" onclick="history.back()">
 				<input type="button" value="수정" onclick="check()">
 			</td>
 		</tr>		
 	</table>
 	</form>
-</body>
+</body> 
+<style>
+.title-box{
+background-color: azure;
+text-align: center;
+width: 120px;
+}
+</style>
 </html>

@@ -88,21 +88,21 @@
 				</li>
 				<li class="contentListLi" style="display:none;">
 					<ol class="contentList">
-						<li onclick="hotelmain()">호텔 관리</li>
-						<li onclick="window.open('activity_main')">액티비티 관리</li>
-					</ol>
-				</li>
+						<li onclick="location.href='hotel_main'">호텔 관리</li>
+						<li onclick="location.href='activity_main'">액티비티 관리</li>
+					</ol> 
+				</li>  
 				</c:if>
 				<c:if test="${companyLoginOkBean.a_level eq 1}">
 				<li onclick="location.href='company_partner_req_wait'">제휴 신청 현황</li>
 				</c:if>
 				<c:if test="${companyLoginOkBean.a_level eq 0}">
 				<li onclick="location.href='company_partner_req'">제휴 신청</li>
-				</c:if>
+				</c:if> 
 				<li onclick="location.href='list_companyQnA'">Q&A</li>
 			</ul>
 		</td>
-		<td>			
+		<td width="80%" align="center" valign="top" style="padding:20px;"> 			
 <script> 
 function hotelmain(){
 	window.open("hotel_main", "", "_blank");

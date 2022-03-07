@@ -3,8 +3,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!-- room_group_list.jsp -->
 <%@ include file="hotel_maintop.jsp"%>
-<table border="1" align="center" width="1000" height="600">
-	<tr>
+<div style="width: 750px; height:690px; overflow: auto;">
+<table border="1" align="center">
+	<tr>  
 		<td>
 			<div align ="center">
 				<hr color="green" width="300">
@@ -69,5 +70,6 @@
 		</td>
 	</tr>
 </table>
+</div>
 </body>
 </html>

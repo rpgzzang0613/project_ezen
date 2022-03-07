@@ -5,7 +5,7 @@
 <c:if test="${empty bookActList}">
 	<h3 align="center" style="color:red">예약하신 액티비티가 없습니다.</h3>
 </c:if>	
-<br><h2>액티비티 예약 목록</h2>
+<div style="text-align: center; font-size: xx-large; font-weight:bold;">엑티비티 예약 목록</div><br>
 <c:set var = "num" value = "${number}"/>
 <c:forEach var="badto" items="${bookActList}">
 <table align="center" valign="top" width="90%" border="1">

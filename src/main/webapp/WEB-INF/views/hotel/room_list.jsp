@@ -3,7 +3,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!-- room_list.jsp -->
 <%@ include file="hotel_maintop.jsp"%>
-<table border="1" align="center" width="1000" height="600">
+<div style="width: 750px; height:690px; overflow: auto;">
+<table border="1" align="center" style="width:750px; height:690px;table-layout: fixed">
 	<tr>
 		<td>
 			<div align ="center">
@@ -74,5 +75,6 @@
 		</td>
 	</tr>
 </table>
-</body>
+</div>
+</b1ody>
 </html>

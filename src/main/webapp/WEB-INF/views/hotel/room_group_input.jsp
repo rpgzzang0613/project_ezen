@@ -38,14 +38,14 @@
 </script>
 <body>
 	<%@ include file="hotel_maintop.jsp"%>
-	<div align="center">
-		호텔 정보 등록 → 객실 정보 등록
+	<div align="center" style="font-weight:bold; margin-bottom:20px;">
+		호텔 정보 등록 후 객실 정보를 등록합니다. 
 	</div>
 	<form name="f_roomGroupInput" method="post" action="room_group_input_ok" enctype="multipart/form-data">
 	<input type="hidden" name="h_num" value="${h_num}">
 	<input type="hidden" name="c_num" value="${c_num}">
-	<table align="center" width="800">
-		<tr>
+	<table align="center" width="750"> 
+		<tr> 
 			<td align="left">객실 타입</td>
 			<td>
 				<select name="room_type">

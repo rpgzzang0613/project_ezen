@@ -9,7 +9,7 @@
 <body>
 	<div align ="center">
 		<%@ include file="activity_maintop.jsp"%>
-		<table border="1" width="800" height="600">	
+		<table border="1" width="750" height="690">	
 			<tr>
 				<td>메인화면입니다</td>
 			</tr>

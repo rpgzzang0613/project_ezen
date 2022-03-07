@@ -105,9 +105,9 @@
 					<li onclick="location.href='user_pointList'">포인트</li>
 					<li onclick="location.href='list_userQnA'">Q&A</li>
 				</ul>
-			</td>
-		<td width="80%" align="center" valign="top">
-<script>
+			</td> 
+		<td width="80%" align="center" valign="top" style="padding:20px;"> 
+<script>  
 	function onInfoListClicked() {
 		const infoList = document.querySelectorAll(".infoList")
 		infoList.forEach(list => {

@@ -116,7 +116,7 @@
 	<table border="1" align="center" width="600" height="500">
 	<caption align="center">프로그램 정보 수정</caption>
 		<tr>
-			<td>프로그램 이미지</td>
+			<td class="text-box">프로그램 <br> 이미지</td>
 			<td>
 				<table align="center">
 					<tr>
@@ -169,11 +169,11 @@
 			</td>
 		</tr>
 		<tr>
-			<td width="120">프로그램 이름</td>
+			<td class="text-box" width="120">프로그램 <br>이름</td>
 			<td><input type="text" name="a_name" value="${adto.a_name}"></td>
 		</tr>
 		<tr>
-			<td width="120">액티비티 타입</td>
+			<td class="text-box" width="120">액티비티 타입</td>
 			<td>
 				<select name="a_code" size="1">
 				<c:set var="a_codelist" value="스포츠,엔터테인먼트,음악,요리,문화,학업" />
@@ -189,7 +189,7 @@
 				</select> 
 			</td>
 		<tr>
-			<td width="120">액티비티 <br>타입추가<br>
+			<td class="text-box" width="120">액티비티 <br>타입추가<br>
 			<td> 
 			<select name="a_extracode" size="1">
 				<c:set var="a_extracodeslist" value="추가선택,스포츠,엔터테인먼트,음악,요리,문화,학업" />
@@ -206,15 +206,15 @@
 			</td>
 		</tr>
 		<tr>
-			<td width="120">담당자명</td>
+			<td class="text-box" width="120">담당자명</td>
 			<td><input type="text" name="a_manager" value="${adto.a_manager}"></td>
 		</tr>
 		<tr>
-			<td width="120">전화번호</td>
+			<td class="text-box" width="120">전화번호</td>
 			<td><input type="text" name="a_tel" value="${adto.a_tel}"></td>
 		</tr>
 		<tr>
-			<td>주소</td>
+			<td class="text-box">주소</td>
 			<td>
 				<c:set var="fullAddr" value="${fn:split(adto.a_address,'@')}"/>
 				<input type="text" id="a_postcode" placeholder="우편번호" value="${fullAddr[3]}" readOnly>
@@ -225,11 +225,11 @@
 			</td>
 		</tr>
 		<tr>
-			<td>기본 정보</td>
+			<td class="text-box">기본 정보</td>
 			<td><textarea rows="5" cols="63" name="a_info">${adto.a_info}</textarea></td>
 		</tr>
 		<tr>
-			<td>예약 규정</td>
+			<td class="text-box">예약 규정</td>
 			<td><textarea rows="5" cols="63" name="a_notice">${adto.a_notice}</textarea></td>
 		</tr>
 		<tr>
@@ -239,6 +239,12 @@
 			</td>
 		</tr>
 	</table>
-	</form>
+	</form> 
 	</body>
+<style>
+.text-box{
+	background-color: azure;
+	text-align:center;
+}
+</style>
 </html>

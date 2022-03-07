@@ -4,9 +4,10 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!-- activity_booklist.jsp -->
 <%@ include file="activity_maintop.jsp"%>
-<table border="1" align="center" width="1000" height="600">
+<div style="width: 750px; height:690px; overflow: auto;">
+<table border="1" align="center" width="750" height="690">
 	<tr>
-		<td>
+		<td align="center" valign="top">
 			<div align ="center">
 				<hr color="green" width="300">
 				예약 관리
@@ -90,5 +91,6 @@
 		</td>
 	</tr>
 </table>
+</div>
 </body>
 </html>

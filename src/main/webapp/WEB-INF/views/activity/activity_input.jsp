@@ -110,16 +110,16 @@ function getPostcode() {
 	}
 </script>
 <body>
-	<%@ include file="activity_maintop.jsp"%>
-	<div align="center">
-		액티비티 정보 등록
+	<%@ include file="activity_maintop.jsp"%> 
+	<div align="center" style="font-weight:bold; margin-top:10px;">
+		액티비티 정보 등록 후 프로그램 정보를 등록합니다. 
 	</div>
 	<form name="f_activityInput" method="post" action="activity_input_ok" enctype="multipart/form-data" >
 	<input type="hidden" name="c_num" value="${c_num}">
 	<input type="hidden" name="a_address" value="">
-	<table border="1" align="center" width="900" height="500">
-		<tr>
-			<td>액티비티 이미지</td>
+	<table border="1" align="center" width="600" height="500">
+		<tr> 
+			<td class="title-box">액티비티 이미지</td>
 			<td>
 				<input type="file" name="a_images" multiple><br>
 				<input type="file" name="a_images" multiple><br>
@@ -129,11 +129,11 @@ function getPostcode() {
 			</td>
 		</tr>
 		<tr>
-			<td width="120">프로그램 이름</td>
+			<td class="title-box" width="120">프로그램 이름</td>
 			<td><input type="text" name="a_name"></td>
 		</tr>
 		<tr>
-			<td width="120">프로그램 타입</td>
+			<td class="title-box" width="120">프로그램 타입</td>
 			<td>
 				<select name="a_code" size="1">
 					<option value="">필수선택</option>
@@ -146,7 +146,7 @@ function getPostcode() {
 				</select> 
 			</td>
 		<tr>
-			<td width="120">프로그램<br>타입추가<br>
+			<td class="title-box" width="120">프로그램<br>타입추가<br>
 			<td> 
 				<select name="a_extracode" size="1">
 					<option value="none">추가 선택</option>
@@ -160,15 +160,15 @@ function getPostcode() {
 			</td>
 		</tr>
 		<tr>
-			<td width="120">액티비티<br>담당자명</td>
+			<td class="title-box" width="120">액티비티<br>담당자명</td>
 			<td><input type="text" name="a_manager"></td>
 		</tr>
 		<tr>
-			<td width="120">액티비티<br>전화번호</td>
+			<td class="title-box" width="120">액티비티<br>전화번호</td>
 			<td><input type="text" name="a_tel"></td>
 		</tr>
 		<tr>
-			<td>주소</td>
+			<td class="title-box">주소</td>
 			<td>
 				<input type="text" id="a_postcode" placeholder="우편번호" readOnly>
 				<input type="button" id="a_postcodeBtn" onclick="getPostcode()" value="검색"><br>
@@ -178,12 +178,12 @@ function getPostcode() {
 			</td>
 		</tr>
 		<tr>
-			<td>기본 정보</td>
-			<td><textarea rows="5" cols="63" name="a_info"></textarea></td>
+			<td class="title-box">기본 정보</td>
+			<td><textarea style="resize:none;" maxlength="600" rows="5" cols="63" name="a_info"></textarea></td>
 		</tr>
 		<tr>
-			<td>예약 규정</td>
-			<td><textarea rows="5" cols="63" name="a_notice"></textarea></td>
+			<td class="title-box">예약 규정</td>
+			<td><textarea style="resize:none;" maxlength="600" rows="5" cols="63" name="a_notice"></textarea></td>
 		</tr>
 		<tr>
 			<td colspan="2" align="center">
@@ -191,7 +191,13 @@ function getPostcode() {
 				<input type="button" value="액티비티 등록" onclick="check()">
 			</td>
 		</tr>
-	</table>
-	</form>
+	</table>  
+	</form> 
 </body>
+<style> 
+.title-box{
+background-color: azure;
+text-align: center;
+}
+</style>
 </html>

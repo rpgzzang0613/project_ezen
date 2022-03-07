@@ -5,10 +5,10 @@
 	<div style="text-align:center; margin-top: 10px;" >  
 	<h3>리뷰 작성</h3>  
 	<form name="form_review" method="post" action="user_reviewOk" enctype="multipart/form-data" style="margin-left:145px;">
-	<input input type="hidden" name="h_num" value="${h_num}">
-	<input input type="hidden" name="room_type" value="${room_type}">
-	<input input type="hidden" name="u_num" value="${u_num}">
-	<input input type="hidden" name="book_num" value="${book_num}">
+	<input type="hidden" name="h_num" value="${h_num}">
+	<input type="hidden" name="room_type" value="${room_type}">
+	<input type="hidden" name="u_num" value="${u_num}">
+	<input type="hidden" name="book_num" value="${book_num}">
 	<table border="0"> 
 		<tr>
 			<th>닉네임</th>

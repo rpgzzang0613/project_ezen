@@ -106,15 +106,15 @@ function getPostcode() {
 </script>
 <body>
 	<%@ include file="hotel_maintop.jsp"%>
-	<div align="center">
-		호텔 정보 등록 → 객실 정보 등록
-	</div>
+	<div align="center" style="font-weight:bold; margin-bottom:20px;">
+		호텔 정보 등록 후 객실 정보를 등록합니다. 
+	</div> 
 	<form name="f_hotelInput" method="post" action="hotel_input_ok" enctype="multipart/form-data" >
 	<input type="hidden" name="c_num" value="${c_num}">
 	<input type="hidden" name="h_address" value="">
-	<table border="1" align="center" width="1000" height="500">
+	<table border="1" align="center" width="600" height="500">
 		<tr>
-			<td>호텔 이미지</td>
+			<td class="title-box">호텔 이미지</td>
 			<td>
 				<input type="file" name="h_images" multiple><br>
 				<input type="file" name="h_images" multiple><br>
@@ -124,11 +124,11 @@ function getPostcode() {
 			</td>
 		</tr>
 		<tr>
-			<td width="120">호텔 이름</td>
+			<td class="title-box" width="120">호텔 이름</td>
 			<td><input type="text" name="h_name"></td>
 		</tr>
 		<tr>
-			<td width="120">호텔 등급</td>
+			<td class="title-box" width="120">호텔 등급</td>
 			<td>
 				<select name="h_grade" size="1">
 					<option value="3">3성</option>
@@ -138,15 +138,15 @@ function getPostcode() {
 			</td>
 		</tr>
 		<tr>
-			<td width="120">호텔 담당자명</td>
+			<td class="title-box" width="120">호텔 담당자명</td>
 			<td><input type="text" name="h_manager"></td>
 		</tr>
 		<tr>
-			<td width="120">호텔 전화번호</td>
+			<td class="title-box" width="120">호텔 전화번호</td>
 			<td><input type="text" name="h_tel"></td>
 		</tr>
 		<tr>
-			<td>호텔 주소</td>
+			<td class="title-box">호텔 주소</td>
 			<td>
 				<input type="text" id="h_postcode" placeholder="우편번호" readOnly>
 				<input type="button" id="h_postcodeBtn" onclick="getPostcode()" value="검색"><br>
@@ -156,15 +156,15 @@ function getPostcode() {
 			</td>
 		</tr>
 		<tr>
-			<td>기본 정보</td>
-			<td><textarea rows="5" cols="63" name="h_info"></textarea></td>
+			<td class="title-box">기본 정보</td>
+			<td><textarea style="resize:none;" maxlength="600" rows="5" cols="63" name="h_info"></textarea></td>
 		</tr>
 		<tr>
-			<td>예약 규정</td>
-			<td><textarea rows="5" cols="63" name="h_notice"></textarea></td>
+			<td class="title-box">예약 규정</td>
+			<td><textarea style="resize:none;" maxlength="600" rows="5" cols="63" name="h_notice"></textarea></td>
 		</tr>
-		<tr>	
-			<td>호텔 지원서비스</td>
+		<tr>	 
+			<td class="title-box">호텔 지원서비스</td>
 			<td>
 				<input type="checkbox" name="h_park" value="y">주차공간
 				<input type="checkbox" name="h_meal" value="y">조식
@@ -183,8 +183,14 @@ function getPostcode() {
 				<input type="button" value="돌아가기" onclick="history.back()">
 				<input type="button" value="객실등록으로 이동" onclick="check()">
 			</td>
-		</tr>
-	</table>
+		</tr> 
+	</table> 
 	</form>
-</body>
+</body> 
+<style>
+.title-box{
+background-color: azure;
+text-align: center;
+}
+</style>
 </html>

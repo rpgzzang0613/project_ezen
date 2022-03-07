@@ -4,9 +4,10 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!-- activity_list.jsp -->
 <%@ include file="activity_maintop.jsp"%>
-<table border="1" align="center" width="1000" height="600">
-	<tr>
-		<td>
+<div style="width: 750px; height:690px; overflow: auto;">
+<table border="1" align="center" width="750" height="690">
+	<tr>  
+		<td algin="center" valign="top">
 			<div align ="center">
 				<hr color="darkgrey" width="300">
 				액티비티 리스트
@@ -63,5 +64,6 @@
 		</td>
 	</tr>
 </table>
+</div>
 </body>
 </html>

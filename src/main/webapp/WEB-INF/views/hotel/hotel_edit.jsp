@@ -117,7 +117,7 @@
 	<table border="1" align="center" width="600" height="500">
 	<caption align="center">호텔 정보 수정</caption>
 		<tr>
-			<td>호텔 이미지</td>
+			<td align="center" style="background-color: azure;">호텔 이미지</td>
 			<td>
 				<table align="center">
 					<tr>
@@ -170,11 +170,11 @@
 			</td>
 		</tr>
 		<tr>
-			<td width="120">호텔 이름</td>
+			<td align="center" style="background-color: azure;">호텔 이름</td>
 			<td><input type="text" name="h_name" value="${hdto.h_name}"></td>
 		</tr>
 		<tr>
-			<td width="120">호텔 등급</td>
+			<td align="center" style="background-color: azure;">호텔 등급</td>
 			<td>
 				<select name="h_grade" size="1">
 				<c:forTokens var="h_grades" items="3,4,5" delims=",">
@@ -189,15 +189,15 @@
 			</td>
 		</tr>
 		<tr>
-			<td width="120">호텔 담당자명</td>
+			<td align="center" style="background-color: azure;">호텔 담당자명</td>
 			<td><input type="text" name="h_manager" value="${hdto.h_manager}"></td>
 		</tr>
 		<tr>
-			<td width="120">호텔 전화번호</td>
+			<td align="center" style="background-color: azure;">호텔 전화번호</td>
 			<td><input type="text" name="h_tel" value="${hdto.h_tel}"></td>
 		</tr>
 		<tr>
-			<td>호텔 주소</td>
+			<td align="center" style="background-color: azure;">호텔 주소</td>
 			<td>
 				<c:set var="fullAddr" value="${fn:split(hdto.h_address,'@')}"/>
 				<input type="text" id="h_postcode" placeholder="우편번호" value="${fullAddr[3]}" readOnly>
@@ -208,15 +208,15 @@
 			</td>
 		</tr>
 		<tr>
-			<td>기본 정보</td>
-			<td><textarea rows="5" cols="63" name="h_info">${hdto.h_info}</textarea></td>
-		</tr>
-		<tr>
-			<td>예약 규정</td>
-			<td><textarea rows="5" cols="63" name="h_notice">${hdto.h_notice}</textarea></td>
+			<td align="center" style="background-color: azure;">기본 정보</td>
+			<td><textarea style="resize:none;" maxlength="600" rows="5" cols="63" name="h_info">${hdto.h_info}</textarea></td>
+		</tr> 
+		<tr> 
+			<td align="center" style="background-color: azure;">예약 규정</td>
+			<td><textarea style="resize:none;" maxlength="600" rows="5" cols="63" name="h_notice">${hdto.h_notice}</textarea></td>
 		</tr>
 		<tr>	
-			<td>호텔 지원서비스</td>
+			<td align="center" style="background-color: azure;">호텔 지원서비스</td>
 			<td>
 			<c:if test="${hdto.h_park=='y'}">
 				<input type="checkbox" name="h_park" value="y" checked>주차공간
@@ -279,8 +279,8 @@
 				<input type="checkbox" name="h_front24" value="y">24시간프론트운영<br>
 			</c:if>
 			</td>
-		</tr>
-		<tr>
+		</tr> 
+		<tr> 
 			<td colspan="2" align="center">
 				<input type="button" value="돌아가기" onclick="history.back()">
 				<input type="button" value="수정" onclick="check()">

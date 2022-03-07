@@ -5,11 +5,11 @@
 <c:if test="${empty bookList}">
 	<h3 align="center" style="color:red">예약하신 호텔이 없습니다.</h3>
 </c:if>	
-<div style="text-align: center; font-weight:bold;">호텔 예약 목록</div><br>
+<div style="text-align: center; font-size: xx-large; font-weight:bold;">호텔 예약 목록</div><br>
 <c:set var = "num" value = "${number}"/>
-<c:forEach var="bdto" items="${bookList}">
+<c:forEach var="bdto" items="${bookList}"> 
 <table align="center" valign="top" width="90%" border="1">
-	<tr>
+	<tr> 
 		<td>
 			<c:if test="${bdto.book_status eq 'wait'}">
 				<font color="green">[예약대기]</font>
