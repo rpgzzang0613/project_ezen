@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-</tr>
-</table>
+
 <footer style="background:#DEDEDE;">
 	<h5>COMPANY INFO</h5>
 	<div style="font-size:12px;">

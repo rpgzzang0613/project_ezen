@@ -15,6 +15,17 @@
 			f_check.c_email.focus()
 			return
 		}
+		if (f_check.c_email.value.indexOf('@') == -1){
+			alert("이메일 양식을 맞추셔야 합니다.")
+			f.c_email.focus()
+			return false
+		}
+		 
+		if (f_check.c_email.value.indexOf('.') == -1){
+			alert("이메일 양식을 맞추셔야 합니다.")
+			f.c_email.focus()
+			return false
+		}
 		if(f_check.c_bnum.value==""){
 			alert("사업자 번호를 입력하셔야 합니다.")
 			f_check.c_bnum.focus()

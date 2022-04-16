@@ -50,7 +50,7 @@
 			  monthNamesShort: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
 			  dayNames: ['일','월','화','수','목','금','토'],
 			  dayNamesMin: ['일','월','화','수','목','금','토'],
-	          minDate:0 //오늘 이전 날짜를 선택할 수 없음
+	          	
 	        })
 	        .on( "change", function() {
 	          to.datepicker( "option", "minDate", getDate(this) );//종료일의 minDate 지정

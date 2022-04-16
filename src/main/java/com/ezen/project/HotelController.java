@@ -106,7 +106,7 @@ public class HotelController {
 			for(int i=0; i<mfList.size(); ++i) {
 				// 업로드할 파일명이 default.jpg면 업로드 안함
 				if(!images[i].equals("default.jpg")) {
-					File file = new File(upPath+"\\hotel", images[i]);
+					File file = new File(upPath+"/hotel", images[i]);
 					mfList.get(i).transferTo(file);
 				}
 			}
@@ -185,11 +185,11 @@ public class HotelController {
 				// 새 파일명이랑 기존 파일명이 다를 경우
 				if(!images[i].equals(pre_images[i])) {
 					// 새 파일 업로드
-					File newFile = new File(upPath+"\\hotel", images[i]);
+					File newFile = new File(upPath+"/hotel", images[i]);
 					mfList.get(i).transferTo(newFile);
 					
 					// 기존 파일 삭제 (default.jpg 예외)
-					File preFile = new File(upPath+"\\hotel", pre_images[i]);
+					File preFile = new File(upPath+"/hotel", pre_images[i]);
 					if(preFile.exists() && !preFile.getName().equals("default.jpg")) {
 						preFile.delete();
 					}
@@ -222,9 +222,9 @@ public class HotelController {
 				
 				// DB에서 삭제한 객실들의 이미지파일을 전부 삭제한다. (default.jpg는 남겨둠)
 				for(RoomDTO rdto : rlist) {
-					File file1 = new File(upPath+"\\room", rdto.getRoom_image1());
-					File file2 = new File(upPath+"\\room", rdto.getRoom_image2());
-					File file3 = new File(upPath+"\\room", rdto.getRoom_image3());
+					File file1 = new File(upPath+"/room", rdto.getRoom_image1());
+					File file2 = new File(upPath+"/room", rdto.getRoom_image2());
+					File file3 = new File(upPath+"/room", rdto.getRoom_image3());
 					
 					if(file1.exists() && !file1.getName().equals("default.jpg")) {
 						file1.delete();
@@ -244,7 +244,7 @@ public class HotelController {
 			if(res>0) {
 				// 호텔 이미지를 삭제한다. (default.jpg일 경우는 남겨둠)
 				for(int i=0; i<h_images.length; ++i) {
-					File file = new File(upPath+"\\hotel", h_images[i]);
+					File file = new File(upPath+"/hotel", h_images[i]);
 					if (file.exists() && !file.getName().equals("default.jpg")) {
 						file.delete();
 					}
@@ -356,7 +356,7 @@ public class HotelController {
 			// 실제 파일을 업로드
 			for(int i=0; i<mfList.size(); ++i) {
 				if(!images[i].equals("default.jpg")) {
-					File file = new File(upPath+"\\room", images[i]);
+					File file = new File(upPath+"/room", images[i]);
 					mfList.get(i).transferTo(file);
 				}
 			}
@@ -439,11 +439,11 @@ public class HotelController {
 				// 새 파일명이랑 기존 파일명이 다를 경우
 				if(!images[i].equals(pre_images[i])) {
 					// 새 파일 업로드
-					File newFile = new File(upPath+"\\room", images[i]);
+					File newFile = new File(upPath+"/room", images[i]);
 					mfList.get(i).transferTo(newFile);
 					
 					// 기존 파일 삭제 (default.jpg 예외)
-					File preFile = new File(upPath+"\\room", pre_images[i]);
+					File preFile = new File(upPath+"/room", pre_images[i]);
 					if(preFile.exists() && !preFile.getName().equals("default.jpg")) {
 						preFile.delete();
 					}
@@ -470,7 +470,7 @@ public class HotelController {
 			if(res>0) {
 				// 실제 파일 삭제
 				for(int i=0; i<room_images.length; ++i) {
-					File file = new File(upPath+"\\room", room_images[i]);
+					File file = new File(upPath+"/room", room_images[i]);
 					if (file.exists() && !file.getName().equals("default.jpg")) {
 						file.delete();
 					}

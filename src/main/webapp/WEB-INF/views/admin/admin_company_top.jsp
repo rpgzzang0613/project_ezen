@@ -21,7 +21,7 @@
 	<nav class="navbar">
 		<div class="navbar_logo">
 			<i class="fas fa-suitcase"></i>
-			<a href="main" style="color: #6c738a">Hotel Festival</a>
+			<a href="admin_company_list" style="color: #6c738a">Hotel Festival</a>
 		</div>
 		<ul class="navbar_menu">  
 			<li><a href="admin_company_list" style="color: #6c738a">기업 리스트</a></li>

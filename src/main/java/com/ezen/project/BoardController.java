@@ -405,7 +405,7 @@ public class BoardController {
 		
 		if(res>0) {
 			if(!review_image.equals("")) {
-				File file = new File(upPath+"\\review", review_image);
+				File file = new File(upPath+"/review", review_image);
 				mf.transferTo(file);
 			}
 			
@@ -442,10 +442,10 @@ public class BoardController {
 		
 		if(res > 0) {
 			if(!newImage.equals(pastImage)) {
-				File file = new File(upPath+"\\review", newImage);
+				File file = new File(upPath+"/review", newImage);
 				mf.transferTo(file);
 				
-				File pastFile = new File(upPath+"\\review", pastImage);
+				File pastFile = new File(upPath+"/review", pastImage);
 				if(pastFile.exists()) {
 					pastFile.delete();
 				}
@@ -468,7 +468,7 @@ public class BoardController {
 	      
 	      if(res > 0) {
 	         try {
-	        	 File file = new File(upPath+"\\review", image);
+	        	 File file = new File(upPath+"/review", image);
 	        	 
 	        	 if(file.exists()) {
 	        		 file.delete();
@@ -584,7 +584,7 @@ public class BoardController {
 			
 			if(res > 0) {
 				if(!review_image.equals("")) {
-					File file = new File(upPath+"\\review", review_image);
+					File file = new File(upPath+"/review", review_image);
 					mf.transferTo(file);
 				}
 				
@@ -666,7 +666,7 @@ public class BoardController {
 				
 				if(res > 0) {
 					try {
-						File file = new File(upPath+"\\review", image);
+						File file = new File(upPath+"/review", image);
 						
 						if(file.exists()) {
 							file.delete();
@@ -712,10 +712,10 @@ public class BoardController {
 			
 			if(res > 0) {
 				if(!newImage.equals(pastImage)) {
-					File file = new File(upPath+"\\review", newImage);
+					File file = new File(upPath+"/review", newImage);
 					mf.transferTo(file);
 					
-					File pastFile = new File(upPath+"\\review", pastImage);
+					File pastFile = new File(upPath+"/review", pastImage);
 					if(pastFile.exists()) {
 						pastFile.delete();
 					}

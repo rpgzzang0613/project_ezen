@@ -77,7 +77,7 @@ public class ActivityController {
 			for(int i=0; i<mfList.size(); ++i) {
 				// 업로드할 파일명이 default.jpg면 업로드 안함
 				if(!images[i].equals("default.jpg")) {
-					File file = new File(upPath+"\\activity", images[i]);
+					File file = new File(upPath+"/activity", images[i]);
 					mfList.get(i).transferTo(file);
 				}
 			}
@@ -151,11 +151,11 @@ public class ActivityController {
 				// 새 파일명이랑 기존 파일명이 다를 경우
 				if(!images[i].equals(pre_images[i])) {
 					// 새 파일 업로드
-					File newFile = new File(upPath+"\\activity", images[i]);
+					File newFile = new File(upPath+"/activity", images[i]);
 					mfList.get(i).transferTo(newFile);
 					
 					// 기존 파일 삭제 (default.jpg 예외)
-					File preFile = new File(upPath+"\\activity", pre_images[i]);
+					File preFile = new File(upPath+"/activity", pre_images[i]);
 					if(preFile.exists() && !preFile.getName().equals("default.jpg")) {
 						preFile.delete();
 					}
@@ -178,7 +178,7 @@ public class ActivityController {
 		
 		if(res>0) {
 			for(int i=0; i<a_images.length; ++i) {
-				File file = new File(upPath+"\\activity", a_images[i]);
+				File file = new File(upPath+"/activity", a_images[i]);
 				if (file.exists() && !file.getName().equals("default.jpg")) {
 					file.delete();
 					}
