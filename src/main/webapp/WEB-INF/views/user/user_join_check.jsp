@@ -11,50 +11,137 @@
 </style>
 <%@ include file="../user_top.jsp"%>
 <script>
-	function check(){
+	function checkAll(){
 		if(f_userJoin_check.agree.checked==false){
 			alert("약관에 동의해주시기 바랍니다.");
 			return
 		}
-		
-		if (f_userJoin_check.u_email.value==""){
-			alert("아이디를 입력하셔야 합니다.")
-			f_userJoin_check.u_email.focus() 
-			return
-		}
-		if (f_userJoin_check.u_password.value==""){
-			alert("비밀번호를 입력하셔야 합니다.")
-			f_userJoin_check.u_password.focus()
-			return
-		}
-		if (f_userJoin_check.u_password.value!=f_userJoin_check.u_password2.value){
-			alert("비밀번호가 일치하지 않습니다.")
-			f_userJoin_check.u_password2.focus()
-			return
-		}
-		if (f_userJoin_check.u_name.value==""){
-			alert("이름을 입력하셔야 합니다.")
-			f_userJoin_check.u_name.focus()
-			return
-		} 
-		if (f_userJoin_check.u_nickname.value==""){
-			alert("닉네임을 입력하셔야 합니다.")
-			f_userJoin_check.u_nickname.focus()
-			return
-		}
-		if (f_userJoin_check.u_tel.value==""){
-			alert("전화번호를 입력하셔야 합니다.")
-			f_userJoin_check.u_tel.focus()
-			return
-		}
-		if (f_userJoin_check.u_birth.value==""){
-			alert("생년월일을 입력하셔야 합니다.")
-			f_userJoin_check.u_birth.focus()
-			return
-		}
-		document.f_userJoin_check.submit()
+		if (!checkEmail(f_userJoin_check.u_email.value)) {
+	        return false;
+	    }
+	    if (!checkPassword(f_userJoin_check.u_email.value, f_userJoin_check.u_password.value,f_userJoin_check.u_password2.value)) {
+	        return false;
+	    }
+	    if (!checkName(f_userJoin_check.u_name.value)) {
+	        return false;
+	    }
+	    if(!checkNickName(f_userJoin_check.u_nickname.value)){
+	    	return false;
+	    }
+	    if (!checkTel(f_userJoin_check.u_tel.value)){
+	    	return false;
+	    }
+	    if (!checkBirth(f_userJoin_check.u_birth.value)) {
+	        return false;
+	    }
+
+	    return document.f_userJoin_check.submit();
+	    
 	}
-</script>	 
+
+	function checkExistData(value, dataName) {
+		if(value == ""){
+			alert (dataName + "입력해주세요");
+			return false;
+		}
+		return true;
+	}
+
+	function checkEmail(email){
+		if(!checkExistData(email, "아이디를"))
+			return false;
+		var emailRegExp = /^[A-Za-z0-9_]+[A-Za-z0-9]*[@]{1}[A-Za-z0-9]+[A-Za-z0-9]*[.]{1}[A-Za-z]{1,3}$/;
+		if(!emailRegExp.test(email)){
+			alert("이메일 형식이 올바르지 않습니다");
+			f_userJoin_check.u_email.value = "";
+			f_userJoin_check.u_email.focus();
+			return false;
+		}
+		return true;
+	}
+
+	function checkPassword(email, password1, password2){
+		if(!checkExistData(password1, "비밀번호를"))
+			return false;
+		if(!checkExistData(password2, "비밀번호 확인을"))
+			return false;
+		
+		var password1RegExp = /^[a-zA-z0-9]{4,12}$/;
+		if(!password1RegExp.test(password1)){
+			alert("비밀번호는 영문 대소문자와 숫자 4~12자리로 입력을 해야 합니다.");
+			f_userJoin_check.u_password.value ==""
+			f_userJoin_check.u_password.focus();
+			return false;
+		}
+		
+		if(password1 != password2){
+			alert("두 비밀번호가 맞지 않습니다.");
+			f_userJoin_check.u_password.value =="";
+			f_userJoin_check.u_password2.value =="";
+			f_userJoin_check.u_password2.focus();
+			return false;
+		}
+		
+		if(email == password1){
+			alert("아이디와 비밀번호는 같을 수 없습니다");
+			f_userJoin_check.u_password.value = "";
+			f_userJoin_check.u_password2.value = "";
+			f_userJoin_check.u_password.focus();
+			return false;
+		}
+		return true;
+	}
+	function checkName(name){
+		if(!checkExistData(name, "이름을"))
+			return false;
+		
+		var nameRegExp = /^[가-힣]{2,4}$/;
+		if (!nameRegExp.test(name)){
+			alert("이름이 올바르지 않습니다.");
+			return false;
+		}
+		return true;
+	}
+
+	function checkNickName(Nickname){
+		if(!checkExistData(Nickname, "닉네임을"))
+			return false;
+
+		return true;
+	}
+	
+	function checkTel(Tel){
+		if(!checkExistData(Tel, "전화번호"))
+			return false;
+		
+		var telRegExp = /^01+[016789]+[0-9]{7,8}$/;
+		if(!telRegExp.test(Tel)){
+			alert("전화번호 형식이 올바르지 않습니다.");
+			f_userJoin_check.u_tel.value ="";
+			f_userJoin_check.u_tel.focus();
+			return false;
+			
+		}
+		return true;
+	}
+
+	function checkBirth(birth){
+		if(!checkExistData(birth, "생일을"))
+			return false;
+		
+		var birthRegExp = /^[0-9]{8}/;
+		if(!birthRegExp.test(birth)){
+			alert("생일 형식이 올바르지 않습니다.");
+			f_userJoin_check.u_birth.value ="";
+			f_userJoin_check.u_birth.focus();
+			return false;
+		}
+		return true;
+		
+		}
+	
+
+</script>
 <form name="f_userJoin_check" method="POST" action="user_join_ok" >
 	<input type="hidden" name="a_level" value="1"/>
 	<input type="hidden" name="u_point" value="0"/>
@@ -194,7 +281,7 @@
 	</tr>
 	<tr>
 		<td colspan="3" align="center">
-			<button type="button" name="userJoin" onclick="check()"  
+			<button type="button" name="userJoin" onclick="checkAll()"   
 			style="width:350px;height:50px;background-color:black;color:white;border-color:black">회원 가입</button>
 		</td>
 	</tr>

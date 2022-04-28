@@ -279,7 +279,7 @@ public class DisplayHotelController {
 		resp.setHeader("Cache-Control", "no-store, no-cache, must-revalidate");
 		resp.addHeader("Cache-Control", "post-check=0, pre-check=0"); 
 		resp.setHeader("Pragma", "no-cache");
-		
+		 
 		return "display/display_roomContent";
 	}
 	

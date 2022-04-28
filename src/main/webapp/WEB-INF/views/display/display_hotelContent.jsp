@@ -274,7 +274,7 @@
 		<br>
 	<input type="hidden" id="addr" value="${map_addr}">
 	<input type="hidden" id="hotelN" value="${hdto.h_name}">
-	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=fe10c33359dd79a3e93e06cb153c4c9a&libraries=services"></script>
+	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=	82ba4e506bae18278836f2eef170a009&libraries=services"></script>
 	<div id="map" style="width:1000px;height:500px;"></div>
 	<div id="clickLatlng"></div>
 	
@@ -310,7 +310,7 @@
         var marker = new kakao.maps.Marker({
             map: map,
             position: coords
-        });
+        }); 
 
         // 인포윈도우로 장소에 대한 설명을 표시합니다
         var infowindow = new kakao.maps.InfoWindow({
@@ -333,8 +333,10 @@
 			child.close();
 		}
 	</script>
-		
-	<div class="booking border row" width="1000">
+	<div style="width:1000px; text-align: center;">
+		<h2>서비스 목록</h2>
+	</div>
+	<div class="booking row" style="width:1000px; margin-top: 10px; margin-bottom:10px;">
 		<span align="center">
 			<c:if test="${hdto.h_park eq 'y'}">
 				<img src="resources/images/hotel/service/parking.png" width="100" height="80"><br>
@@ -426,16 +428,44 @@
 			<tr>
 				<td align="center" colspan="2"><a href="review?h_num=${hdto.h_num}">전체 후기 보기</a><br>(후기 ${reviewCount}개)</td>
 			</tr>
-		</table>
+		</table>	
+		<c:if test="${empty loginOkBean}">
+		<div class="row align-center justify-center"> 
+			<div style="text-align:center; position: fixed; bottom: 0; z-index: 9999; width:100%; background-color:#1f244d;">
+        		<i class="fas fa-chevron-left fa-2x" style="cursor:pointer; color: white; margin-bottom:10px; margin-top: 10px; margin-right: 10px;"
+        		 onclick="window.history.back()"></i>
+        		<i class="fas fa-home fa-2x" style="cursor:pointer; color: white; margin-bottom:10px; margin-top: 10px; margin-right: 10px;"
+        		 onclick="location.href='main'"></i> 	
+    			<i class="fas fa-chevron-right fa-2x" style="cursor:pointer; color: white; margin-bottom:10px; margin-top: 10px;"
+        		 onclick="window.history.forward()"></i>
+    		</div> 
+		</div>		
+		</c:if>				
+		<c:if test="${not empty loginOkBean}">
+		<div class="row align-center justify-center"> 
+			<div style="text-align:center; position: fixed; bottom: 0; z-index: 9999; width:100%; background-color:#1f244d;">
+        		<i class="fas fa-chevron-left fa-2x" style="cursor:pointer; color: white; margin-bottom:10px; margin-top: 10px; margin-right: 10px;"
+        		 onclick="window.history.back()"></i>
+        		<i class="fas fa-address-book fa-2x" style="cursor:pointer; margin-left:100px; margin-right: 20px; color: white; margin-bottom:10px; margin-top: 10px;" onclick="location.href='user_myPage'"></i>
+        	<c:if test="${bookable_roomCount ne 0}">
+        		<i class="fas fa-credit-card fa-2x" style="cursor:pointer; margin-right:20px;color: white; margin-bottom:10px" onclick="reservation()"></i>
+			</c:if>
+    			<i class="fas fa-heart fa-2x" style="cursor:pointer; margin-right:20px;color: white; margin-bottom:10px; margin-top: 10px;" onclick="location.href='user_wishlist'"></i> 
+    			<i class="fas fa-home fa-2x" style="cursor:pointer; color: white; margin-bottom:10px; margin-top: 10px;" onclick="location.href='main'"></i> 	
+    			<i class="fas fa-chevron-right fa-2x" style="cursor:pointer; color: white; margin-bottom:10px; margin-top: 10px;"
+        		 onclick="window.history.forward()"></i>
+    		</div>
+		</div>
+		</c:if> 
 	</div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script>
 	$(document).ready(function(){
-		let bookingImages = $('#bookingImages').children('img')
-		$(bookingImages).each(function (index, el) {
-			$(this).click(function() {
-				let selectedSrc = $(el).attr('src')
-				$('#selectedImage').attr('src', selectedSrc)
+		let bookingImages = $('#bookingImages').children('img')//jquery에서 ID값이 bookingImages인 값을 가져와서 자식들중에  img값 찾기 
+		$(bookingImages).each(function (index, el) { //jquery에서 each반복문 , (index, el)로 해서 index가 순서 값이고 el 자식들 가져오기(img) 
+			$(this).click(function() {				//자식들을 선택했을 때 클릭이벤트 발생
+				let selectedSrc = $(el).attr('src')	//attr 속성에 접근. src(주소값) 을 가져온다.
+				$('#selectedImage').attr('src', selectedSrc)//$# --> id값 가져오기 . 속성값을 바꿔준다. 뒤에넣어주면 속성값 변환.
 			})
 		});
 	});

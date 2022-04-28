@@ -6,9 +6,9 @@
 <%@ include file="../user_top.jsp"%>
 <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
 <script type="text/javascript">
-//카카오로그인
+//카카오로그인 
 Kakao.init('fd470f1b6a887556abbbaafff7719fff');
-console.log(Kakao.isInitialized());
+console.log(Kakao.isInitialized()); 
   function loginWithKakao() {
     Kakao.Auth.loginForm({   
       success: function(authObj) {

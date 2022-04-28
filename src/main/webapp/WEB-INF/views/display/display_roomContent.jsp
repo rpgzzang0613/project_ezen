@@ -16,7 +16,7 @@
 			var rn = document.getElementById("room_num").value;
 			if(mode == "member") {
 				// 비회원 예약정보 입력하기 전
-				window.open("loginAskPage", "search", "width=450, height=350");
+				window.open("loginAskPage", "search", "width=388, height=300");
 				// loginAskPage가 열리고 정보를 입력하고 나면 닫히면서 roomContent 페이지를 새로고침하면서 mode값이 변경됨
 			}else {
 				// 비회원 예약정보 입력한 후
@@ -120,16 +120,34 @@
 			<li>상세한 취소 규정은 '자세히 보기'에서 확인하실 수 있습니다.</li>
 			</ul>
 		</div>
+		<c:if test="${empty loginOkBean}">
 		<div class="row align-center justify-center"> 
 			<div style="text-align:center; position: fixed; bottom: 0; z-index: 9999; width:100%; background-color:#1f244d;">
+        		<i class="fas fa-chevron-left fa-2x" style="color: white; margin-bottom:10px; margin-top: 10px; margin-right: 10px;"
+        		 onclick="window.history.back()"></i>
+        		<i class="fas fa-home fa-2x" style="color: white; margin-bottom:10px; margin-top: 10px; margin-right: 10px;"
+        		 onclick="location.href='main'"></i> 	
+    			<i class="fas fa-chevron-right fa-2x" style="color: white; margin-bottom:10px; margin-top: 10px;"
+        		 onclick="window.history.forward()"></i>
+    		</div> 
+		</div>		
+		</c:if>				
+		<c:if test="${not empty loginOkBean}">
+		<div class="row align-center justify-center"> 
+			<div style="text-align:center; position: fixed; bottom: 0; z-index: 9999; width:100%; background-color:#1f244d;">
+        		<i class="fas fa-chevron-left fa-2x" style="color: white; margin-bottom:10px; margin-top: 10px; margin-right: 10px;"
+        		 onclick="window.history.back()"></i>
         		<i class="fas fa-address-book fa-2x" style="margin-left:100px; margin-right: 20px; color: white; margin-bottom:10px; margin-top: 10px;" onclick="location.href='user_myPage'"></i>
         	<c:if test="${bookable_roomCount ne 0}">
         		<i class="fas fa-credit-card fa-2x" style="margin-right:20px;color: white; margin-bottom:10px" onclick="reservation()"></i>
 			</c:if>
     			<i class="fas fa-heart fa-2x" style="margin-right:20px;color: white; margin-bottom:10px; margin-top: 10px;" onclick="location.href='user_wishlist'"></i> 
     			<i class="fas fa-home fa-2x" style="color: white; margin-bottom:10px; margin-top: 10px;" onclick="location.href='main'"></i> 	
+    			<i class="fas fa-chevron-right fa-2x" style="color: white; margin-bottom:10px; margin-top: 10px;"
+        		 onclick="window.history.forward()"></i>
     		</div>
 		</div>
+		</c:if> 
 	</div>  
 </form>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>

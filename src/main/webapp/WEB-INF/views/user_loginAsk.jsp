@@ -18,6 +18,7 @@
 			return
 		}
 		document.loginAsk.submit()
+		window.close()
 	}
 </script>
 <body>
@@ -62,11 +63,17 @@
 			<tr>
 				<td>&nbsp;</td>
 			</tr>
-			
+			<tr>
+				<td colspan="2" align="center">
+					<b>회원 가입하기</b>&nbsp;&nbsp;&nbsp;
+					<button type="button" name="userJoin" onclick="location.href='user_joinchoose'" 
+					style="width:80px;height:35px;background-color:black;color:white;border-color:black">진행</button>
+				</td>
+			</tr>
 			<tr>
 				<td colspan="2" align="center">
 					<b>비회원으로 계속하기</b>&nbsp;&nbsp;&nbsp;
-					<button type="button" name="userJoin" onclick="location.href='nonUserInfo'" 
+					<button type="button" name="nonUser" onclick="location.href='nonUserInfo'" 
 					style="width:80px;height:35px;background-color:black;color:white;border-color:black">진행</button>
 				</td>
 			</tr>

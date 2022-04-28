@@ -34,7 +34,7 @@
 <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"/>
 <link rel="stylesheet" href="resources/LJWstyle.css"/>
 	<div class="align-center" style="width: 1000; margin: 0 auto;" >
-		<div class="row justify-center align-center" style="border:1px solid grey;">
+		<div class="row justify-center align-center">
 			<a href="javascript:goNextFilter('maxReview','${condition}')">
 				<button style= "background:#79B8D6">후기 많은 순</button>
 			</a>
@@ -52,12 +52,12 @@
 			</a>
 			<a href="javascript:goNextFilter('minStar','${condition}')">
 				<button style= "background:#79B8D6">별점 낮은 순</button>
-			</a>
+			</a> 
 		</div>
-		
-<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=fe10c33359dd79a3e93e06cb153c4c9a&libraries=services"></script>
-<div id="map" style="width:100%;height:350px;"></div>	
-<script>
+		 
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=82ba4e506bae18278836f2eef170a009&libraries=services"></script>
+<div id="map" style="width:100%;height:350px; margin-top: 10px;"></div>	
+<script> 
 	const addrs = new Array();
 	const names = new Array();
 	const h_num = new Array();
@@ -158,8 +158,47 @@
 					
 					</span>	
 				</div> 
-			</div>
+			</div> 
 		</div>	
 		</c:forEach>
+		<c:if test="${empty loginOkBean}">
+		<div class="row align-center justify-center"> 
+			<div style="text-align:center; position: fixed; bottom: 0; z-index: 9999; width:100%; background-color:#1f244d;">
+        		<i class="fas fa-chevron-left fa-2x" style="cursor:pointer; color: white; margin-bottom:10px; margin-top: 10px; margin-right: 10px;"
+        		 onclick="window.history.back()"></i>
+        		<i class="fas fa-home fa-2x" style="cursor:pointer; color: white; margin-bottom:10px; margin-top: 10px; margin-right: 10px;"
+        		 onclick="location.href='main'"></i> 	
+    			<i class="fas fa-chevron-right fa-2x" style="cursor:pointer; color: white; margin-bottom:10px; margin-top: 10px;"
+        		 onclick="window.history.forward()"></i>
+    		</div> 
+		</div>		
+		</c:if>				
+		<c:if test="${not empty loginOkBean}">
+		<div class="row align-center justify-center"> 
+			<div style="text-align:center; position: fixed; bottom: 0; z-index: 9999; width:100%; background-color:#1f244d;">
+        		<i class="fas fa-chevron-left fa-2x" style="cursor:pointer; color: white; margin-bottom:10px; margin-top: 10px; margin-right: 10px;"
+        		 onclick="window.history.back()"></i>
+        		<i class="fas fa-address-book fa-2x" style="cursor:pointer; margin-left:100px; margin-right: 20px; color: white; margin-bottom:10px; margin-top: 10px;" onclick="location.href='user_myPage'"></i>
+        	<c:if test="${bookable_roomCount ne 0}">
+        		<i class="fas fa-credit-card fa-2x" style="cursor:pointer; margin-right:20px;color: white; margin-bottom:10px" onclick="reservation()"></i>
+			</c:if>
+    			<i class="fas fa-heart fa-2x" style="cursor:pointer; margin-right:20px;color: white; margin-bottom:10px; margin-top: 10px;" onclick="location.href='user_wishlist'"></i> 
+    			<i class="fas fa-home fa-2x" style="cursor:pointer; color: white; margin-bottom:10px; margin-top: 10px;" onclick="location.href='main'"></i> 	
+    			<i class="fas fa-chevron-right fa-2x" style="color: white; margin-bottom:10px; margin-top: 10px;"
+        		 onclick="window.history.forward()"></i>
+    		</div>
+		</div>
+		</c:if> 
 	</div>
+<script>
+	$(document).ready(function(){
+		let roomcontentImages = $('#roomcontentImages').children('img')
+		$(roomcontentImages).each(function (index, el) {
+			$(this).click(function() {
+				let selectedSrc = $(el).attr('src')
+				$('#selectedImage').attr('src', selectedSrc)
+			})
+		});
+	});
+</script>	
 <%@ include file="../bottom.jsp"%>
