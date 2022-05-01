@@ -135,15 +135,15 @@
 		<c:if test="${not empty loginOkBean}">
 		<div class="row align-center justify-center"> 
 			<div style="text-align:center; position: fixed; bottom: 0; z-index: 9999; width:100%; background-color:#1f244d;">
-        		<i class="fas fa-chevron-left fa-2x" style="color: white; margin-bottom:10px; margin-top: 10px; margin-right: 10px;"
-        		 onclick="window.history.back()"></i>
-        		<i class="fas fa-address-book fa-2x" style="margin-left:100px; margin-right: 20px; color: white; margin-bottom:10px; margin-top: 10px;" onclick="location.href='user_myPage'"></i>
+        		<i class="fas fa-chevron-left fa-2x" style="cursor:pointer; color: white; margin-bottom:10px; margin-top: 10px;"
+        		 onclick="window.history.back()"></i> 
+        		<i class="fas fa-address-book fa-2x" style="cursor:pointer; margin-right: 20px; color: white; margin-bottom:10px; margin-top: 10px;" onclick="location.href='user_myPage'"></i>
         	<c:if test="${bookable_roomCount ne 0}">
-        		<i class="fas fa-credit-card fa-2x" style="margin-right:20px;color: white; margin-bottom:10px" onclick="reservation()"></i>
+        		<i class="fas fa-credit-card fa-2x" style="cursor:pointer; margin-right:20px;color: white; margin-bottom:10px" onclick="reservation()"></i>
 			</c:if>
-    			<i class="fas fa-heart fa-2x" style="margin-right:20px;color: white; margin-bottom:10px; margin-top: 10px;" onclick="location.href='user_wishlist'"></i> 
-    			<i class="fas fa-home fa-2x" style="color: white; margin-bottom:10px; margin-top: 10px;" onclick="location.href='main'"></i> 	
-    			<i class="fas fa-chevron-right fa-2x" style="color: white; margin-bottom:10px; margin-top: 10px;"
+    			<i class="fas fa-heart fa-2x" style="cursor:pointer; margin-right:20px;color: white; margin-bottom:10px; margin-top: 10px;" onclick="location.href='user_wishlist'"></i> 
+    			<i class="fas fa-home fa-2x" style="cursor:pointer; color: white; margin-bottom:10px; margin-top: 10px;" onclick="location.href='main'"></i> 	
+    			<i class="fas fa-chevron-right fa-2x" style="cursor:pointer; color: white; margin-bottom:10px; margin-top: 10px;"
         		 onclick="window.history.forward()"></i>
     		</div>
 		</div>
