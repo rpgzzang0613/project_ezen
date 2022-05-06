@@ -44,7 +44,7 @@
 		<td bgcolor="lightgrey" align="center" width="15%">내 용</td>
 		<td width="85%">
 			<textarea name="uqa_contents" cols="65" rows="12">
-				param.u_num_parent:${param.u_num_parent}, loginOkBean.u_num:${loginOkBean.u_num}
+				
 			</textarea>
 		</td>
 	</tr>
